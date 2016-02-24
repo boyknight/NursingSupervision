@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		35FAEC4755D40C9FF215FD6B /* libPods-NursingSupervision.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC9420152A26BD00AD8EF71 /* libPods-NursingSupervision.a */; };
+		B085480F1C7DAC600004991B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B085480E1C7DAC600004991B /* main.m */; };
+		B08548121C7DAC600004991B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548111C7DAC600004991B /* AppDelegate.m */; };
+		B085481A1C7DAC600004991B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B08548191C7DAC600004991B /* Assets.xcassets */; };
+		B085481D1C7DAC600004991B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B085481B1C7DAC600004991B /* LaunchScreen.storyboard */; };
+		B085482B1C7DB2B20004991B /* NSVMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B085482A1C7DB2B20004991B /* NSVMainViewController.m */; };
+		B085482E1C7DB6EC0004991B /* NSVClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B085482D1C7DB6EC0004991B /* NSVClassViewController.m */; };
+		B08548311C7DB7110004991B /* NSVIssueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548301C7DB7110004991B /* NSVIssueViewController.m */; };
+		B08548341C7DBE8F0004991B /* NSVClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548331C7DBE8F0004991B /* NSVClass.m */; };
+		B08548371C7DBE9D0004991B /* NSVProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548361C7DBE9D0004991B /* NSVProject.m */; };
+		B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548391C7DBEA80004991B /* NSVIssue.m */; };
+		B085483D1C7DBF370004991B /* NSVNurse.m in Sources */ = {isa = PBXBuildFile; fileRef = B085483C1C7DBF370004991B /* NSVNurse.m */; };
+		B08548401C7DBF950004991B /* NSVRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = B085483F1C7DBF950004991B /* NSVRecord.m */; };
+		B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */; };
+		B0C963A61C7E0629002F1A38 /* NSVPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C963A51C7E0629002F1A38 /* NSVPosition.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		16FAEA4756DCB6EFC2A39F48 /* Pods-NursingSupervision.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NursingSupervision.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision.debug.xcconfig"; sourceTree = "<group>"; };
+		5CC9420152A26BD00AD8EF71 /* libPods-NursingSupervision.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NursingSupervision.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B085480A1C7DAC600004991B /* NursingSupervision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NursingSupervision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B085480E1C7DAC600004991B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B08548101C7DAC600004991B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B08548111C7DAC600004991B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B08548191C7DAC600004991B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B085481C1C7DAC600004991B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B085481E1C7DAC600004991B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B08548291C7DB2B20004991B /* NSVMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVMainViewController.h; sourceTree = "<group>"; };
+		B085482A1C7DB2B20004991B /* NSVMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVMainViewController.m; sourceTree = "<group>"; };
+		B085482C1C7DB6EC0004991B /* NSVClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVClassViewController.h; sourceTree = "<group>"; };
+		B085482D1C7DB6EC0004991B /* NSVClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVClassViewController.m; sourceTree = "<group>"; };
+		B085482F1C7DB7110004991B /* NSVIssueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVIssueViewController.h; sourceTree = "<group>"; };
+		B08548301C7DB7110004991B /* NSVIssueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVIssueViewController.m; sourceTree = "<group>"; };
+		B08548321C7DBE8F0004991B /* NSVClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVClass.h; sourceTree = "<group>"; };
+		B08548331C7DBE8F0004991B /* NSVClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVClass.m; sourceTree = "<group>"; };
+		B08548351C7DBE9D0004991B /* NSVProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVProject.h; sourceTree = "<group>"; };
+		B08548361C7DBE9D0004991B /* NSVProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVProject.m; sourceTree = "<group>"; };
+		B08548381C7DBEA80004991B /* NSVIssue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVIssue.h; sourceTree = "<group>"; };
+		B08548391C7DBEA80004991B /* NSVIssue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVIssue.m; sourceTree = "<group>"; };
+		B085483B1C7DBF370004991B /* NSVNurse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVNurse.h; sourceTree = "<group>"; };
+		B085483C1C7DBF370004991B /* NSVNurse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNurse.m; sourceTree = "<group>"; };
+		B085483E1C7DBF950004991B /* NSVRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVRecord.h; sourceTree = "<group>"; };
+		B085483F1C7DBF950004991B /* NSVRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVRecord.m; sourceTree = "<group>"; };
+		B0C963A11C7DF4BE002F1A38 /* NSVDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVDataCenter.h; sourceTree = "<group>"; };
+		B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVDataCenter.m; sourceTree = "<group>"; };
+		B0C963A41C7E0629002F1A38 /* NSVPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVPosition.h; sourceTree = "<group>"; };
+		B0C963A51C7E0629002F1A38 /* NSVPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVPosition.m; sourceTree = "<group>"; };
+		C93001A78EEBC5F567E285A0 /* Pods-NursingSupervision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NursingSupervision.release.xcconfig"; path = "Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B08548071C7DAC600004991B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35FAEC4755D40C9FF215FD6B /* libPods-NursingSupervision.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1F89B8C421A64BA772C0E8A2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5CC9420152A26BD00AD8EF71 /* libPods-NursingSupervision.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B08548011C7DAC600004991B = {
+			isa = PBXGroup;
+			children = (
+				B085480C1C7DAC600004991B /* NursingSupervision */,
+				B085480B1C7DAC600004991B /* Products */,
+				F56234B2F9FA30E96EE5D6B3 /* Pods */,
+				1F89B8C421A64BA772C0E8A2 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B085480B1C7DAC600004991B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B085480A1C7DAC600004991B /* NursingSupervision.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B085480C1C7DAC600004991B /* NursingSupervision */ = {
+			isa = PBXGroup;
+			children = (
+				B08548261C7DACCD0004991B /* UI */,
+				B08548271C7DACD20004991B /* DataCenter */,
+				B08548281C7DACD70004991B /* Utilities */,
+				B08548101C7DAC600004991B /* AppDelegate.h */,
+				B08548111C7DAC600004991B /* AppDelegate.m */,
+				B08548191C7DAC600004991B /* Assets.xcassets */,
+				B085481B1C7DAC600004991B /* LaunchScreen.storyboard */,
+				B085481E1C7DAC600004991B /* Info.plist */,
+				B085480D1C7DAC600004991B /* Supporting Files */,
+			);
+			path = NursingSupervision;
+			sourceTree = "<group>";
+		};
+		B085480D1C7DAC600004991B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B085480E1C7DAC600004991B /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B08548261C7DACCD0004991B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B08548291C7DB2B20004991B /* NSVMainViewController.h */,
+				B085482A1C7DB2B20004991B /* NSVMainViewController.m */,
+				B085482C1C7DB6EC0004991B /* NSVClassViewController.h */,
+				B085482D1C7DB6EC0004991B /* NSVClassViewController.m */,
+				B085482F1C7DB7110004991B /* NSVIssueViewController.h */,
+				B08548301C7DB7110004991B /* NSVIssueViewController.m */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		B08548271C7DACD20004991B /* DataCenter */ = {
+			isa = PBXGroup;
+			children = (
+				B08548321C7DBE8F0004991B /* NSVClass.h */,
+				B08548331C7DBE8F0004991B /* NSVClass.m */,
+				B08548351C7DBE9D0004991B /* NSVProject.h */,
+				B08548361C7DBE9D0004991B /* NSVProject.m */,
+				B0C963A41C7E0629002F1A38 /* NSVPosition.h */,
+				B0C963A51C7E0629002F1A38 /* NSVPosition.m */,
+				B08548381C7DBEA80004991B /* NSVIssue.h */,
+				B08548391C7DBEA80004991B /* NSVIssue.m */,
+				B085483B1C7DBF370004991B /* NSVNurse.h */,
+				B085483C1C7DBF370004991B /* NSVNurse.m */,
+				B085483E1C7DBF950004991B /* NSVRecord.h */,
+				B085483F1C7DBF950004991B /* NSVRecord.m */,
+				B0C963A11C7DF4BE002F1A38 /* NSVDataCenter.h */,
+				B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */,
+			);
+			path = DataCenter;
+			sourceTree = "<group>";
+		};
+		B08548281C7DACD70004991B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		F56234B2F9FA30E96EE5D6B3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				16FAEA4756DCB6EFC2A39F48 /* Pods-NursingSupervision.debug.xcconfig */,
+				C93001A78EEBC5F567E285A0 /* Pods-NursingSupervision.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B08548091C7DAC600004991B /* NursingSupervision */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B08548211C7DAC600004991B /* Build configuration list for PBXNativeTarget "NursingSupervision" */;
+			buildPhases = (
+				3F0BAD1D13A959F745826586 /* Check Pods Manifest.lock */,
+				B08548061C7DAC600004991B /* Sources */,
+				B08548071C7DAC600004991B /* Frameworks */,
+				B08548081C7DAC600004991B /* Resources */,
+				EF14A24ABC9FACB9BA94CC05 /* Embed Pods Frameworks */,
+				9C1739B65D069BC6D1E56CC9 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NursingSupervision;
+			productName = NursingSupervision;
+			productReference = B085480A1C7DAC600004991B /* NursingSupervision.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B08548021C7DAC600004991B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = NSV;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "yx Studio";
+				TargetAttributes = {
+					B08548091C7DAC600004991B = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 334YLCXWYF;
+					};
+				};
+			};
+			buildConfigurationList = B08548051C7DAC600004991B /* Build configuration list for PBXProject "NursingSupervision" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B08548011C7DAC600004991B;
+			productRefGroup = B085480B1C7DAC600004991B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B08548091C7DAC600004991B /* NursingSupervision */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B08548081C7DAC600004991B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B085481D1C7DAC600004991B /* LaunchScreen.storyboard in Resources */,
+				B085481A1C7DAC600004991B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3F0BAD1D13A959F745826586 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9C1739B65D069BC6D1E56CC9 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EF14A24ABC9FACB9BA94CC05 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B08548061C7DAC600004991B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0C963A61C7E0629002F1A38 /* NSVPosition.m in Sources */,
+				B085482B1C7DB2B20004991B /* NSVMainViewController.m in Sources */,
+				B08548121C7DAC600004991B /* AppDelegate.m in Sources */,
+				B08548341C7DBE8F0004991B /* NSVClass.m in Sources */,
+				B085480F1C7DAC600004991B /* main.m in Sources */,
+				B08548311C7DB7110004991B /* NSVIssueViewController.m in Sources */,
+				B085483D1C7DBF370004991B /* NSVNurse.m in Sources */,
+				B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */,
+				B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */,
+				B08548371C7DBE9D0004991B /* NSVProject.m in Sources */,
+				B08548401C7DBF950004991B /* NSVRecord.m in Sources */,
+				B085482E1C7DB6EC0004991B /* NSVClassViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B085481B1C7DAC600004991B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B085481C1C7DAC600004991B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B085481F1C7DAC600004991B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B08548201C7DAC600004991B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B08548221C7DAC600004991B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 16FAEA4756DCB6EFC2A39F48 /* Pods-NursingSupervision.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = NursingSupervision/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yxstudio.NursingSupervision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B08548231C7DAC600004991B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C93001A78EEBC5F567E285A0 /* Pods-NursingSupervision.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = NursingSupervision/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yxstudio.NursingSupervision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B08548051C7DAC600004991B /* Build configuration list for PBXProject "NursingSupervision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B085481F1C7DAC600004991B /* Debug */,
+				B08548201C7DAC600004991B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B08548211C7DAC600004991B /* Build configuration list for PBXNativeTarget "NursingSupervision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B08548221C7DAC600004991B /* Debug */,
+				B08548231C7DAC600004991B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B08548021C7DAC600004991B /* Project object */;
+}

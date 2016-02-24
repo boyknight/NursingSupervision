@@ -1,0 +1,16 @@
+PODS:
+  - FMDB (2.6):
+    - FMDB/standard (= 2.6)
+  - FMDB/standard (2.6)
+  - OLCOrm (1.0.4.2):
+    - FMDB
+
+DEPENDENCIES:
+  - FMDB (~> 2.6)
+  - OLCOrm (~> 1.0)
+
+SPEC CHECKSUMS:
+  FMDB: c1968bab3ab0aed38f66cb778ae1e7fa9a652b6e
+  OLCOrm: 90169988a9363194f0e4d1c13616b70e11017744
+
+COCOAPODS: 0.39.0
