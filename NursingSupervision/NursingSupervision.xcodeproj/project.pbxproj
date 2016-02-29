@@ -13,15 +13,16 @@
 		B085481A1C7DAC600004991B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B08548191C7DAC600004991B /* Assets.xcassets */; };
 		B085481D1C7DAC600004991B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B085481B1C7DAC600004991B /* LaunchScreen.storyboard */; };
 		B085482B1C7DB2B20004991B /* NSVMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B085482A1C7DB2B20004991B /* NSVMainViewController.m */; };
-		B085482E1C7DB6EC0004991B /* NSVClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B085482D1C7DB6EC0004991B /* NSVClassViewController.m */; };
+		B085482E1C7DB6EC0004991B /* NSVClassifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B085482D1C7DB6EC0004991B /* NSVClassifyViewController.m */; };
 		B08548311C7DB7110004991B /* NSVIssueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548301C7DB7110004991B /* NSVIssueViewController.m */; };
-		B08548341C7DBE8F0004991B /* NSVClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548331C7DBE8F0004991B /* NSVClass.m */; };
+		B08548341C7DBE8F0004991B /* NSVClassify.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548331C7DBE8F0004991B /* NSVClassify.m */; };
 		B08548371C7DBE9D0004991B /* NSVProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548361C7DBE9D0004991B /* NSVProject.m */; };
 		B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548391C7DBEA80004991B /* NSVIssue.m */; };
 		B085483D1C7DBF370004991B /* NSVNurse.m in Sources */ = {isa = PBXBuildFile; fileRef = B085483C1C7DBF370004991B /* NSVNurse.m */; };
 		B08548401C7DBF950004991B /* NSVRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = B085483F1C7DBF950004991B /* NSVRecord.m */; };
+		B0B22D3E1C82F6450040DA49 /* NSVAssessment.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B22D3D1C82F6450040DA49 /* NSVAssessment.m */; };
+		B0B22D401C82FB080040DA49 /* init.json in Resources */ = {isa = PBXBuildFile; fileRef = B0B22D3F1C82FB080040DA49 /* init.json */; };
 		B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */; };
-		B0C963A61C7E0629002F1A38 /* NSVPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C963A51C7E0629002F1A38 /* NSVPosition.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,12 +37,12 @@
 		B085481E1C7DAC600004991B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B08548291C7DB2B20004991B /* NSVMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVMainViewController.h; sourceTree = "<group>"; };
 		B085482A1C7DB2B20004991B /* NSVMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVMainViewController.m; sourceTree = "<group>"; };
-		B085482C1C7DB6EC0004991B /* NSVClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVClassViewController.h; sourceTree = "<group>"; };
-		B085482D1C7DB6EC0004991B /* NSVClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVClassViewController.m; sourceTree = "<group>"; };
+		B085482C1C7DB6EC0004991B /* NSVClassifyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVClassifyViewController.h; sourceTree = "<group>"; };
+		B085482D1C7DB6EC0004991B /* NSVClassifyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVClassifyViewController.m; sourceTree = "<group>"; };
 		B085482F1C7DB7110004991B /* NSVIssueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVIssueViewController.h; sourceTree = "<group>"; };
 		B08548301C7DB7110004991B /* NSVIssueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVIssueViewController.m; sourceTree = "<group>"; };
-		B08548321C7DBE8F0004991B /* NSVClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVClass.h; sourceTree = "<group>"; };
-		B08548331C7DBE8F0004991B /* NSVClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVClass.m; sourceTree = "<group>"; };
+		B08548321C7DBE8F0004991B /* NSVClassify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVClassify.h; sourceTree = "<group>"; };
+		B08548331C7DBE8F0004991B /* NSVClassify.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVClassify.m; sourceTree = "<group>"; };
 		B08548351C7DBE9D0004991B /* NSVProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVProject.h; sourceTree = "<group>"; };
 		B08548361C7DBE9D0004991B /* NSVProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVProject.m; sourceTree = "<group>"; };
 		B08548381C7DBEA80004991B /* NSVIssue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVIssue.h; sourceTree = "<group>"; };
@@ -50,10 +51,11 @@
 		B085483C1C7DBF370004991B /* NSVNurse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNurse.m; sourceTree = "<group>"; };
 		B085483E1C7DBF950004991B /* NSVRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVRecord.h; sourceTree = "<group>"; };
 		B085483F1C7DBF950004991B /* NSVRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVRecord.m; sourceTree = "<group>"; };
+		B0B22D3C1C82F6450040DA49 /* NSVAssessment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVAssessment.h; sourceTree = "<group>"; };
+		B0B22D3D1C82F6450040DA49 /* NSVAssessment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVAssessment.m; sourceTree = "<group>"; };
+		B0B22D3F1C82FB080040DA49 /* init.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = init.json; sourceTree = "<group>"; };
 		B0C963A11C7DF4BE002F1A38 /* NSVDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVDataCenter.h; sourceTree = "<group>"; };
 		B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVDataCenter.m; sourceTree = "<group>"; };
-		B0C963A41C7E0629002F1A38 /* NSVPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVPosition.h; sourceTree = "<group>"; };
-		B0C963A51C7E0629002F1A38 /* NSVPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVPosition.m; sourceTree = "<group>"; };
 		C93001A78EEBC5F567E285A0 /* Pods-NursingSupervision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NursingSupervision.release.xcconfig"; path = "Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +116,7 @@
 		B085480D1C7DAC600004991B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B0B22D3F1C82FB080040DA49 /* init.json */,
 				B085480E1C7DAC600004991B /* main.m */,
 			);
 			name = "Supporting Files";
@@ -124,8 +127,8 @@
 			children = (
 				B08548291C7DB2B20004991B /* NSVMainViewController.h */,
 				B085482A1C7DB2B20004991B /* NSVMainViewController.m */,
-				B085482C1C7DB6EC0004991B /* NSVClassViewController.h */,
-				B085482D1C7DB6EC0004991B /* NSVClassViewController.m */,
+				B085482C1C7DB6EC0004991B /* NSVClassifyViewController.h */,
+				B085482D1C7DB6EC0004991B /* NSVClassifyViewController.m */,
 				B085482F1C7DB7110004991B /* NSVIssueViewController.h */,
 				B08548301C7DB7110004991B /* NSVIssueViewController.m */,
 			);
@@ -135,12 +138,12 @@
 		B08548271C7DACD20004991B /* DataCenter */ = {
 			isa = PBXGroup;
 			children = (
-				B08548321C7DBE8F0004991B /* NSVClass.h */,
-				B08548331C7DBE8F0004991B /* NSVClass.m */,
+				B0B22D3C1C82F6450040DA49 /* NSVAssessment.h */,
+				B0B22D3D1C82F6450040DA49 /* NSVAssessment.m */,
+				B08548321C7DBE8F0004991B /* NSVClassify.h */,
+				B08548331C7DBE8F0004991B /* NSVClassify.m */,
 				B08548351C7DBE9D0004991B /* NSVProject.h */,
 				B08548361C7DBE9D0004991B /* NSVProject.m */,
-				B0C963A41C7E0629002F1A38 /* NSVPosition.h */,
-				B0C963A51C7E0629002F1A38 /* NSVPosition.m */,
 				B08548381C7DBEA80004991B /* NSVIssue.h */,
 				B08548391C7DBEA80004991B /* NSVIssue.m */,
 				B085483B1C7DBF370004991B /* NSVNurse.h */,
@@ -233,6 +236,7 @@
 			files = (
 				B085481D1C7DAC600004991B /* LaunchScreen.storyboard in Resources */,
 				B085481A1C7DAC600004991B /* Assets.xcassets in Resources */,
+				B0B22D401C82FB080040DA49 /* init.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,10 +295,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0C963A61C7E0629002F1A38 /* NSVPosition.m in Sources */,
 				B085482B1C7DB2B20004991B /* NSVMainViewController.m in Sources */,
 				B08548121C7DAC600004991B /* AppDelegate.m in Sources */,
-				B08548341C7DBE8F0004991B /* NSVClass.m in Sources */,
+				B08548341C7DBE8F0004991B /* NSVClassify.m in Sources */,
+				B0B22D3E1C82F6450040DA49 /* NSVAssessment.m in Sources */,
 				B085480F1C7DAC600004991B /* main.m in Sources */,
 				B08548311C7DB7110004991B /* NSVIssueViewController.m in Sources */,
 				B085483D1C7DBF370004991B /* NSVNurse.m in Sources */,
@@ -302,7 +306,7 @@
 				B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */,
 				B08548371C7DBE9D0004991B /* NSVProject.m in Sources */,
 				B08548401C7DBF950004991B /* NSVRecord.m in Sources */,
-				B085482E1C7DB6EC0004991B /* NSVClassViewController.m in Sources */,
+				B085482E1C7DB6EC0004991B /* NSVClassifyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

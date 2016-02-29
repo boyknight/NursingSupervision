@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "OCLModel.h"
+#import "JSONModelLib.h"
 
-@interface NSVNurse : OCLModel
+@interface NSVNurse : JSONModel
 
 @property (nonatomic, assign) NSInteger nurseId;
 @property (nonatomic, strong) NSString* name;

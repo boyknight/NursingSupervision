@@ -1,16 +1,13 @@
 PODS:
-  - FMDB (2.6):
-    - FMDB/standard (= 2.6)
-  - FMDB/standard (2.6)
-  - OLCOrm (1.0.4.2):
-    - FMDB
+  - JSONModel (1.2.0)
+  - PinYin4Objc (1.1.1)
 
 DEPENDENCIES:
-  - FMDB (~> 2.6)
-  - OLCOrm (~> 1.0)
+  - JSONModel
+  - PinYin4Objc
 
 SPEC CHECKSUMS:
-  FMDB: c1968bab3ab0aed38f66cb778ae1e7fa9a652b6e
-  OLCOrm: 90169988a9363194f0e4d1c13616b70e11017744
+  JSONModel: 12523685c4b623553ccf844bbbf7007624317b2c
+  PinYin4Objc: 3fa9673610368330e2dfb688b1d19a35c3930a78
 
 COCOAPODS: 0.39.0

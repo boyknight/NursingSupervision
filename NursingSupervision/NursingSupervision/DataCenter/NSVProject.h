@@ -7,16 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "OCLModel.h"
+#import "JSONModelLib.h"
+#import "NSVIssue.h"
 
-@interface NSVProject : OCLModel
+@protocol NSVProject
 
-@property (nonatomic, assign) NSInteger classId;
+@end
 
-@property (nonatomic, assign) NSInteger projectId;
+@interface NSVProject : JSONModel
 
 @property (nonatomic, strong) NSString* name;
-@property (nonatomic, strong) NSNumber* score;
 
+@property (nonatomic, strong) NSArray<NSVIssue>* issues;
 
 @end

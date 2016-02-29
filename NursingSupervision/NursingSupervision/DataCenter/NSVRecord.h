@@ -7,13 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "OCLModel.h"
-#import "NSVClass.h"
+#import "JSONModelLib.h"
+#import "NSVClassify.h"
 #import "NSVProject.h"
 #import "NSVIssue.h"
 #import "NSVNurse.h"
 
-@interface NSVRecord : OCLModel
+@interface NSVRecord : JSONModel
 
 @property (nonatomic, assign) NSInteger recordId;
 

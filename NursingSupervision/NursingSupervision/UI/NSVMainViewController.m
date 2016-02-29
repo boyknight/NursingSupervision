@@ -7,7 +7,7 @@
 //
 
 #import "NSVMainViewController.h"
-#import "NSVClassViewController.h"
+#import "NSVClassifyViewController.h"
 #import "NSVIssueViewController.h"
 
 @interface NSVMainViewController ()
@@ -21,15 +21,6 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSVClassViewController* classVC = [[NSVClassViewController alloc] initWithNibName:nil bundle:nil];
-    UINavigationController* classNC = [[UINavigationController alloc] initWithRootViewController:classVC];
-    
-    NSVIssueViewController* issueVC = [[NSVIssueViewController alloc] initWithNibName:nil bundle:nil];
-    UINavigationController* issueNC = [[UINavigationController alloc] initWithRootViewController:issueVC];
-    
-    self.viewControllers = @[classNC, issueNC];
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,5 +28,9 @@ static NSString * const reuseIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
+
+-(void) classifyViewController:(NSVClassifyViewController*)classifyViewController projectSelected:(NSVProject*)project{
+    [self.issueViewController setProjectFilter:project];
+}
 
 @end

@@ -7,141 +7,196 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		091D1CC404959B4D5F4017B5664F92EF /* OLCOrmNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 7FAF4C8169C0CB1206295AF75DB3772E /* OLCOrmNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0DAF7CD10E5F2F2E011B07FFC08A4F5F /* OCLDBHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FF1E2CA7AF36B99C806C4D173889652 /* OCLDBHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0EF8E9AA652DBE2745A7D5C8CD2E3BDE /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 780804826777B44B1C83A269FD043326 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		0F8A8E0D6FAEBF758E0B4D620335F094 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD275447BF7BC9848D28E3E274DF761 /* FMDatabasePool.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		19DE167299C7193DCAB48DB7C978DDC5 /* OLCMigrator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8993A56805A39345138EB867677081D2 /* OLCMigrator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		249B126D66053D4B8E49E092C89A64D3 /* Pods-NursingSupervision-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 714ECB484FC3089C36A8C83F2C8E04DE /* Pods-NursingSupervision-dummy.m */; };
-		282081E035E7A843068E8BCC2E07C217 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8141D8E4131066BE1DAA4C37DBE2DB6F /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		313531CEDA0294311D87B4F4C3F073F4 /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = E88704DCA4FC337D0F286F2121B03E45 /* FMDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		38A20DA2FB0314A3D18760878E69E699 /* OLCTableHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2913A5A21F2D976779BFD9AB3136EA15 /* OLCTableHandler.m */; };
-		3D0F69C4CA35EB6A1F686BA88B19B4F6 /* FMDB-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CFACC6FEC94CC6B0579B58F8AC50A7 /* FMDB-dummy.m */; };
-		587B76A3E381AF7C3EFFDF6754D39288 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		605FA97A1224A3C8913F5D323095DC28 /* OLCOrm-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 756881FCE76950CDD4953ED5E3A040E9 /* OLCOrm-dummy.m */; };
-		7326A5CE73F5BB7B4858EE81A55D69D4 /* OLCOrm.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B450C37A678755763A780DDC52CC231 /* OLCOrm.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		78C327757ADC8434D64832FD618280C7 /* OCLDBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9A45AF5061CE677456CBCC340B8F99 /* OCLDBHelper.m */; };
-		8718DBEEA074F9DBBF47D5C62105D45D /* OLCOrmNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B962A9505343D1C3E772516A9D157AD /* OLCOrmNotification.m */; };
-		914122FC773AB23A971DEBAB0F32AF14 /* OCLObjectParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 73DC1741E1B82CC0ABA7FDCDB6B72F0B /* OCLObjectParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		92641F4FC25599EF52333FAFB746B24C /* NSObject+KJSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C0C0E631FA061600E900A5CF168200F /* NSObject+KJSerializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A350C5704A1F233DAD830E081E00F8C1 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9840C9AE917C24D1C6940CF0EC64787 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		A451CBC8B41A8597FBD02C6D2D22FF8E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		A6C85D87326CF538E732F1EB13C90ADF /* OLCMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 186AA119CFDBCCFB05D599148DF74FBC /* OLCMigrator.m */; };
-		AC60459AE5B68ADBD32009520B9A054B /* OLCTableHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = D947EC19A744C828B445AB6E69F4D2D3 /* OLCTableHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B078F6A019264DFB1D64A97EBFF4DE44 /* NSObject+KJSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B2EF810CDB5537AAEFA1B04F8BD5D /* NSObject+KJSerializer.m */; };
-		B418C9BDCF8C6BAC2E3942F157BB6D4C /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 614CF16623A3B5BEF27B3CEFA5269DC9 /* FMDatabaseAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C6C4C560C206F7FA1CDC5A2B8429890B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
-		CA027706DD6805766F1F4EC548E72440 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C35B76416DD126FD6C609F146D8741 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		CB594C972AD82C2B08CCD984E16F9165 /* OCLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E399D383792EE92EDABD12C393C0E8F /* OCLModel.m */; };
-		D0C5FF5485EAA2CDA03E9796B407697A /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = B7FD4F20128853813C3CA05B22906069 /* FMDatabaseQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D0D5FFE53407F16C9CD3D0ECF43ACE93 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = F3E0AB80C97E7B11C67049345774D6EE /* FMDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D919B1C747E978683B112D5B49E8A0BC /* OCLObjectParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE2E346B3354D87964C213A3DDBF247 /* OCLObjectParser.m */; };
-		DEFA3504695E9DFDE1177DAB22884470 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = D4F23225F8A1DB3AAEF3C627633D1273 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		ED51CDCB9585B2043ACA0EB24DE4C998 /* OLCOrm.m in Sources */ = {isa = PBXBuildFile; fileRef = 7176EFB73BE16EE8A0B91C6E3D79AADD /* OLCOrm.m */; };
-		F977B243321331B58666E9284634101A /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = F64E933633F099D27C675FE5F6D719DF /* FMResultSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE8A96057FB10F234D6D2359822C7D96 /* OCLModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BB134454730827E30B4B1462EABB28A /* OCLModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		04E0EFD308A39DA6783F9004C5689973 /* JSONValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = E57589B11125A91075ACC335E2C380CA /* JSONValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E33D27691C990C7C837220DC264B868 /* PinyinFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 60547B23EEB111F979A90BCC29485275 /* PinyinFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		19A2AEA6F18B93212006AFB2A7A25AF8 /* JSONModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D8ABC1D4A891EC5A925D321A8DDDC /* JSONModel.m */; };
+		216E5A12ACFD64B84DC1A2E253336D9B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+		2658969E817E3F0063EACD27458BCD2F /* NSString+PinYin4Cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD444D406CCD394C1CF987D3E73B394 /* NSString+PinYin4Cocoa.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		2F8D135BE069298B3FE7C13988B2CF08 /* JSONModelClassProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 191EE779689DF588889554E9EC56FE20 /* JSONModelClassProperty.m */; };
+		393E2E501D0B38AE7DD535362026926D /* JSONAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EB44969879889FF481C175B7A07173 /* JSONAPI.m */; };
+		47F9D9E27A28CEA429B60ED172E5D799 /* PinyinHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A338FC168C894D8DCC1E5EF029AE0E3 /* PinyinHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4856B77569991A1F8ECA90AC1734C181 /* PinYin4Objc.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F08B697B9F7267F435361CC6205098E /* PinYin4Objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A717270FAA9A1A75B2DB47028668973 /* PinyinHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01EF9D664644CE42D11BAC6FD1BCB2 /* PinyinHelper.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		4B2A904C218C82FA49EA02814077A576 /* NSString+PinYin4Cocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 9700410A1B4DB37D208D771540353A9A /* NSString+PinYin4Cocoa.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4BDE97C783ED286933A60CAE9292B775 /* JSONKeyMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F691DD3F4A47709CCB07D8B99D42DDF /* JSONKeyMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		52B9F1F399DEADDDFBE3F17BAA8D6D14 /* JSONModelArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 460DB96C6EE189AE53A65C80CBB72D7E /* JSONModelArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59DFAF46993F71E88A7336D2A8A3731D /* JSONHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EF7BD4998EA9D8F1938708BFF3169A1 /* JSONHTTPClient.m */; };
+		60455C808237A133A533D119BCA573BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+		7259EB905DF2E9B7A2512581B9018C54 /* PinyinFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA400AB5CE03D20A32DDD407BF64AF7 /* PinyinFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		740B64AC8CA44CDC54A3A2CCB396A0EB /* JSONModelClassProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = 771AFD9AA7AA840C2B9D453AA70F5A7C /* JSONModelClassProperty.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7A64FBA532EE50A1600EB1DE4E595CFC /* HanyuPinyinOutputFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = AC9F627F3D6878BD48450809F9ED7BCA /* HanyuPinyinOutputFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7EC57A971BC81BEFCD4D52ACF58BB517 /* JSONValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9164C541636B7E5E7D43E5DBE18101 /* JSONValueTransformer.m */; };
+		8572EA2DB7894989FDA4C085E70D96C8 /* NSArray+JSONModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E967270C8FDD130CDAC16491FD82CD /* NSArray+JSONModel.m */; };
+		85AC21BC7BD345D84F489F7A52D39E44 /* JSONAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = F6446B09C2619770C883C7A22F8E91DB /* JSONAPI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		870F921B6CFDBD0486AEF0906D2865C8 /* PinYin4Objc-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E277F149253C9642B241E073B3786 /* PinYin4Objc-dummy.m */; };
+		880C99DF50E8C41EBE032934BE7F9905 /* JSONModelArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C390A2AFBF2EDB58CBE0D4ADFC5230 /* JSONModelArray.m */; };
+		891A5DA07C60C95DAD969B542CCDE442 /* JSONModel+networking.m in Sources */ = {isa = PBXBuildFile; fileRef = C84AA9DCCB71208EE77A4CD5519B0628 /* JSONModel+networking.m */; };
+		8CD001B0217CFDD1F5D8A3A6C3A8A5DC /* JSONKeyMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F018D0623495A849CD1F895AE37101D /* JSONKeyMapper.m */; };
+		8F11ABA0C553B18981097015226E5748 /* NSArray+JSONModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 898A1DAEFD9F76ACB27F01720FBCE852 /* NSArray+JSONModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9FBDF5F56E32CB7DD3A7C2E5635D8AFF /* Pods-NursingSupervision-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 714ECB484FC3089C36A8C83F2C8E04DE /* Pods-NursingSupervision-dummy.m */; };
+		A049B322C75DF1C944935D7D0D7F1E7E /* JSONModelError.m in Sources */ = {isa = PBXBuildFile; fileRef = 428B7608E662A6D04693F8B16BBBF542 /* JSONModelError.m */; };
+		A07740D16F33C488F368C99537B23E68 /* ChineseToPinyinResource.m in Sources */ = {isa = PBXBuildFile; fileRef = A06E7F0D3C24EEEB201078909E41745E /* ChineseToPinyinResource.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		A6513D952A4D9EC811699382925BC717 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+		B82A170962598E7EAE9A8752574B7B74 /* JSONModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 2EB56FD6E1950426590A961B7E40B973 /* JSONModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BA68E12BC2C67CD3464E95D627F55D10 /* ChineseToPinyinResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 5CC45B9049A11B692FC250729FECECF6 /* ChineseToPinyinResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE9BC2852A591E4211551B16EA430231 /* HanyuPinyinOutputFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C0AEE8335B4A431125EF25FA073A4F /* HanyuPinyinOutputFormat.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		C591CE6B9FA1950409E543A70B3ECABE /* JSONModelLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 267261E3167E7959070B15A42717E488 /* JSONModelLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D2718FB5214DA8A524CE735932323F82 /* JSONHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 071F84CC679CF0410F9EC17A3598A9C3 /* JSONHTTPClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EE27B8D800BD5CBC5A23FACF87210920 /* JSONModel-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D938169999B52D4F17BFCB5969F801E /* JSONModel-dummy.m */; };
+		F4D2A0918C2C064F1A16B4CA2D42089A /* JSONModelError.h in Headers */ = {isa = PBXBuildFile; fileRef = 93B6DDFF1390257BF04F4A7280BC29FB /* JSONModelError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F7B5D2658B77049DDEC0AAA88E6FCEA7 /* JSONModel+networking.h in Headers */ = {isa = PBXBuildFile; fileRef = E260B91A4A7B05ADC9C2F770CCAA79C1 /* JSONModel+networking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1F0F571EABF048436E0F8FBD5F302811 /* PBXContainerItemProxy */ = {
+		916DD0499F009C6A436D625EA63E3BF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 9F12FB4A63E20F601CFB2E64A65B57C1;
-			remoteInfo = FMDB;
+			remoteGlobalIDString = 0CCBBF4BAA3FA48F98623D8875DC1DA7;
+			remoteInfo = PinYin4Objc;
 		};
-		43633D5A5144036C4B59739F43C3F83F /* PBXContainerItemProxy */ = {
+		ADF3E269AAA843F46ECD2E61155B1609 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 0FC3E410E7AD00FA3A6032540BF59DBE;
-			remoteInfo = OLCOrm;
-		};
-		4F788133ECC0EFDB687430E289773244 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9F12FB4A63E20F601CFB2E64A65B57C1;
-			remoteInfo = FMDB;
+			remoteGlobalIDString = 09FA060F1A0492FB25232F489AC4E573;
+			remoteInfo = JSONModel;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		067F63FE6AE99613F874437B53804674 /* FMDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FMDB-prefix.pch"; sourceTree = "<group>"; };
-		0B962A9505343D1C3E772516A9D157AD /* OLCOrmNotification.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OLCOrmNotification.m; path = Pod/Classes/OLCOrmNotification.m; sourceTree = "<group>"; };
-		0C99AB842AC56E9B045273EF29D556A3 /* libPods-NursingSupervision.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NursingSupervision.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		12CFACC6FEC94CC6B0579B58F8AC50A7 /* FMDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FMDB-dummy.m"; sourceTree = "<group>"; };
+		071F84CC679CF0410F9EC17A3598A9C3 /* JSONHTTPClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONHTTPClient.h; path = JSONModel/JSONModelNetworking/JSONHTTPClient.h; sourceTree = "<group>"; };
+		0A338FC168C894D8DCC1E5EF029AE0E3 /* PinyinHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PinyinHelper.h; path = PinYin4Objc/Classes/PinyinHelper.h; sourceTree = "<group>"; };
+		0D385E13B54B03313AEB1B4DC862385B /* libJSONModel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJSONModel.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EABF8F486449D7E11A80740A003B49 /* Pods-NursingSupervision-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-NursingSupervision-frameworks.sh"; sourceTree = "<group>"; };
-		186AA119CFDBCCFB05D599148DF74FBC /* OLCMigrator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OLCMigrator.m; path = Pod/Classes/OLCMigrator.m; sourceTree = "<group>"; };
-		2913A5A21F2D976779BFD9AB3136EA15 /* OLCTableHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OLCTableHandler.m; path = Pod/Classes/OLCTableHandler.m; sourceTree = "<group>"; };
-		2E256FBBB2E9A369991BBABEB26DEAC4 /* OLCOrm-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OLCOrm-prefix.pch"; sourceTree = "<group>"; };
-		2E399D383792EE92EDABD12C393C0E8F /* OCLModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCLModel.m; path = Pod/Classes/OCLModel.m; sourceTree = "<group>"; };
-		346DD6C43CB0C5C932F2656F16BC364A /* OLCOrm.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OLCOrm.xcconfig; sourceTree = "<group>"; };
-		3C0C0E631FA061600E900A5CF168200F /* NSObject+KJSerializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+KJSerializer.h"; path = "Pod/Classes/NSObject+KJSerializer.h"; sourceTree = "<group>"; };
+		191EE779689DF588889554E9EC56FE20 /* JSONModelClassProperty.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSONModelClassProperty.m; path = JSONModel/JSONModel/JSONModelClassProperty.m; sourceTree = "<group>"; };
+		1D938169999B52D4F17BFCB5969F801E /* JSONModel-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "JSONModel-dummy.m"; sourceTree = "<group>"; };
+		267261E3167E7959070B15A42717E488 /* JSONModelLib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONModelLib.h; path = JSONModel/JSONModelLib.h; sourceTree = "<group>"; };
+		2EB56FD6E1950426590A961B7E40B973 /* JSONModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONModel.h; path = JSONModel/JSONModel/JSONModel.h; sourceTree = "<group>"; };
+		2EF7BD4998EA9D8F1938708BFF3169A1 /* JSONHTTPClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSONHTTPClient.m; path = JSONModel/JSONModelNetworking/JSONHTTPClient.m; sourceTree = "<group>"; };
 		3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		483DACA0A663BE318410EA9104C93C21 /* libOLCOrm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOLCOrm.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4BB134454730827E30B4B1462EABB28A /* OCLModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCLModel.h; path = Pod/Classes/OCLModel.h; sourceTree = "<group>"; };
-		4FF1E2CA7AF36B99C806C4D173889652 /* OCLDBHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCLDBHelper.h; path = Pod/Classes/OCLDBHelper.h; sourceTree = "<group>"; };
+		3F08B697B9F7267F435361CC6205098E /* PinYin4Objc.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PinYin4Objc.h; path = PinYin4Objc/Classes/PinYin4Objc.h; sourceTree = "<group>"; };
+		428B7608E662A6D04693F8B16BBBF542 /* JSONModelError.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSONModelError.m; path = JSONModel/JSONModel/JSONModelError.m; sourceTree = "<group>"; };
+		44771E6792354A927C1AA0C0880AB635 /* libPods-NursingSupervision.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NursingSupervision.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		460DB96C6EE189AE53A65C80CBB72D7E /* JSONModelArray.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONModelArray.h; path = JSONModel/JSONModel/JSONModelArray.h; sourceTree = "<group>"; };
+		4697C10DC8A43A3D160D397C0C36185A /* PinYin4Objc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PinYin4Objc.xcconfig; sourceTree = "<group>"; };
+		5786A65906776D8F1311CBF66DD4D715 /* JSONModel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = JSONModel.xcconfig; sourceTree = "<group>"; };
 		593BF0E2C2526796014DFBBA35C3FCDE /* Pods-NursingSupervision.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NursingSupervision.debug.xcconfig"; sourceTree = "<group>"; };
-		5B450C37A678755763A780DDC52CC231 /* OLCOrm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OLCOrm.h; path = Pod/Classes/OLCOrm.h; sourceTree = "<group>"; };
-		614CF16623A3B5BEF27B3CEFA5269DC9 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = src/fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
-		6CD275447BF7BC9848D28E3E274DF761 /* FMDatabasePool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabasePool.h; path = src/fmdb/FMDatabasePool.h; sourceTree = "<group>"; };
+		5CC45B9049A11B692FC250729FECECF6 /* ChineseToPinyinResource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ChineseToPinyinResource.h; path = PinYin4Objc/Classes/ChineseToPinyinResource.h; sourceTree = "<group>"; };
+		60547B23EEB111F979A90BCC29485275 /* PinyinFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PinyinFormatter.h; path = PinYin4Objc/Classes/PinyinFormatter.h; sourceTree = "<group>"; };
 		714ECB484FC3089C36A8C83F2C8E04DE /* Pods-NursingSupervision-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NursingSupervision-dummy.m"; sourceTree = "<group>"; };
-		7176EFB73BE16EE8A0B91C6E3D79AADD /* OLCOrm.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OLCOrm.m; path = Pod/Classes/OLCOrm.m; sourceTree = "<group>"; };
-		73DC1741E1B82CC0ABA7FDCDB6B72F0B /* OCLObjectParser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCLObjectParser.h; path = Pod/Classes/OCLObjectParser.h; sourceTree = "<group>"; };
-		756881FCE76950CDD4953ED5E3A040E9 /* OLCOrm-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "OLCOrm-dummy.m"; sourceTree = "<group>"; };
-		780804826777B44B1C83A269FD043326 /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
-		7FAF4C8169C0CB1206295AF75DB3772E /* OLCOrmNotification.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OLCOrmNotification.h; path = Pod/Classes/OLCOrmNotification.h; sourceTree = "<group>"; };
-		8141D8E4131066BE1DAA4C37DBE2DB6F /* FMDatabaseQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = src/fmdb/FMDatabaseQueue.m; sourceTree = "<group>"; };
-		8993A56805A39345138EB867677081D2 /* OLCMigrator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OLCMigrator.h; path = Pod/Classes/OLCMigrator.h; sourceTree = "<group>"; };
+		771AFD9AA7AA840C2B9D453AA70F5A7C /* JSONModelClassProperty.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONModelClassProperty.h; path = JSONModel/JSONModel/JSONModelClassProperty.h; sourceTree = "<group>"; };
+		7BA400AB5CE03D20A32DDD407BF64AF7 /* PinyinFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PinyinFormatter.m; path = PinYin4Objc/Classes/PinyinFormatter.m; sourceTree = "<group>"; };
+		7F018D0623495A849CD1F895AE37101D /* JSONKeyMapper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSONKeyMapper.m; path = JSONModel/JSONModelTransformations/JSONKeyMapper.m; sourceTree = "<group>"; };
+		7F691DD3F4A47709CCB07D8B99D42DDF /* JSONKeyMapper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONKeyMapper.h; path = JSONModel/JSONModelTransformations/JSONKeyMapper.h; sourceTree = "<group>"; };
+		84C390A2AFBF2EDB58CBE0D4ADFC5230 /* JSONModelArray.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSONModelArray.m; path = JSONModel/JSONModel/JSONModelArray.m; sourceTree = "<group>"; };
+		898A1DAEFD9F76ACB27F01720FBCE852 /* NSArray+JSONModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSArray+JSONModel.h"; path = "JSONModel/JSONModelCategories/NSArray+JSONModel.h"; sourceTree = "<group>"; };
+		8E7D8ABC1D4A891EC5A925D321A8DDDC /* JSONModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSONModel.m; path = JSONModel/JSONModel/JSONModel.m; sourceTree = "<group>"; };
+		93B6DDFF1390257BF04F4A7280BC29FB /* JSONModelError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONModelError.h; path = JSONModel/JSONModel/JSONModelError.h; sourceTree = "<group>"; };
+		9700410A1B4DB37D208D771540353A9A /* NSString+PinYin4Cocoa.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSString+PinYin4Cocoa.h"; path = "PinYin4Objc/Classes/NSString+PinYin4Cocoa.h"; sourceTree = "<group>"; };
+		97EB44969879889FF481C175B7A07173 /* JSONAPI.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSONAPI.m; path = JSONModel/JSONModelNetworking/JSONAPI.m; sourceTree = "<group>"; };
+		9C01EF9D664644CE42D11BAC6FD1BCB2 /* PinyinHelper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PinyinHelper.m; path = PinYin4Objc/Classes/PinyinHelper.m; sourceTree = "<group>"; };
+		A06E7F0D3C24EEEB201078909E41745E /* ChineseToPinyinResource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ChineseToPinyinResource.m; path = PinYin4Objc/Classes/ChineseToPinyinResource.m; sourceTree = "<group>"; };
 		A0AC64B03F239EF17D7DBE802A51BF98 /* Pods-NursingSupervision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NursingSupervision.release.xcconfig"; sourceTree = "<group>"; };
-		A4F82279EFEBB18C04442451D85E3526 /* libFMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFMDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		A8C35B76416DD126FD6C609F146D8741 /* FMDatabase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = src/fmdb/FMDatabase.m; sourceTree = "<group>"; };
-		AA9A45AF5061CE677456CBCC340B8F99 /* OCLDBHelper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCLDBHelper.m; path = Pod/Classes/OCLDBHelper.m; sourceTree = "<group>"; };
-		B7FD4F20128853813C3CA05B22906069 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = src/fmdb/FMDatabaseQueue.h; sourceTree = "<group>"; };
+		AC9F627F3D6878BD48450809F9ED7BCA /* HanyuPinyinOutputFormat.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HanyuPinyinOutputFormat.h; path = PinYin4Objc/Classes/HanyuPinyinOutputFormat.h; sourceTree = "<group>"; };
+		B6F55BA3573BB84536F0E3188656BAD0 /* PinYin4Objc-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PinYin4Objc-prefix.pch"; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		C21B2EF810CDB5537AAEFA1B04F8BD5D /* NSObject+KJSerializer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+KJSerializer.m"; path = "Pod/Classes/NSObject+KJSerializer.m"; sourceTree = "<group>"; };
-		C9840C9AE917C24D1C6940CF0EC64787 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = src/fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		BD82999A1B79B00051BAADA21A2B0D22 /* unicode_to_hanyu_pinyin.txt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = unicode_to_hanyu_pinyin.txt; path = PinYin4Objc/Resources/unicode_to_hanyu_pinyin.txt; sourceTree = "<group>"; };
+		C84AA9DCCB71208EE77A4CD5519B0628 /* JSONModel+networking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "JSONModel+networking.m"; path = "JSONModel/JSONModelNetworking/JSONModel+networking.m"; sourceTree = "<group>"; };
 		C9E243FA3AF75C02F75F0940292EA09B /* Pods-NursingSupervision-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NursingSupervision-acknowledgements.plist"; sourceTree = "<group>"; };
-		CCE2E346B3354D87964C213A3DDBF247 /* OCLObjectParser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCLObjectParser.m; path = Pod/Classes/OCLObjectParser.m; sourceTree = "<group>"; };
+		CBD444D406CCD394C1CF987D3E73B394 /* NSString+PinYin4Cocoa.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSString+PinYin4Cocoa.m"; path = "PinYin4Objc/Classes/NSString+PinYin4Cocoa.m"; sourceTree = "<group>"; };
+		CD9164C541636B7E5E7D43E5DBE18101 /* JSONValueTransformer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSONValueTransformer.m; path = JSONModel/JSONModelTransformations/JSONValueTransformer.m; sourceTree = "<group>"; };
+		CE84545CA127C18932B5C7E4552B9AE4 /* libPinYin4Objc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPinYin4Objc.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0C0AEE8335B4A431125EF25FA073A4F /* HanyuPinyinOutputFormat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HanyuPinyinOutputFormat.m; path = PinYin4Objc/Classes/HanyuPinyinOutputFormat.m; sourceTree = "<group>"; };
+		D23E277F149253C9642B241E073B3786 /* PinYin4Objc-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PinYin4Objc-dummy.m"; sourceTree = "<group>"; };
 		D2815B906463D23E6233F052C3419080 /* Pods-NursingSupervision-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-NursingSupervision-resources.sh"; sourceTree = "<group>"; };
-		D2F3E95C32471AD6F72ED1DE95F06B34 /* FMDB.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FMDB.xcconfig; sourceTree = "<group>"; };
-		D4F23225F8A1DB3AAEF3C627633D1273 /* FMResultSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = src/fmdb/FMResultSet.m; sourceTree = "<group>"; };
-		D947EC19A744C828B445AB6E69F4D2D3 /* OLCTableHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OLCTableHandler.h; path = Pod/Classes/OLCTableHandler.h; sourceTree = "<group>"; };
-		E88704DCA4FC337D0F286F2121B03E45 /* FMDB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
-		F3E0AB80C97E7B11C67049345774D6EE /* FMDatabase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = src/fmdb/FMDatabase.h; sourceTree = "<group>"; };
-		F64E933633F099D27C675FE5F6D719DF /* FMResultSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = src/fmdb/FMResultSet.h; sourceTree = "<group>"; };
+		E1E967270C8FDD130CDAC16491FD82CD /* NSArray+JSONModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSArray+JSONModel.m"; path = "JSONModel/JSONModelCategories/NSArray+JSONModel.m"; sourceTree = "<group>"; };
+		E260B91A4A7B05ADC9C2F770CCAA79C1 /* JSONModel+networking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "JSONModel+networking.h"; path = "JSONModel/JSONModelNetworking/JSONModel+networking.h"; sourceTree = "<group>"; };
+		E57589B11125A91075ACC335E2C380CA /* JSONValueTransformer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONValueTransformer.h; path = JSONModel/JSONModelTransformations/JSONValueTransformer.h; sourceTree = "<group>"; };
+		F6446B09C2619770C883C7A22F8E91DB /* JSONAPI.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONAPI.h; path = JSONModel/JSONModelNetworking/JSONAPI.h; sourceTree = "<group>"; };
+		F6D2E9740F34C9E0529414FDE5761BDC /* JSONModel-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JSONModel-prefix.pch"; sourceTree = "<group>"; };
 		FDBBA4050A2607C0AB3F277C265ADF7D /* Pods-NursingSupervision-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NursingSupervision-acknowledgements.markdown"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		84AF63084FFE4472EFC6131BD113B13D /* Frameworks */ = {
+		8F5946FD9DD1A660E21A21FA0FFE774A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				587B76A3E381AF7C3EFFDF6754D39288 /* Foundation.framework in Frameworks */,
+				A6513D952A4D9EC811699382925BC717 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BF334AC0702EE851C8998A133AE1CAC4 /* Frameworks */ = {
+		99150F972A6BC5CBF8EC03B3418857EB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A451CBC8B41A8597FBD02C6D2D22FF8E /* Foundation.framework in Frameworks */,
+				60455C808237A133A533D119BCA573BB /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D3DE937520935A867F727DAA5BA1626A /* Frameworks */ = {
+		EB932C7244160CC464D5F7E2A9713D3F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6C4C560C206F7FA1CDC5A2B8429890B /* Foundation.framework in Frameworks */,
+				216E5A12ACFD64B84DC1A2E253336D9B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D9377E7C247323C66549A2E297FD3F3 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				5786A65906776D8F1311CBF66DD4D715 /* JSONModel.xcconfig */,
+				1D938169999B52D4F17BFCB5969F801E /* JSONModel-dummy.m */,
+				F6D2E9740F34C9E0529414FDE5761BDC /* JSONModel-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/JSONModel";
+			sourceTree = "<group>";
+		};
+		1C138D0B3B6113EB0D99684BF85529D6 /* JSONModel */ = {
+			isa = PBXGroup;
+			children = (
+				F6446B09C2619770C883C7A22F8E91DB /* JSONAPI.h */,
+				97EB44969879889FF481C175B7A07173 /* JSONAPI.m */,
+				071F84CC679CF0410F9EC17A3598A9C3 /* JSONHTTPClient.h */,
+				2EF7BD4998EA9D8F1938708BFF3169A1 /* JSONHTTPClient.m */,
+				7F691DD3F4A47709CCB07D8B99D42DDF /* JSONKeyMapper.h */,
+				7F018D0623495A849CD1F895AE37101D /* JSONKeyMapper.m */,
+				2EB56FD6E1950426590A961B7E40B973 /* JSONModel.h */,
+				8E7D8ABC1D4A891EC5A925D321A8DDDC /* JSONModel.m */,
+				E260B91A4A7B05ADC9C2F770CCAA79C1 /* JSONModel+networking.h */,
+				C84AA9DCCB71208EE77A4CD5519B0628 /* JSONModel+networking.m */,
+				460DB96C6EE189AE53A65C80CBB72D7E /* JSONModelArray.h */,
+				84C390A2AFBF2EDB58CBE0D4ADFC5230 /* JSONModelArray.m */,
+				771AFD9AA7AA840C2B9D453AA70F5A7C /* JSONModelClassProperty.h */,
+				191EE779689DF588889554E9EC56FE20 /* JSONModelClassProperty.m */,
+				93B6DDFF1390257BF04F4A7280BC29FB /* JSONModelError.h */,
+				428B7608E662A6D04693F8B16BBBF542 /* JSONModelError.m */,
+				267261E3167E7959070B15A42717E488 /* JSONModelLib.h */,
+				E57589B11125A91075ACC335E2C380CA /* JSONValueTransformer.h */,
+				CD9164C541636B7E5E7D43E5DBE18101 /* JSONValueTransformer.m */,
+				898A1DAEFD9F76ACB27F01720FBCE852 /* NSArray+JSONModel.h */,
+				E1E967270C8FDD130CDAC16491FD82CD /* NSArray+JSONModel.m */,
+				0D9377E7C247323C66549A2E297FD3F3 /* Support Files */,
+			);
+			path = JSONModel;
+			sourceTree = "<group>";
+		};
+		1E14227AD1CDAD3D09F714A8E77E21AE /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4697C10DC8A43A3D160D397C0C36185A /* PinYin4Objc.xcconfig */,
+				D23E277F149253C9642B241E073B3786 /* PinYin4Objc-dummy.m */,
+				B6F55BA3573BB84536F0E3188656BAD0 /* PinYin4Objc-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/PinYin4Objc";
+			sourceTree = "<group>";
+		};
 		285427DEF38905712F42289B1A1B7C68 /* Pods-NursingSupervision */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,26 +212,6 @@
 			path = "Target Support Files/Pods-NursingSupervision";
 			sourceTree = "<group>";
 		};
-		2D5C5A7F02DA6BA47BCA924A8513BA8D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				61FB7469F97B8BD4551416B306C1F012 /* FMDB */,
-				F2E985B87F53A8919781B8A06E4D27C6 /* OLCOrm */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		2DD91173EB97381086EC646927B936F5 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				346DD6C43CB0C5C932F2656F16BC364A /* OLCOrm.xcconfig */,
-				756881FCE76950CDD4953ED5E3A040E9 /* OLCOrm-dummy.m */,
-				2E256FBBB2E9A369991BBABEB26DEAC4 /* OLCOrm-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/OLCOrm";
-			sourceTree = "<group>";
-		};
 		3A1180CFE2D223C417DCD1B6F1EB0CA6 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,23 +220,32 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		61FB7469F97B8BD4551416B306C1F012 /* FMDB */ = {
+		70A590BB3D925AD5E0FDF05F51288F07 /* PinYin4Objc */ = {
 			isa = PBXGroup;
 			children = (
-				C20CE33107D4A6CB55D14E5C95FC14E4 /* standard */,
-				E2DF21D11E140756A25F16F0DC39C356 /* Support Files */,
+				5CC45B9049A11B692FC250729FECECF6 /* ChineseToPinyinResource.h */,
+				A06E7F0D3C24EEEB201078909E41745E /* ChineseToPinyinResource.m */,
+				AC9F627F3D6878BD48450809F9ED7BCA /* HanyuPinyinOutputFormat.h */,
+				D0C0AEE8335B4A431125EF25FA073A4F /* HanyuPinyinOutputFormat.m */,
+				9700410A1B4DB37D208D771540353A9A /* NSString+PinYin4Cocoa.h */,
+				CBD444D406CCD394C1CF987D3E73B394 /* NSString+PinYin4Cocoa.m */,
+				3F08B697B9F7267F435361CC6205098E /* PinYin4Objc.h */,
+				60547B23EEB111F979A90BCC29485275 /* PinyinFormatter.h */,
+				7BA400AB5CE03D20A32DDD407BF64AF7 /* PinyinFormatter.m */,
+				0A338FC168C894D8DCC1E5EF029AE0E3 /* PinyinHelper.h */,
+				9C01EF9D664644CE42D11BAC6FD1BCB2 /* PinyinHelper.m */,
+				79434E8693601FD53070EB6DBDDC14BD /* Resources */,
+				1E14227AD1CDAD3D09F714A8E77E21AE /* Support Files */,
 			);
-			path = FMDB;
+			path = PinYin4Objc;
 			sourceTree = "<group>";
 		};
-		6E0C03EDFFB83BF9084E77112E79E50A /* Products */ = {
+		79434E8693601FD53070EB6DBDDC14BD /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A4F82279EFEBB18C04442451D85E3526 /* libFMDB.a */,
-				483DACA0A663BE318410EA9104C93C21 /* libOLCOrm.a */,
-				0C99AB842AC56E9B045273EF29D556A3 /* libPods-NursingSupervision.a */,
+				BD82999A1B79B00051BAADA21A2B0D22 /* unicode_to_hanyu_pinyin.txt */,
 			);
-			name = Products;
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -209,8 +253,8 @@
 			children = (
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				2D5C5A7F02DA6BA47BCA924A8513BA8D /* Pods */,
-				6E0C03EDFFB83BF9084E77112E79E50A /* Products */,
+				D05A37D958BEA30234B19629A42D1485 /* Pods */,
+				E90EDF455FC639369B24A61C3F18CA8E /* Products */,
 				3A1180CFE2D223C417DCD1B6F1EB0CA6 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
@@ -231,144 +275,112 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		C20CE33107D4A6CB55D14E5C95FC14E4 /* standard */ = {
+		D05A37D958BEA30234B19629A42D1485 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F3E0AB80C97E7B11C67049345774D6EE /* FMDatabase.h */,
-				A8C35B76416DD126FD6C609F146D8741 /* FMDatabase.m */,
-				614CF16623A3B5BEF27B3CEFA5269DC9 /* FMDatabaseAdditions.h */,
-				C9840C9AE917C24D1C6940CF0EC64787 /* FMDatabaseAdditions.m */,
-				6CD275447BF7BC9848D28E3E274DF761 /* FMDatabasePool.h */,
-				780804826777B44B1C83A269FD043326 /* FMDatabasePool.m */,
-				B7FD4F20128853813C3CA05B22906069 /* FMDatabaseQueue.h */,
-				8141D8E4131066BE1DAA4C37DBE2DB6F /* FMDatabaseQueue.m */,
-				E88704DCA4FC337D0F286F2121B03E45 /* FMDB.h */,
-				F64E933633F099D27C675FE5F6D719DF /* FMResultSet.h */,
-				D4F23225F8A1DB3AAEF3C627633D1273 /* FMResultSet.m */,
+				1C138D0B3B6113EB0D99684BF85529D6 /* JSONModel */,
+				70A590BB3D925AD5E0FDF05F51288F07 /* PinYin4Objc */,
 			);
-			name = standard;
+			name = Pods;
 			sourceTree = "<group>";
 		};
-		E2DF21D11E140756A25F16F0DC39C356 /* Support Files */ = {
+		E90EDF455FC639369B24A61C3F18CA8E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D2F3E95C32471AD6F72ED1DE95F06B34 /* FMDB.xcconfig */,
-				12CFACC6FEC94CC6B0579B58F8AC50A7 /* FMDB-dummy.m */,
-				067F63FE6AE99613F874437B53804674 /* FMDB-prefix.pch */,
+				0D385E13B54B03313AEB1B4DC862385B /* libJSONModel.a */,
+				CE84545CA127C18932B5C7E4552B9AE4 /* libPinYin4Objc.a */,
+				44771E6792354A927C1AA0C0880AB635 /* libPods-NursingSupervision.a */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/FMDB";
-			sourceTree = "<group>";
-		};
-		F2E985B87F53A8919781B8A06E4D27C6 /* OLCOrm */ = {
-			isa = PBXGroup;
-			children = (
-				3C0C0E631FA061600E900A5CF168200F /* NSObject+KJSerializer.h */,
-				C21B2EF810CDB5537AAEFA1B04F8BD5D /* NSObject+KJSerializer.m */,
-				4FF1E2CA7AF36B99C806C4D173889652 /* OCLDBHelper.h */,
-				AA9A45AF5061CE677456CBCC340B8F99 /* OCLDBHelper.m */,
-				4BB134454730827E30B4B1462EABB28A /* OCLModel.h */,
-				2E399D383792EE92EDABD12C393C0E8F /* OCLModel.m */,
-				73DC1741E1B82CC0ABA7FDCDB6B72F0B /* OCLObjectParser.h */,
-				CCE2E346B3354D87964C213A3DDBF247 /* OCLObjectParser.m */,
-				8993A56805A39345138EB867677081D2 /* OLCMigrator.h */,
-				186AA119CFDBCCFB05D599148DF74FBC /* OLCMigrator.m */,
-				5B450C37A678755763A780DDC52CC231 /* OLCOrm.h */,
-				7176EFB73BE16EE8A0B91C6E3D79AADD /* OLCOrm.m */,
-				7FAF4C8169C0CB1206295AF75DB3772E /* OLCOrmNotification.h */,
-				0B962A9505343D1C3E772516A9D157AD /* OLCOrmNotification.m */,
-				D947EC19A744C828B445AB6E69F4D2D3 /* OLCTableHandler.h */,
-				2913A5A21F2D976779BFD9AB3136EA15 /* OLCTableHandler.m */,
-				2DD91173EB97381086EC646927B936F5 /* Support Files */,
-			);
-			path = OLCOrm;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		5B5CF7147C73ADF0A6E5E6D3429B942E /* Headers */ = {
+		6EEA72BE015541ED3D178BEF9BB5788F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92641F4FC25599EF52333FAFB746B24C /* NSObject+KJSerializer.h in Headers */,
-				0DAF7CD10E5F2F2E011B07FFC08A4F5F /* OCLDBHelper.h in Headers */,
-				FE8A96057FB10F234D6D2359822C7D96 /* OCLModel.h in Headers */,
-				914122FC773AB23A971DEBAB0F32AF14 /* OCLObjectParser.h in Headers */,
-				19DE167299C7193DCAB48DB7C978DDC5 /* OLCMigrator.h in Headers */,
-				7326A5CE73F5BB7B4858EE81A55D69D4 /* OLCOrm.h in Headers */,
-				091D1CC404959B4D5F4017B5664F92EF /* OLCOrmNotification.h in Headers */,
-				AC60459AE5B68ADBD32009520B9A054B /* OLCTableHandler.h in Headers */,
+				85AC21BC7BD345D84F489F7A52D39E44 /* JSONAPI.h in Headers */,
+				D2718FB5214DA8A524CE735932323F82 /* JSONHTTPClient.h in Headers */,
+				4BDE97C783ED286933A60CAE9292B775 /* JSONKeyMapper.h in Headers */,
+				F7B5D2658B77049DDEC0AAA88E6FCEA7 /* JSONModel+networking.h in Headers */,
+				B82A170962598E7EAE9A8752574B7B74 /* JSONModel.h in Headers */,
+				52B9F1F399DEADDDFBE3F17BAA8D6D14 /* JSONModelArray.h in Headers */,
+				740B64AC8CA44CDC54A3A2CCB396A0EB /* JSONModelClassProperty.h in Headers */,
+				F4D2A0918C2C064F1A16B4CA2D42089A /* JSONModelError.h in Headers */,
+				C591CE6B9FA1950409E543A70B3ECABE /* JSONModelLib.h in Headers */,
+				04E0EFD308A39DA6783F9004C5689973 /* JSONValueTransformer.h in Headers */,
+				8F11ABA0C553B18981097015226E5748 /* NSArray+JSONModel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B2D82357BE4C2A10AB2CD4724B8E654 /* Headers */ = {
+		96166E50303562C5F965AB6CB9C21E06 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0D5FFE53407F16C9CD3D0ECF43ACE93 /* FMDatabase.h in Headers */,
-				B418C9BDCF8C6BAC2E3942F157BB6D4C /* FMDatabaseAdditions.h in Headers */,
-				0F8A8E0D6FAEBF758E0B4D620335F094 /* FMDatabasePool.h in Headers */,
-				D0C5FF5485EAA2CDA03E9796B407697A /* FMDatabaseQueue.h in Headers */,
-				313531CEDA0294311D87B4F4C3F073F4 /* FMDB.h in Headers */,
-				F977B243321331B58666E9284634101A /* FMResultSet.h in Headers */,
+				BA68E12BC2C67CD3464E95D627F55D10 /* ChineseToPinyinResource.h in Headers */,
+				7A64FBA532EE50A1600EB1DE4E595CFC /* HanyuPinyinOutputFormat.h in Headers */,
+				4B2A904C218C82FA49EA02814077A576 /* NSString+PinYin4Cocoa.h in Headers */,
+				4856B77569991A1F8ECA90AC1734C181 /* PinYin4Objc.h in Headers */,
+				0E33D27691C990C7C837220DC264B868 /* PinyinFormatter.h in Headers */,
+				47F9D9E27A28CEA429B60ED172E5D799 /* PinyinHelper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		0FC3E410E7AD00FA3A6032540BF59DBE /* OLCOrm */ = {
+		09FA060F1A0492FB25232F489AC4E573 /* JSONModel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14117AFC06FBEDBB016450FA10244239 /* Build configuration list for PBXNativeTarget "OLCOrm" */;
+			buildConfigurationList = C6AF5E073E12BB724B34252D7E1E5E2E /* Build configuration list for PBXNativeTarget "JSONModel" */;
 			buildPhases = (
-				B7437FA3521E3AEE4DD6D618759350FA /* Sources */,
-				D3DE937520935A867F727DAA5BA1626A /* Frameworks */,
-				5B5CF7147C73ADF0A6E5E6D3429B942E /* Headers */,
+				DCC9A773031824E51419098CE072BB9E /* Sources */,
+				EB932C7244160CC464D5F7E2A9713D3F /* Frameworks */,
+				6EEA72BE015541ED3D178BEF9BB5788F /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				622C4F7DE76952776E39CDD7057D7EB3 /* PBXTargetDependency */,
 			);
-			name = OLCOrm;
-			productName = OLCOrm;
-			productReference = 483DACA0A663BE318410EA9104C93C21 /* libOLCOrm.a */;
+			name = JSONModel;
+			productName = JSONModel;
+			productReference = 0D385E13B54B03313AEB1B4DC862385B /* libJSONModel.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		9F12FB4A63E20F601CFB2E64A65B57C1 /* FMDB */ = {
+		0CCBBF4BAA3FA48F98623D8875DC1DA7 /* PinYin4Objc */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3AC899FD215914230EB9D8B57AD910D0 /* Build configuration list for PBXNativeTarget "FMDB" */;
+			buildConfigurationList = FA4207FFCD94E5098AE817E8A62A9336 /* Build configuration list for PBXNativeTarget "PinYin4Objc" */;
 			buildPhases = (
-				050B66E154969A68944942A22BD9B314 /* Sources */,
-				84AF63084FFE4472EFC6131BD113B13D /* Frameworks */,
-				8B2D82357BE4C2A10AB2CD4724B8E654 /* Headers */,
+				7FC0A65EB9680DF5D1015F24C8C6C65B /* Sources */,
+				99150F972A6BC5CBF8EC03B3418857EB /* Frameworks */,
+				96166E50303562C5F965AB6CB9C21E06 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = FMDB;
-			productName = FMDB;
-			productReference = A4F82279EFEBB18C04442451D85E3526 /* libFMDB.a */;
+			name = PinYin4Objc;
+			productName = PinYin4Objc;
+			productReference = CE84545CA127C18932B5C7E4552B9AE4 /* libPinYin4Objc.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		AD56A3457E29A51BFA2422A7DCF4C9D0 /* Pods-NursingSupervision */ = {
+		1F1BFBFA157815351BCE4AFACB2BD1CD /* Pods-NursingSupervision */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B3286589D1F7A164B216BC26D65F86CE /* Build configuration list for PBXNativeTarget "Pods-NursingSupervision" */;
+			buildConfigurationList = 47D89A3C0BC9514DCFD88C13265B82EF /* Build configuration list for PBXNativeTarget "Pods-NursingSupervision" */;
 			buildPhases = (
-				186ED2945721C7E5222F80E988F7A87B /* Sources */,
-				BF334AC0702EE851C8998A133AE1CAC4 /* Frameworks */,
+				D322B961BE646B2CFFC275DDA2831FF9 /* Sources */,
+				8F5946FD9DD1A660E21A21FA0FFE774A /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				2004448253247AEF6E477D16F220B791 /* PBXTargetDependency */,
-				75EA74FAB44D0E943E12B1D4A647556D /* PBXTargetDependency */,
+				D9CD886A34B41C4FF8330106DC6BAE6F /* PBXTargetDependency */,
+				45909861265D30A60F115DDF0FD9B8B8 /* PBXTargetDependency */,
 			);
 			name = "Pods-NursingSupervision";
 			productName = "Pods-NursingSupervision";
-			productReference = 0C99AB842AC56E9B045273EF29D556A3 /* libPods-NursingSupervision.a */;
+			productReference = 44771E6792354A927C1AA0C0880AB635 /* libPods-NursingSupervision.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -388,75 +400,71 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 6E0C03EDFFB83BF9084E77112E79E50A /* Products */;
+			productRefGroup = E90EDF455FC639369B24A61C3F18CA8E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9F12FB4A63E20F601CFB2E64A65B57C1 /* FMDB */,
-				0FC3E410E7AD00FA3A6032540BF59DBE /* OLCOrm */,
-				AD56A3457E29A51BFA2422A7DCF4C9D0 /* Pods-NursingSupervision */,
+				09FA060F1A0492FB25232F489AC4E573 /* JSONModel */,
+				0CCBBF4BAA3FA48F98623D8875DC1DA7 /* PinYin4Objc */,
+				1F1BFBFA157815351BCE4AFACB2BD1CD /* Pods-NursingSupervision */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		050B66E154969A68944942A22BD9B314 /* Sources */ = {
+		7FC0A65EB9680DF5D1015F24C8C6C65B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA027706DD6805766F1F4EC548E72440 /* FMDatabase.m in Sources */,
-				A350C5704A1F233DAD830E081E00F8C1 /* FMDatabaseAdditions.m in Sources */,
-				0EF8E9AA652DBE2745A7D5C8CD2E3BDE /* FMDatabasePool.m in Sources */,
-				282081E035E7A843068E8BCC2E07C217 /* FMDatabaseQueue.m in Sources */,
-				3D0F69C4CA35EB6A1F686BA88B19B4F6 /* FMDB-dummy.m in Sources */,
-				DEFA3504695E9DFDE1177DAB22884470 /* FMResultSet.m in Sources */,
+				A07740D16F33C488F368C99537B23E68 /* ChineseToPinyinResource.m in Sources */,
+				BE9BC2852A591E4211551B16EA430231 /* HanyuPinyinOutputFormat.m in Sources */,
+				2658969E817E3F0063EACD27458BCD2F /* NSString+PinYin4Cocoa.m in Sources */,
+				870F921B6CFDBD0486AEF0906D2865C8 /* PinYin4Objc-dummy.m in Sources */,
+				7259EB905DF2E9B7A2512581B9018C54 /* PinyinFormatter.m in Sources */,
+				4A717270FAA9A1A75B2DB47028668973 /* PinyinHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		186ED2945721C7E5222F80E988F7A87B /* Sources */ = {
+		D322B961BE646B2CFFC275DDA2831FF9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				249B126D66053D4B8E49E092C89A64D3 /* Pods-NursingSupervision-dummy.m in Sources */,
+				9FBDF5F56E32CB7DD3A7C2E5635D8AFF /* Pods-NursingSupervision-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B7437FA3521E3AEE4DD6D618759350FA /* Sources */ = {
+		DCC9A773031824E51419098CE072BB9E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B078F6A019264DFB1D64A97EBFF4DE44 /* NSObject+KJSerializer.m in Sources */,
-				78C327757ADC8434D64832FD618280C7 /* OCLDBHelper.m in Sources */,
-				CB594C972AD82C2B08CCD984E16F9165 /* OCLModel.m in Sources */,
-				D919B1C747E978683B112D5B49E8A0BC /* OCLObjectParser.m in Sources */,
-				A6C85D87326CF538E732F1EB13C90ADF /* OLCMigrator.m in Sources */,
-				605FA97A1224A3C8913F5D323095DC28 /* OLCOrm-dummy.m in Sources */,
-				ED51CDCB9585B2043ACA0EB24DE4C998 /* OLCOrm.m in Sources */,
-				8718DBEEA074F9DBBF47D5C62105D45D /* OLCOrmNotification.m in Sources */,
-				38A20DA2FB0314A3D18760878E69E699 /* OLCTableHandler.m in Sources */,
+				393E2E501D0B38AE7DD535362026926D /* JSONAPI.m in Sources */,
+				59DFAF46993F71E88A7336D2A8A3731D /* JSONHTTPClient.m in Sources */,
+				8CD001B0217CFDD1F5D8A3A6C3A8A5DC /* JSONKeyMapper.m in Sources */,
+				891A5DA07C60C95DAD969B542CCDE442 /* JSONModel+networking.m in Sources */,
+				EE27B8D800BD5CBC5A23FACF87210920 /* JSONModel-dummy.m in Sources */,
+				19A2AEA6F18B93212006AFB2A7A25AF8 /* JSONModel.m in Sources */,
+				880C99DF50E8C41EBE032934BE7F9905 /* JSONModelArray.m in Sources */,
+				2F8D135BE069298B3FE7C13988B2CF08 /* JSONModelClassProperty.m in Sources */,
+				A049B322C75DF1C944935D7D0D7F1E7E /* JSONModelError.m in Sources */,
+				7EC57A971BC81BEFCD4D52ACF58BB517 /* JSONValueTransformer.m in Sources */,
+				8572EA2DB7894989FDA4C085E70D96C8 /* NSArray+JSONModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2004448253247AEF6E477D16F220B791 /* PBXTargetDependency */ = {
+		45909861265D30A60F115DDF0FD9B8B8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = FMDB;
-			target = 9F12FB4A63E20F601CFB2E64A65B57C1 /* FMDB */;
-			targetProxy = 1F0F571EABF048436E0F8FBD5F302811 /* PBXContainerItemProxy */;
+			name = PinYin4Objc;
+			target = 0CCBBF4BAA3FA48F98623D8875DC1DA7 /* PinYin4Objc */;
+			targetProxy = 916DD0499F009C6A436D625EA63E3BF1 /* PBXContainerItemProxy */;
 		};
-		622C4F7DE76952776E39CDD7057D7EB3 /* PBXTargetDependency */ = {
+		D9CD886A34B41C4FF8330106DC6BAE6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = FMDB;
-			target = 9F12FB4A63E20F601CFB2E64A65B57C1 /* FMDB */;
-			targetProxy = 4F788133ECC0EFDB687430E289773244 /* PBXContainerItemProxy */;
-		};
-		75EA74FAB44D0E943E12B1D4A647556D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = OLCOrm;
-			target = 0FC3E410E7AD00FA3A6032540BF59DBE /* OLCOrm */;
-			targetProxy = 43633D5A5144036C4B59739F43C3F83F /* PBXContainerItemProxy */;
+			name = JSONModel;
+			target = 09FA060F1A0492FB25232F489AC4E573 /* JSONModel */;
+			targetProxy = ADF3E269AAA843F46ECD2E61155B1609 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -495,7 +503,25 @@
 			};
 			name = Release;
 		};
-		19F6E9C9C946FF6D55699F9185BF9C5D /* Release */ = {
+		2C5CBD3A72085FEB008264874E65D26A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5786A65906776D8F1311CBF66DD4D715 /* JSONModel.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/JSONModel/JSONModel-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		3B8FB9A051AFDB498C478101AA546F16 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A0AC64B03F239EF17D7DBE802A51BF98 /* Pods-NursingSupervision.release.xcconfig */;
 			buildSettings = {
@@ -512,12 +538,12 @@
 			};
 			name = Release;
 		};
-		641F071BD177C0FD805ECAF1D202F7CB /* Release */ = {
+		7004E894EF63FE62A0C9DF26AB9D8114 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2F3E95C32471AD6F72ED1DE95F06B34 /* FMDB.xcconfig */;
+			baseConfigurationReference = 4697C10DC8A43A3D160D397C0C36185A /* PinYin4Objc.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/FMDB/FMDB-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/PinYin4Objc/PinYin4Objc-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
@@ -530,30 +556,12 @@
 			};
 			name = Release;
 		};
-		7DAD0827C51E037D5B914D683065BA78 /* Release */ = {
+		AE468C2DDF5A46CC833EEC72A6B4CE66 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 346DD6C43CB0C5C932F2656F16BC364A /* OLCOrm.xcconfig */;
+			baseConfigurationReference = 4697C10DC8A43A3D160D397C0C36185A /* PinYin4Objc.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/OLCOrm/OLCOrm-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		8E22345807C46884D17DD8C2728A6201 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2F3E95C32471AD6F72ED1DE95F06B34 /* FMDB.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/FMDB/FMDB-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/PinYin4Objc/PinYin4Objc-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
@@ -605,12 +613,12 @@
 			};
 			name = Debug;
 		};
-		B9A57DFAE03D26C2DE6E06252E101BC0 /* Debug */ = {
+		D5A53314F0406B315CA0867F8EFCFD33 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 346DD6C43CB0C5C932F2656F16BC364A /* OLCOrm.xcconfig */;
+			baseConfigurationReference = 5786A65906776D8F1311CBF66DD4D715 /* JSONModel.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/OLCOrm/OLCOrm-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/JSONModel/JSONModel-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
@@ -623,7 +631,7 @@
 			};
 			name = Debug;
 		};
-		F30BE93B126941D6738C591BACB4B1E3 /* Debug */ = {
+		DCFBEC36BB52B848836D07F442D2767C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 593BF0E2C2526796014DFBBA35C3FCDE /* Pods-NursingSupervision.debug.xcconfig */;
 			buildSettings = {
@@ -643,15 +651,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		14117AFC06FBEDBB016450FA10244239 /* Build configuration list for PBXNativeTarget "OLCOrm" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B9A57DFAE03D26C2DE6E06252E101BC0 /* Debug */,
-				7DAD0827C51E037D5B914D683065BA78 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -661,20 +660,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3AC899FD215914230EB9D8B57AD910D0 /* Build configuration list for PBXNativeTarget "FMDB" */ = {
+		47D89A3C0BC9514DCFD88C13265B82EF /* Build configuration list for PBXNativeTarget "Pods-NursingSupervision" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8E22345807C46884D17DD8C2728A6201 /* Debug */,
-				641F071BD177C0FD805ECAF1D202F7CB /* Release */,
+				DCFBEC36BB52B848836D07F442D2767C /* Debug */,
+				3B8FB9A051AFDB498C478101AA546F16 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B3286589D1F7A164B216BC26D65F86CE /* Build configuration list for PBXNativeTarget "Pods-NursingSupervision" */ = {
+		C6AF5E073E12BB724B34252D7E1E5E2E /* Build configuration list for PBXNativeTarget "JSONModel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F30BE93B126941D6738C591BACB4B1E3 /* Debug */,
-				19F6E9C9C946FF6D55699F9185BF9C5D /* Release */,
+				D5A53314F0406B315CA0867F8EFCFD33 /* Debug */,
+				2C5CBD3A72085FEB008264874E65D26A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA4207FFCD94E5098AE817E8A62A9336 /* Build configuration list for PBXNativeTarget "PinYin4Objc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE468C2DDF5A46CC833EEC72A6B4CE66 /* Debug */,
+				7004E894EF63FE62A0C9DF26AB9D8114 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSVClassifyViewController.h"
+#import "NSVIssueViewController.h"
 
-@interface NSVMainViewController : UISplitViewController
+
+@interface NSVMainViewController : UISplitViewController <NSVClassifyViewControllerDelegate>
+
+@property (nonatomic, strong) NSVClassifyViewController* classifyViewController;
+@property (nonatomic, strong) NSVIssueViewController* issueViewController;
 
 @end

@@ -10,9 +10,4 @@
 
 @implementation NSVProject
 
-+ (NSString *) primaryKey
-{
-    return @"projectId";
-}
-
 @end

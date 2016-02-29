@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSVProject.h"
 
 @interface NSVIssueViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+-(void) setProjectFilter:(NSVProject*)projectFilter;
 
 @end

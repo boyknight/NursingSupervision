@@ -7,17 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "OCLModel.h"
+#import "JSONModelLib.h"
 
-@interface NSVIssue : OCLModel
+@protocol NSVIssue
 
-@property (nonatomic, assign) NSInteger classId;
-@property (nonatomic, assign) NSInteger projectId;
-@property (nonatomic, assign) NSInteger positionId;
+@end
 
-@property (nonatomic, assign) NSInteger issueId;
+@interface NSVIssue : JSONModel
 
 @property (nonatomic, strong) NSString* name;
-@property (nonatomic, assign) NSInteger score;
+@property (nonatomic, strong) NSNumber* score;
+@property (nonatomic, strong) NSString<Optional>* nameQuanPin; // 全拼
+@property (nonatomic, strong) NSString<Optional>* namePinYinShouZiMu; // 拼音首字母
 
 @end

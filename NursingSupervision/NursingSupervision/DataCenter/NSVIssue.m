@@ -10,9 +10,5 @@
 
 @implementation NSVIssue
 
-+ (NSString *) primaryKey
-{
-    return @"issueId";
-}
 
 @end

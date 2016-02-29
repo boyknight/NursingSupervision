@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NSVAssessment.h"
 
 @interface NSVDataCenter : NSObject
+
+@property (nonatomic, strong, readonly) NSVAssessment* assessment;
 
 +(instancetype) defaultCenter;
 

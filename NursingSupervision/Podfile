@@ -5,8 +5,8 @@
 
 target 'NursingSupervision' do
 
-pod 'OLCOrm', '~> 1.0'
-pod 'FMDB', '~> 2.6'
+pod 'PinYin4Objc'
+pod 'JSONModel'
 
 end
 

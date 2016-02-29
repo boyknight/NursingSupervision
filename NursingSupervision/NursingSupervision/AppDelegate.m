@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "NSVMainViewController.h"
 #import "NSVDataCenter.h"
+#import "NSVClassifyViewController.h"
+#import "NSVIssueViewController.h"
 
 
 @interface AppDelegate ()
@@ -25,6 +27,17 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
     NSVMainViewController* mainViewControler = [[NSVMainViewController alloc] initWithNibName:nil bundle:nil];
+    
+    NSVClassifyViewController* classVC = [[NSVClassifyViewController alloc] initWithNibName:nil bundle:nil];
+    
+    NSVIssueViewController* issueVC = [[NSVIssueViewController alloc] initWithNibName:nil bundle:nil];
+    
+    mainViewControler.viewControllers = @[classVC, issueVC];
+    mainViewControler.classifyViewController = classVC;
+    mainViewControler.issueViewController = issueVC;
+    
+    classVC.delegate = mainViewControler;
+    
     
     self.window.rootViewController = mainViewControler;
     
