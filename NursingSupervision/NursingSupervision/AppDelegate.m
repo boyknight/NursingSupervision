@@ -28,17 +28,6 @@
     
     NSVMainViewController* mainViewControler = [[NSVMainViewController alloc] initWithNibName:nil bundle:nil];
     
-    NSVClassifyViewController* classVC = [[NSVClassifyViewController alloc] initWithNibName:nil bundle:nil];
-    
-    NSVIssueViewController* issueVC = [[NSVIssueViewController alloc] initWithNibName:nil bundle:nil];
-    
-    mainViewControler.viewControllers = @[classVC, issueVC];
-    mainViewControler.classifyViewController = classVC;
-    mainViewControler.issueViewController = issueVC;
-    
-    classVC.delegate = mainViewControler;
-    
-    
     self.window.rootViewController = mainViewControler;
     
     [self.window makeKeyAndVisible];

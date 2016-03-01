@@ -11,9 +11,6 @@
 #import "NSVIssueViewController.h"
 
 
-@interface NSVMainViewController : UISplitViewController <NSVClassifyViewControllerDelegate>
-
-@property (nonatomic, strong) NSVClassifyViewController* classifyViewController;
-@property (nonatomic, strong) NSVIssueViewController* issueViewController;
+@interface NSVMainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end
