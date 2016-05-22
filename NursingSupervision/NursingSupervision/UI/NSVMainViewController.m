@@ -20,6 +20,8 @@
 @property (nonatomic, strong) UILabel* issueLabel;
 @property (nonatomic, strong) UILabel* nurseLabel;
 
+@property (nonatomic, strong) UISearchBar* issueSearchBar;
+
 @property (nonatomic, strong) UITableView* projectTableView;
 @property (nonatomic, strong) UITableView* issueTableView;
 @property (nonatomic, strong) UITableView* nurseTableView;
@@ -96,12 +98,20 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self.issueBgView addSubview:self.issueLabel];
     
+    // 问题 搜索
+    self.issueSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f,
+                                                                        self.issueLabel.frame.origin.y + self.issueLabel.frame.size.height,
+                                                                        self.issueBgView.frame.size.width,
+                                                                        44.0f)];
+    self.issueSearchBar.searchBarStyle = UISearchBarStyleMinimal;
+    [self.issueBgView addSubview:self.issueSearchBar];
+    
     
     // 问题 列表
     self.issueTableView= [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                       self.issueLabel.frame.origin.y + self.issueLabel.frame.size.height,
+                                                                       self.issueSearchBar.frame.origin.y + self.issueSearchBar.frame.size.height,
                                                                        self.issueBgView.frame.size.width,
-                                                                       self.issueBgView.frame.size.height - self.issueLabel.frame.size.height)
+                                                                       self.issueBgView.frame.size.height - self.issueLabel.frame.size.height - self.issueSearchBar.frame.size.height)
                                                       style:UITableViewStylePlain];
     
     self.issueTableView.dataSource = self;
@@ -360,13 +370,6 @@ static NSString * const reuseIdentifier = @"Cell";
                     [self loadViewIfNeeded];
                 }];
             }
-//            else
-//            {
-//                newNurseBgViewFrame.origin.x += (newNurseBgViewFrame.size.width + 20);
-//            }
-            
-            
-
             
             self.lastSelectedIssueIndexPath = indexPath;
 
