@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		35FAEC4755D40C9FF215FD6B /* libPods-NursingSupervision.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC9420152A26BD00AD8EF71 /* libPods-NursingSupervision.a */; };
+		B02243F41CF487DA004E2E6F /* UIColor+NSVAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */; };
+		B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B07FE80F1CF5E4360052F2DA /* NSVProjectItemTableViewCell.m */; };
 		B085480F1C7DAC600004991B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B085480E1C7DAC600004991B /* main.m */; };
 		B08548121C7DAC600004991B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548111C7DAC600004991B /* AppDelegate.m */; };
 		B085481A1C7DAC600004991B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B08548191C7DAC600004991B /* Assets.xcassets */; };
@@ -28,6 +30,10 @@
 /* Begin PBXFileReference section */
 		16FAEA4756DCB6EFC2A39F48 /* Pods-NursingSupervision.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NursingSupervision.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision.debug.xcconfig"; sourceTree = "<group>"; };
 		5CC9420152A26BD00AD8EF71 /* libPods-NursingSupervision.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NursingSupervision.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B02243F21CF487DA004E2E6F /* UIColor+NSVAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+NSVAdditions.h"; sourceTree = "<group>"; };
+		B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NSVAdditions.m"; sourceTree = "<group>"; };
+		B07FE80E1CF5E4360052F2DA /* NSVProjectItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVProjectItemTableViewCell.h; sourceTree = "<group>"; };
+		B07FE80F1CF5E4360052F2DA /* NSVProjectItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVProjectItemTableViewCell.m; sourceTree = "<group>"; };
 		B085480A1C7DAC600004991B /* NursingSupervision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NursingSupervision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B085480E1C7DAC600004991B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B08548101C7DAC600004991B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -131,6 +137,8 @@
 				B085482D1C7DB6EC0004991B /* NSVClassifyViewController.m */,
 				B085482F1C7DB7110004991B /* NSVIssueViewController.h */,
 				B08548301C7DB7110004991B /* NSVIssueViewController.m */,
+				B07FE80E1CF5E4360052F2DA /* NSVProjectItemTableViewCell.h */,
+				B07FE80F1CF5E4360052F2DA /* NSVProjectItemTableViewCell.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -159,6 +167,8 @@
 		B08548281C7DACD70004991B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B02243F21CF487DA004E2E6F /* UIColor+NSVAdditions.h */,
+				B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -299,6 +309,7 @@
 				B08548121C7DAC600004991B /* AppDelegate.m in Sources */,
 				B08548341C7DBE8F0004991B /* NSVClassify.m in Sources */,
 				B0B22D3E1C82F6450040DA49 /* NSVAssessment.m in Sources */,
+				B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */,
 				B085480F1C7DAC600004991B /* main.m in Sources */,
 				B08548311C7DB7110004991B /* NSVIssueViewController.m in Sources */,
 				B085483D1C7DBF370004991B /* NSVNurse.m in Sources */,
@@ -306,6 +317,7 @@
 				B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */,
 				B08548371C7DBE9D0004991B /* NSVProject.m in Sources */,
 				B08548401C7DBF950004991B /* NSVRecord.m in Sources */,
+				B02243F41CF487DA004E2E6F /* UIColor+NSVAdditions.m in Sources */,
 				B085482E1C7DB6EC0004991B /* NSVClassifyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

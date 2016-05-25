@@ -11,6 +11,21 @@
 #import "NSVMainViewController.h"
 #import "NSVDataCenter.h"
 
+#import "UIColor+NSVAdditions.h"
+
+#import "NSVProjectItemTableViewCell.h"
+
+
+#define NSVProjectAreaWidth 225.0f
+
+#define NSVProjectLabelHeight 70.0f
+
+#define NSVProjectHeaderHeight 33.0f
+
+#define NSVProjectLabelBackgroundColor 0x53993f
+
+#define NSVProjectCellBackgroundColor 0xe7eae5
+
 
 @interface NSVMainViewController ()
 
@@ -32,6 +47,10 @@
 @property (nonatomic, copy) NSIndexPath* lastSelectedProjectIndexPath;
 @property (nonatomic, copy) NSIndexPath* lastSelectedIssueIndexPath;
 
+@property (nonatomic, strong) UIButton* projectSwitchButton;
+@property (nonatomic, strong) UIButton* issueManageSwitchButton;
+@property (nonatomic, strong) UIButton* historySwitchButton;
+
 @end
 
 @implementation NSVMainViewController
@@ -47,38 +66,59 @@ static NSString * const reuseIdentifier = @"Cell";
     CGFloat selfHeight = self.view.frame.size.height;
     
     
-    CGFloat projectTableWidth = 220.0f;
     CGFloat statusBarHeight = 20.0f;
     
     
     // 项目背景视图
     self.projectBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,
                                                                   statusBarHeight,
-                                                                  projectTableWidth,
+                                                                  NSVProjectAreaWidth,
                                                                   selfHeight - statusBarHeight)];
+    self.projectBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
     
     [self.view addSubview:self.projectBgView];
     
     // 项目 文字标签
-    self.projectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.projectBgView.frame.size.width, 40.0f)];
-    self.projectLabel.text = @"项目";
+    self.projectLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.projectBgView.frame.size.width, NSVProjectLabelHeight)];
+    self.projectLabel.text = @"记录问题";
     self.projectLabel.textAlignment = NSTextAlignmentCenter;
-    self.projectLabel.backgroundColor = [UIColor lightGrayColor];
+    self.projectLabel.backgroundColor = [UIColor colorWithRGBHex:NSVProjectLabelBackgroundColor];
+    self.projectLabel.font = [UIFont systemFontOfSize:20.0f];
+    self.projectLabel.textColor = [UIColor whiteColor];
 
     [self.projectBgView addSubview:self.projectLabel];
+    
+    
+    // 项目 图标
+    UIImageView* projectIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"project_label_icon"]];
+    projectIconView.frame = CGRectMake(25.0f, 23.0f, 24.0f, 24.0f);
+    
+    [self.projectBgView addSubview:projectIconView];
     
     
     // 项目 列表
     self.projectTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
                                                                           self.projectLabel.frame.origin.y + self.projectLabel.frame.size.height,
                                                                           self.projectBgView.frame.size.width,
-                                                                          self.projectBgView.frame.size.height - self.projectLabel.frame.size.height) style:UITableViewStylePlain];
+                                                                          self.projectBgView.frame.size.height - self.projectLabel.frame.size.height - 2.0f * NSVProjectLabelHeight) style:UITableViewStylePlain];
     self.projectTableView.dataSource = self;
     self.projectTableView.delegate = self;
-    self.projectTableView.sectionHeaderHeight = 20.0f;
-    self.projectTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.projectTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+    self.projectTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     [self.projectBgView addSubview:self.projectTableView];
+    
+    // 项目切换 按钮
+    self.projectSwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.projectSwitchButton.frame = self.projectLabel.frame;
+    [self.projectSwitchButton addTarget:self action:@selector(projectSwitchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.projectBgView addSubview:self.projectSwitchButton];
+    
+    
+    
+    // 
+    
     
     
     
@@ -249,7 +289,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UITableViewCell* cell = nil;
+    NSVProjectItemTableViewCell* cell = nil;
     
     if (tableView == self.projectTableView) {
         NSString* cellid = @"project_table_cell";
@@ -257,8 +297,12 @@ static NSString * const reuseIdentifier = @"Cell";
         cell = [self.projectTableView dequeueReusableCellWithIdentifier:cellid];
         
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell = [[NSVProjectItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
+            cell.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.textLabel.font = [UIFont systemFontOfSize:18.0f];
+            cell.textLabel.backgroundColor = [UIColor clearColor];
+            [cell setIndentationWidth:25.0f];
         }
         
         if (indexPath.section == 0) {
@@ -278,7 +322,7 @@ static NSString * const reuseIdentifier = @"Cell";
         cell = [self.projectTableView dequeueReusableCellWithIdentifier:cellid];
         
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
+            cell = [[NSVProjectItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
 
@@ -311,30 +355,57 @@ static NSString * const reuseIdentifier = @"Cell";
     return cell;
 }
 
-- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    NSString* title = nil;
+#pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    CGFloat height = NSVProjectHeaderHeight;
     
-    if (tableView == self.projectTableView) {
-        if (section == 0) {
-        }
-        else if (section <= self.assessment.classifies.count){
-            NSVClassify* classify = self.assessment.classifies[section - 1];
-            title = classify.name;
-        }
+    if (section == 0) {
+        height = 4.0f;
     }
     
-    return title;
+    return height;
 }
 
-#pragma mark - UITableViewDelegate
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section{
-    UITableViewHeaderFooterView* headerView = (UITableViewHeaderFooterView*)view;
-    if (tableView == self.projectTableView) {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 49.0f;
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
+    
+    
+    UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, NSVProjectAreaWidth, NSVProjectHeaderHeight)];
+    bgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+    
+    if (section == 0) {
+        bgView.frame = CGRectMake(0.0f, 0.0f, NSVProjectAreaWidth, 4.0f);
         
-        if (headerView.textLabel.font.pointSize != 14.0f) {
-            headerView.textLabel.font = [UIFont systemFontOfSize:14.0f];
+    }else{
+        UIView* titleLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 4.0f, NSVProjectAreaWidth, 25.0f)];
+        titleLabelBgView.backgroundColor = [UIColor colorWithRGBHex:0xd6dbd2];
+        
+        [bgView addSubview:titleLabelBgView];
+        
+        NSString* title = nil;
+        
+        if (tableView == self.projectTableView) {
+            if (section == 0) {
+            }
+            else if (section <= self.assessment.classifies.count){
+                NSVClassify* classify = self.assessment.classifies[section - 1];
+                title = classify.name;
+            }
         }
+        
+        UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 4.0f, NSVProjectAreaWidth - 2.0f * 15.0f, 25.0f)];
+        titleLabel.text = title;
+        titleLabel.font = [UIFont systemFontOfSize:13.0f];
+        titleLabel.textColor = [UIColor colorWithRGBHex:0x747474];
+        
+        [bgView addSubview:titleLabel];
     }
+    
+    return bgView;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -379,5 +450,9 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+#pragma mark - button clicked
+-(void) projectSwitchButtonClicked:(UIButton*)button{
+    NSLog(@"project button clicked");
+}
 
 @end
