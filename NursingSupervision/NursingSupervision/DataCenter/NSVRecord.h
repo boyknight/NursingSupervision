@@ -13,6 +13,10 @@
 #import "NSVIssue.h"
 #import "NSVNurse.h"
 
+@protocol NSVRecord <NSObject>
+
+@end
+
 @interface NSVRecord : JSONModel
 
 @property (nonatomic, assign) NSInteger recordId;

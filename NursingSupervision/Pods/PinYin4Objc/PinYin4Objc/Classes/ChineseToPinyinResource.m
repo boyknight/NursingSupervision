@@ -61,6 +61,8 @@ static inline NSString* cachePathForKey(NSString* directory, NSString* key) {
                 [lines enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     NSArray *lineComponents=[obj componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                     [tempMap setObject:lineComponents[1] forKey:lineComponents[0]];
+                    
+                    NSLog(@"load pinyin table one by one");
                 }];
          }
         self->_unicodeToHanyuPinyinTable=tempMap;

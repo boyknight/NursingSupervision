@@ -11,6 +11,7 @@
 #import "NSVDataCenter.h"
 #import "NSVClassifyViewController.h"
 #import "NSVIssueViewController.h"
+#import "ChineseToPinyinResource.h"
 
 
 @interface AppDelegate ()
@@ -21,8 +22,17 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [ChineseToPinyinResource getInstance];
     
     [NSVDataCenter defaultCenter];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    
+    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+        statusBar.backgroundColor = [UIColor blackColor];
+    }
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     

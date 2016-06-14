@@ -9,9 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "JSONModelLib.h"
 
+@protocol NSVNurse <NSObject>
+
+
+@end
+
 @interface NSVNurse : JSONModel
 
 @property (nonatomic, assign) NSInteger nurseId;
 @property (nonatomic, strong) NSString* name;
+@property (nonatomic, strong) NSString* namePinyin;
 
 @end

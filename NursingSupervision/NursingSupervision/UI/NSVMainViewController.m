@@ -16,7 +16,7 @@
 #import "NSVProjectItemTableViewCell.h"
 
 
-#define NSVProjectAreaWidth 225.0f
+#define NSVLeftAreaWidth 225.0f
 
 #define NSVProjectLabelHeight 70.0f
 
@@ -28,233 +28,103 @@
 
 #define StatusBarHeight 20.0f
 
+#define NSVNurseListWidth 179.0f
+
+#define NSVIssueRecordCommitButtonHeight 60.0f
+
+static NSString * const reuseIdentifier = @"Cell";
+
+
+
+
 
 @interface NSVMainViewController ()
 
 // 左侧栏 //
 
-// 背景 视图
+// 记录问题
 @property (nonatomic, strong) UIView* projectBgView;
+
+@property (nonatomic, strong) UILabel* projectLabel;
+@property (nonatomic, strong) UITableView* projectTableView;
+@property (nonatomic, strong) UIButton* projectSwitchButton;
+
+
+// 问题和人员管理
 @property (nonatomic, strong) UIView* projectManagementBgView;
+
+@property (nonatomic, strong) UILabel* projectManagementLabel;
+@property (nonatomic, strong) UITableView* projectManagementTableView;
+@property (nonatomic, strong) UIButton* projectManageSwitchButton;
+
+// 查看历史记录
 @property (nonatomic, strong) UIView* historyBgView;
 
-// 文字标签
-@property (nonatomic, strong) UILabel* projectLabel;
-@property (nonatomic, strong) UILabel* projectManagementLabel;
 @property (nonatomic, strong) UILabel* historyLabel;
-
-// 列表
-@property (nonatomic, strong) UITableView* projectTableView;
-@property (nonatomic, strong) UITableView* projectManagementTableView;
 @property (nonatomic, strong) UITableView* historyTableView;
+@property (nonatomic, strong) UIButton* historySwitchButton;
 
 
 // 右侧部分
 
-// 背景 视图
+// 记录问题
 @property (nonatomic, strong) UIView* issueRecordBgView;
-@property (nonatomic, strong) UIView* nurseBgView;
-
-@property (nonatomic, strong) UILabel* issueLabel;
-@property (nonatomic, strong) UILabel* nurseLabel;
-
 @property (nonatomic, strong) UISearchBar* issueSearchBar;
-
 @property (nonatomic, strong) UITableView* issueTableView;
 @property (nonatomic, strong) UITableView* nurseTableView;
-
+@property (nonatomic, strong) UIButton* issueRecordCommitButton;
 
 
 
 
 @property (nonatomic, weak) NSVAssessment* assessment;
+
+@property (nonatomic, strong) NSMutableArray* nurses;
+
 @property (nonatomic, copy) NSIndexPath* lastSelectedProjectIndexPath;
 @property (nonatomic, copy) NSIndexPath* lastSelectedIssueIndexPath;
 
-@property (nonatomic, strong) UIButton* projectSwitchButton;
-@property (nonatomic, strong) UIButton* projectManageSwitchButton;
-@property (nonatomic, strong) UIButton* historySwitchButton;
+
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) CGFloat height;
+@property (nonatomic, assign) CGFloat deltaOfLeftHeight;
+
 
 @end
 
+
+
 @implementation NSVMainViewController
 
-static NSString * const reuseIdentifier = @"Cell";
+-(instancetype) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
+    if (self != nil) {
+        self.nurses = [NSMutableArray array];
+    }
+    
+    return self;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.width = self.view.frame.size.width;
+    self.height = self.view.frame.size.height;
+    self.deltaOfLeftHeight = self.height - 3.0f * NSVProjectLabelHeight - StatusBarHeight;
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
-    CGFloat selfWidth = self.view.frame.size.width;
-    CGFloat selfHeight = self.view.frame.size.height;
-    CGFloat delta = selfHeight - 3.0f * NSVProjectLabelHeight - StatusBarHeight;
+
     
     // ------------------------ 左侧栏 ------------------------ //
     
-    // 项目背景视图
-    self.projectBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                  StatusBarHeight,
-                                                                  NSVProjectAreaWidth,
-                                                                  selfHeight - StatusBarHeight - 2.0f * NSVProjectLabelHeight)];
-    self.projectBgView.clipsToBounds = YES;
-    self.projectBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
-    [self.view addSubview:self.projectBgView];
+    [self initIssueRecordOfLeftSide];
     
-    // 项目 文字标签 背景
-    UIView* projectLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.projectBgView.frame.size.width, NSVProjectLabelHeight)];
-    projectLabelBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectLabelBackgroundColor];
+    [self initIssueManagementOfLeftSide];
     
-    [self.projectBgView addSubview:projectLabelBgView];
-    
-    // 项目 图标
-    UIImageView* projectIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"project_label_icon"]];
-    projectIconView.frame = CGRectMake(25.0f, 23.0f, 24.0f, 24.0f);
-    
-    [self.projectBgView addSubview:projectIconView];
-    
-    // 项目 文字标签
-    self.projectLabel = [[UILabel alloc] initWithFrame:CGRectMake(projectIconView.frame.origin.x + projectIconView.frame.size.width + 10.0f,
-                                                                  projectIconView.frame.origin.y,
-                                                                  NSVProjectAreaWidth - (projectIconView.frame.origin.x + projectIconView.frame.size.width + 20.0f),
-                                                                  projectIconView.frame.size.height)];
-    self.projectLabel.text = @"记录问题";
-    self.projectLabel.textAlignment = NSTextAlignmentLeft;
-    self.projectLabel.backgroundColor = [UIColor clearColor];
-    self.projectLabel.font = [UIFont systemFontOfSize:20.0f];
-    self.projectLabel.textColor = [UIColor whiteColor];
-
-    [self.projectBgView addSubview:self.projectLabel];
-    
-    // 项目 列表
-    self.projectTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                          projectLabelBgView.frame.origin.y + projectLabelBgView.frame.size.height,
-                                                                          self.projectBgView.frame.size.width,
-                                                                          self.projectBgView.frame.size.height - NSVProjectLabelHeight) style:UITableViewStylePlain];
-    self.projectTableView.dataSource = self;
-    self.projectTableView.delegate = self;
-    self.projectTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
-    self.projectTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-    [self.projectBgView addSubview:self.projectTableView];
-    
-    // 项目 切换 按钮
-    self.projectSwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.projectSwitchButton.frame = projectLabelBgView.frame;
-    [self.projectSwitchButton addTarget:self action:@selector(projectSwitchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.projectBgView addSubview:self.projectSwitchButton];
-    
-    
-    
-    // 项目管理 背景页面
-    self.projectManagementBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                            self.projectBgView.frame.origin.y + self.projectBgView.frame.size.height,
-                                                                            NSVProjectAreaWidth,
-                                                                            NSVProjectLabelHeight)];
-    self.projectManagementBgView.clipsToBounds = YES;
-    self.projectManagementBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
-    [self.view addSubview:self.projectManagementBgView];
-    
-    // 项目管理 文字标签 背景
-    UIView* projectManagementLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.projectManagementBgView.frame.size.width, NSVProjectLabelHeight)];
-    projectManagementLabelBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectLabelBackgroundColor];
-    
-    [self.projectManagementBgView addSubview:projectManagementLabelBgView];
-    
-    
-    // 项目管理的图标
-    UIImageView* projectManagementIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"project_management_icon"]];
-    projectManagementIconView.frame = CGRectMake(25.0f, 23.0f, 24.0f, 24.0f);
-    
-    [self.projectManagementBgView addSubview:projectManagementIconView];
-    
-    // 项目管理 标题文字标签
-    self.projectManagementLabel = [[UILabel alloc] initWithFrame:CGRectMake(projectManagementIconView.frame.origin.x + projectManagementIconView.frame.size.width + 10.0f,
-                                                                            projectManagementIconView.frame.origin.y,
-                                                                            NSVProjectAreaWidth - (projectManagementIconView.frame.origin.x + projectManagementIconView.frame.size.width + 20.0f),
-                                                                            projectManagementIconView.frame.size.height)];
-    self.projectManagementLabel.text = @"问题和人员管理";
-    self.projectManagementLabel.textAlignment = NSTextAlignmentLeft;
-    self.projectManagementLabel.backgroundColor = [UIColor clearColor];
-    self.projectManagementLabel.font = [UIFont systemFontOfSize:20.0f];
-    self.projectManagementLabel.textColor = [UIColor whiteColor];
-    
-    [self.projectManagementBgView addSubview:self.projectManagementLabel];
-    
-    // 项目管理 列表
-    self.projectManagementTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                                    projectManagementLabelBgView.frame.origin.y + projectManagementLabelBgView.frame.size.height,
-                                                                                    self.projectManagementBgView.frame.size.width,
-                                                                                    delta) style:UITableViewStylePlain];
-    self.projectManagementTableView.dataSource = self;
-    self.projectManagementTableView.delegate = self;
-    self.projectManagementTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
-    self.projectManagementTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    [self.projectManagementBgView addSubview:self.projectManagementTableView];
-    
-    
-    // 项目管理 切换按钮
-    self.projectManageSwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.projectManageSwitchButton.frame = projectManagementLabelBgView.frame;
-    [self.projectManageSwitchButton addTarget:self action:@selector(projectManageSwitchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.projectManagementBgView addSubview:self.projectManageSwitchButton];
-    
-    
-    // 历史 背景视图
-    self.historyBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                  2.0f * NSVProjectLabelHeight + delta + StatusBarHeight,
-                                                                  NSVProjectAreaWidth,
-                                                                  NSVProjectLabelHeight)];
-    self.historyBgView.clipsToBounds = YES;
-    self.historyBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
-    [self.view addSubview:self.historyBgView];
-    
-    // 历史 文字标签 背景
-    UIView* historyLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, NSVProjectAreaWidth, NSVProjectLabelHeight)];
-    historyLabelBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectLabelBackgroundColor];
-    
-    [self.historyBgView addSubview:historyLabelBgView];
-    
-    // 历史 图标
-    UIImageView* historyIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"history_label_icon"]];
-    historyIconView.frame = CGRectMake(25.0f, 23.0f, 24.0f, 24.0f);
-    
-    [self.historyBgView addSubview:historyIconView];
-    
-    
-    // 历史 标题文字 标签
-    self.historyLabel = [[UILabel alloc] initWithFrame:CGRectMake(historyIconView.frame.origin.x + historyIconView.frame.size.width + 10.0f,
-                                                                  historyIconView.frame.origin.y,
-                                                                  NSVProjectAreaWidth - (historyIconView.frame.origin.x + historyIconView.frame.size.width + 20.0f),
-                                                                  historyIconView.frame.size.height)];
-    self.historyLabel.text = @"查看历史记录";
-    self.historyLabel.textAlignment = NSTextAlignmentLeft;
-    self.historyLabel.backgroundColor = [UIColor clearColor];
-    self.historyLabel.font = [UIFont systemFontOfSize:20.0f];
-    self.historyLabel.textColor = [UIColor whiteColor];
-    
-    [self.historyBgView addSubview:self.historyLabel];
-    
-    // 历史 列表
-    self.historyTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                          NSVProjectLabelHeight,
-                                                                          NSVProjectAreaWidth,
-                                                                          delta) style:UITableViewStylePlain];
-    self.historyTableView.dataSource = self;
-    self.historyTableView.delegate = self;
-    self.historyTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
-    self.historyTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    [self.historyBgView addSubview:self.historyTableView];
-    
-    // 历史 切换按钮
-    self.historySwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.historySwitchButton.frame = projectManagementLabelBgView.frame;
-    [self.historySwitchButton addTarget:self action:@selector(historySwitchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.historyBgView addSubview:self.historySwitchButton];
-    
+    [self initHistoryOfLeftSide];
     
     // ------------------------ 左侧栏 结束 ------------------------ //
     
@@ -262,80 +132,15 @@ static NSString * const reuseIdentifier = @"Cell";
     
     // ------------------------ 右侧栏 ------------------------ //
     
-    
-    // 问题 背景视图
-    self.issueRecordBgView = [[UIView alloc] initWithFrame:CGRectMake(self.projectBgView.frame.origin.x + self.projectBgView.frame.size.width,
-                                                                  StatusBarHeight,
-                                                                  selfWidth - self.projectBgView.frame.size.width,
-                                                                  selfHeight - StatusBarHeight)];
-    
-    [self.view addSubview:self.issueRecordBgView];
+    // 问题记录
+    [self initIssueRecordOfRightSide];
     
     
-    // 问题 文字标签
-    self.issueLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.issueRecordBgView.frame.size.width, 40.0f)];
-    self.issueLabel.backgroundColor = [UIColor lightGrayColor];
-    self.issueLabel.text = @"问题";
-    self.issueLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [self.issueRecordBgView addSubview:self.issueLabel];
-    
-    // 问题 搜索
-    self.issueSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f,
-                                                                        self.issueLabel.frame.origin.y + self.issueLabel.frame.size.height,
-                                                                        self.issueRecordBgView.frame.size.width,
-                                                                        44.0f)];
-    self.issueSearchBar.searchBarStyle = UISearchBarStyleMinimal;
-    [self.issueRecordBgView addSubview:self.issueSearchBar];
-    
-    
-    // 问题 列表
-    self.issueTableView= [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                       self.issueSearchBar.frame.origin.y + self.issueSearchBar.frame.size.height,
-                                                                       self.issueRecordBgView.frame.size.width,
-                                                                       self.issueRecordBgView.frame.size.height - self.issueLabel.frame.size.height - self.issueSearchBar.frame.size.height)
-                                                      style:UITableViewStylePlain];
-    
-    self.issueTableView.dataSource = self;
-    self.issueTableView.delegate = self;
-    [self.issueRecordBgView addSubview:self.issueTableView];
-    
-    
-    
-    // 护士 背景视图
-    self.nurseBgView = [[UIView alloc] initWithFrame:CGRectMake(self.issueRecordBgView.frame.origin.x + self.issueRecordBgView.frame.size.width + 20.0f,
-                                                                StatusBarHeight,
-                                                                200.0f,
-                                                                selfHeight - StatusBarHeight)];
-    
-    self.nurseBgView.backgroundColor = [UIColor redColor];
-    self.nurseBgView.layer.shadowOffset = CGSizeMake(-5, 5);
-    self.nurseBgView.layer.shadowRadius = 5;
-    self.nurseBgView.layer.shadowOpacity = 0.5;
-    
-    [self.view addSubview:self.nurseBgView];
-    
-    
-    // 护士 文字标签
-    self.nurseLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.nurseBgView.frame.size.width, 40.0f)];
-    self.nurseLabel.backgroundColor = [UIColor lightGrayColor];
-    self.nurseLabel.text = @"责任人";
-    self.nurseLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [self.nurseBgView addSubview:self.nurseLabel];
+    // ------------------------ 右侧栏 结束 ------------------------ //
 
     
-    // 护士 列表
-    self.nurseTableView= [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                       self.nurseLabel.frame.origin.y + self.nurseLabel.frame.size.height,
-                                                                       self.nurseBgView.frame.size.width,
-                                                                       self.nurseBgView.frame.size.height - self.nurseLabel.frame.size.height)
-                                                      style:UITableViewStylePlain];
-    
-    
-    [self.nurseBgView addSubview:self.nurseTableView];
-    
     self.assessment = [NSVDataCenter defaultCenter].assessment;
+    [self refreshNursesData];
     
     self.lastSelectedProjectIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     
@@ -387,7 +192,7 @@ static NSString * const reuseIdentifier = @"Cell";
         count = 1;
     }
     else if (tableView == self.nurseTableView){
-        
+        count = self.nurses.count;
     }
     else if (tableView == self.projectManagementTableView){
         count = 1;
@@ -424,7 +229,8 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     }
     else if (tableView == self.nurseTableView){
-        
+        NSArray* nurses = self.nurses[section][@"nurses"];
+        count = nurses.count;
     }
     else if (tableView == self.projectManagementTableView){
         count = 2;
@@ -435,7 +241,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSVProjectItemTableViewCell* cell = nil;
+    UITableViewCell* cell = nil;
     
     if (tableView == self.projectTableView) {
         NSString* cellid = @"project_table_cell";
@@ -451,15 +257,17 @@ static NSString * const reuseIdentifier = @"Cell";
             [cell setIndentationWidth:25.0f];
         }
         
+        NSVProjectItemTableViewCell* tableCell = (NSVProjectItemTableViewCell*)cell;
+        
         if (indexPath.section == 0) {
-            cell.textLabel.text = @"全部";
+            tableCell.textLabel.text = @"全部";
         }
         else if (indexPath.section <= self.assessment.classifies.count){
             NSVClassify* classify = self.assessment.classifies[indexPath.section - 1];
             
             NSVProject* project = classify.projects[indexPath.row];
             
-            cell.textLabel.text = project.name;
+            tableCell.textLabel.text = project.name;
         }
     }
     else if (tableView == self.issueTableView){
@@ -471,6 +279,8 @@ static NSString * const reuseIdentifier = @"Cell";
             cell = [[NSVProjectItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
+        
+        NSVProjectItemTableViewCell* tableCell = (NSVProjectItemTableViewCell*)cell;
 
         if (self.lastSelectedProjectIndexPath.section == 0) {
             NSMutableArray* issueArray = [NSMutableArray array];
@@ -482,7 +292,7 @@ static NSString * const reuseIdentifier = @"Cell";
             
             NSVIssue* issue = issueArray[indexPath.row];
             
-            cell.textLabel.text = issue.name;
+            tableCell.textLabel.text = issue.name;
             
         }
         else
@@ -491,11 +301,25 @@ static NSString * const reuseIdentifier = @"Cell";
             NSVProject* project = classify.projects[self.lastSelectedProjectIndexPath.row];
             NSVIssue* issue = project.issues[indexPath.row];
             
-            cell.textLabel.text = issue.name;
+            tableCell.textLabel.text = issue.name;
         }
     }
     else if (tableView == self.nurseTableView){
+        NSString* cellid = @"nurse_table_cell";
         
+        cell = [self.nurseTableView dequeueReusableCellWithIdentifier:cellid];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.backgroundColor = [UIColor colorWithRGBHex:0xfafafa];
+            
+        }
+        
+        NSArray* nurses = self.nurses[indexPath.section][@"nurses"];
+        NSVNurse* nurse = nurses[indexPath.row];
+        
+        cell.textLabel.text = nurse.name;
     }
     else if (tableView == self.projectManagementTableView){
         NSString* cellid = @"project_table_cell";
@@ -523,10 +347,15 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    CGFloat height = NSVProjectHeaderHeight;
     
-    if (section == 0) {
-        height = 4.0f;
+    CGFloat height = 0.0f;
+    
+    if (tableView == self.projectTableView) {
+        height = NSVProjectHeaderHeight;
+        
+        if (section == 0) {
+            height = 4.0f;
+        }
     }
     
     return height;
@@ -540,14 +369,14 @@ static NSString * const reuseIdentifier = @"Cell";
     
     
     
-    UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, NSVProjectAreaWidth, NSVProjectHeaderHeight)];
+    UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, NSVProjectHeaderHeight)];
     bgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
     
     if (section == 0) {
-        bgView.frame = CGRectMake(0.0f, 0.0f, NSVProjectAreaWidth, 4.0f);
+        bgView.frame = CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, 4.0f);
         
     }else{
-        UIView* titleLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 4.0f, NSVProjectAreaWidth, 25.0f)];
+        UIView* titleLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 4.0f, NSVLeftAreaWidth, 25.0f)];
         titleLabelBgView.backgroundColor = [UIColor colorWithRGBHex:0xd6dbd2];
         
         [bgView addSubview:titleLabelBgView];
@@ -563,7 +392,7 @@ static NSString * const reuseIdentifier = @"Cell";
             }
         }
         
-        UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 4.0f, NSVProjectAreaWidth - 2.0f * 15.0f, 25.0f)];
+        UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 4.0f, NSVLeftAreaWidth - 2.0f * 15.0f, 25.0f)];
         titleLabel.text = title;
         titleLabel.font = [UIFont systemFontOfSize:13.0f];
         titleLabel.textColor = [UIColor colorWithRGBHex:0x747474];
@@ -580,39 +409,12 @@ static NSString * const reuseIdentifier = @"Cell";
         if (indexPath != self.lastSelectedProjectIndexPath) {
             self.lastSelectedProjectIndexPath = indexPath;
             [self.issueTableView reloadData];
-            
-            if (self.nurseBgView.frame.origin.x < self.view.frame.size.width) {
-                
-                CGRect newNurseBgViewFrame = self.nurseBgView.frame;
-                newNurseBgViewFrame.origin.x += (newNurseBgViewFrame.size.width + 20);
-                
-                [UIView animateWithDuration:0.2f animations:^{
-                    self.nurseBgView.frame = newNurseBgViewFrame;
-                }];
-                
-                [self loadViewIfNeeded];
-            }
         }
         
 
     }
     else if (tableView == self.issueTableView){
-        
-        if (indexPath != self.lastSelectedIssueIndexPath) {
-            CGRect newNurseBgViewFrame = self.nurseBgView.frame;
-            
-            if (self.nurseBgView.frame.origin.x >= self.view.frame.size.width) {
-                
-                newNurseBgViewFrame.origin.x -= (newNurseBgViewFrame.size.width + 20);
-                [UIView animateWithDuration:0.2f animations:^{
-                    self.nurseBgView.frame = newNurseBgViewFrame;
-                    [self loadViewIfNeeded];
-                }];
-            }
-            
             self.lastSelectedIssueIndexPath = indexPath;
-
-        }
     }
 }
 
@@ -708,4 +510,275 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+#pragma mark - 初始化界面
+-(void) initIssueRecordOfLeftSide{
+    // 记录问题 背景视图
+    self.projectBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                  StatusBarHeight,
+                                                                  NSVLeftAreaWidth,
+                                                                  self.height - StatusBarHeight - 2.0f * NSVProjectLabelHeight)];
+    self.projectBgView.clipsToBounds = YES;
+    self.projectBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+    [self.view addSubview:self.projectBgView];
+    
+    // 记录问题 文字标签 背景
+    UIView* projectLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.projectBgView.frame.size.width, NSVProjectLabelHeight)];
+    projectLabelBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectLabelBackgroundColor];
+    
+    [self.projectBgView addSubview:projectLabelBgView];
+    
+    // 记录问题 图标
+    UIImageView* projectIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"project_label_icon"]];
+    projectIconView.frame = CGRectMake(25.0f, 23.0f, 24.0f, 24.0f);
+    
+    [self.projectBgView addSubview:projectIconView];
+    
+    // 记录问题 文字标签
+    self.projectLabel = [[UILabel alloc] initWithFrame:CGRectMake(projectIconView.frame.origin.x + projectIconView.frame.size.width + 10.0f,
+                                                                  projectIconView.frame.origin.y,
+                                                                  NSVLeftAreaWidth - (projectIconView.frame.origin.x + projectIconView.frame.size.width + 20.0f),
+                                                                  projectIconView.frame.size.height)];
+    self.projectLabel.text = @"记录问题";
+    self.projectLabel.textAlignment = NSTextAlignmentLeft;
+    self.projectLabel.backgroundColor = [UIColor clearColor];
+    self.projectLabel.font = [UIFont systemFontOfSize:20.0f];
+    self.projectLabel.textColor = [UIColor whiteColor];
+    
+    [self.projectBgView addSubview:self.projectLabel];
+    
+    // 记录问题 列表
+    self.projectTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                          projectLabelBgView.frame.origin.y + projectLabelBgView.frame.size.height,
+                                                                          self.projectBgView.frame.size.width,
+                                                                          self.projectBgView.frame.size.height - NSVProjectLabelHeight) style:UITableViewStylePlain];
+    self.projectTableView.dataSource = self;
+    self.projectTableView.delegate = self;
+    self.projectTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+    self.projectTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.projectBgView addSubview:self.projectTableView];
+    
+    // 记录问题 切换 按钮
+    self.projectSwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.projectSwitchButton.frame = projectLabelBgView.frame;
+    [self.projectSwitchButton addTarget:self action:@selector(projectSwitchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.projectBgView addSubview:self.projectSwitchButton];
+}
+
+-(void) initIssueManagementOfLeftSide{
+    // 项目管理 背景页面
+    self.projectManagementBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                            self.projectBgView.frame.origin.y + self.projectBgView.frame.size.height,
+                                                                            NSVLeftAreaWidth,
+                                                                            NSVProjectLabelHeight)];
+    self.projectManagementBgView.clipsToBounds = YES;
+    self.projectManagementBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+    [self.view addSubview:self.projectManagementBgView];
+    
+    // 项目管理 文字标签 背景
+    UIView* projectManagementLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.projectManagementBgView.frame.size.width, NSVProjectLabelHeight)];
+    projectManagementLabelBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectLabelBackgroundColor];
+    
+    [self.projectManagementBgView addSubview:projectManagementLabelBgView];
+    
+    
+    // 项目管理的图标
+    UIImageView* projectManagementIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"project_management_icon"]];
+    projectManagementIconView.frame = CGRectMake(25.0f, 23.0f, 24.0f, 24.0f);
+    
+    [self.projectManagementBgView addSubview:projectManagementIconView];
+    
+    // 项目管理 标题文字标签
+    self.projectManagementLabel = [[UILabel alloc] initWithFrame:CGRectMake(projectManagementIconView.frame.origin.x + projectManagementIconView.frame.size.width + 10.0f,
+                                                                            projectManagementIconView.frame.origin.y,
+                                                                            NSVLeftAreaWidth - (projectManagementIconView.frame.origin.x + projectManagementIconView.frame.size.width + 20.0f),
+                                                                            projectManagementIconView.frame.size.height)];
+    self.projectManagementLabel.text = @"问题和人员管理";
+    self.projectManagementLabel.textAlignment = NSTextAlignmentLeft;
+    self.projectManagementLabel.backgroundColor = [UIColor clearColor];
+    self.projectManagementLabel.font = [UIFont systemFontOfSize:20.0f];
+    self.projectManagementLabel.textColor = [UIColor whiteColor];
+    
+    [self.projectManagementBgView addSubview:self.projectManagementLabel];
+    
+    // 项目管理 列表
+    self.projectManagementTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                                    projectManagementLabelBgView.frame.origin.y + projectManagementLabelBgView.frame.size.height,
+                                                                                    self.projectManagementBgView.frame.size.width,
+                                                                                    self.deltaOfLeftHeight) style:UITableViewStylePlain];
+    self.projectManagementTableView.dataSource = self;
+    self.projectManagementTableView.delegate = self;
+    self.projectManagementTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+    self.projectManagementTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.projectManagementBgView addSubview:self.projectManagementTableView];
+    
+    
+    // 项目管理 切换按钮
+    self.projectManageSwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.projectManageSwitchButton.frame = projectManagementLabelBgView.frame;
+    [self.projectManageSwitchButton addTarget:self action:@selector(projectManageSwitchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.projectManagementBgView addSubview:self.projectManageSwitchButton];
+    
+
+}
+
+-(void) initHistoryOfLeftSide{
+    // 历史 背景视图
+    self.historyBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                  2.0f * NSVProjectLabelHeight + self.deltaOfLeftHeight + StatusBarHeight,
+                                                                  NSVLeftAreaWidth,
+                                                                  NSVProjectLabelHeight)];
+    self.historyBgView.clipsToBounds = YES;
+    self.historyBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+    [self.view addSubview:self.historyBgView];
+    
+    // 历史 文字标签 背景
+    UIView* historyLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, NSVProjectLabelHeight)];
+    historyLabelBgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectLabelBackgroundColor];
+    
+    [self.historyBgView addSubview:historyLabelBgView];
+    
+    // 历史 图标
+    UIImageView* historyIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"history_label_icon"]];
+    historyIconView.frame = CGRectMake(25.0f, 23.0f, 24.0f, 24.0f);
+    
+    [self.historyBgView addSubview:historyIconView];
+    
+    
+    // 历史 标题文字 标签
+    self.historyLabel = [[UILabel alloc] initWithFrame:CGRectMake(historyIconView.frame.origin.x + historyIconView.frame.size.width + 10.0f,
+                                                                  historyIconView.frame.origin.y,
+                                                                  NSVLeftAreaWidth - (historyIconView.frame.origin.x + historyIconView.frame.size.width + 20.0f),
+                                                                  historyIconView.frame.size.height)];
+    self.historyLabel.text = @"查看历史记录";
+    self.historyLabel.textAlignment = NSTextAlignmentLeft;
+    self.historyLabel.backgroundColor = [UIColor clearColor];
+    self.historyLabel.font = [UIFont systemFontOfSize:20.0f];
+    self.historyLabel.textColor = [UIColor whiteColor];
+    
+    [self.historyBgView addSubview:self.historyLabel];
+    
+    // 历史 列表
+    self.historyTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                          NSVProjectLabelHeight,
+                                                                          NSVLeftAreaWidth,
+                                                                          self.deltaOfLeftHeight) style:UITableViewStylePlain];
+    self.historyTableView.dataSource = self;
+    self.historyTableView.delegate = self;
+    self.historyTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+    self.historyTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.historyBgView addSubview:self.historyTableView];
+    
+    // 历史 切换按钮
+    self.historySwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.historySwitchButton.frame = historyLabelBgView.frame;
+    [self.historySwitchButton addTarget:self action:@selector(historySwitchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.historyBgView addSubview:self.historySwitchButton];
+}
+
+-(void) initIssueRecordOfRightSide{
+    
+    
+    // 记录问题 背景视图
+    self.issueRecordBgView = [[UIView alloc] initWithFrame:CGRectMake(NSVLeftAreaWidth,
+                                                                      StatusBarHeight,
+                                                                      self.width - NSVLeftAreaWidth,
+                                                                      self.height - StatusBarHeight)];
+    [self.view addSubview:self.issueRecordBgView];
+    
+    // 问题记录 搜索栏
+    self.issueSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f,
+                                                                        0.0f,
+                                                                        self.issueRecordBgView.frame.size.width - NSVNurseListWidth,
+                                                                        44.0f)];
+    self.issueSearchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.issueSearchBar.placeholder = @"请输入关键词或项目名称搜索问题";
+    self.issueSearchBar.backgroundColor = [UIColor whiteColor];
+    [self.issueRecordBgView addSubview:self.issueSearchBar];
+    
+    
+    // 问题记录列表
+    self.issueTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                       self.issueSearchBar.frame.origin.y + self.issueSearchBar.frame.size.height,
+                                                                       self.issueSearchBar.frame.size.width,
+                                                                       self.issueRecordBgView.frame.size.height - self.issueSearchBar.frame.size.height)
+                                                      style:UITableViewStylePlain];
+    
+    self.issueTableView.dataSource = self;
+    self.issueTableView.delegate = self;
+    [self.issueRecordBgView addSubview:self.issueTableView];
+    
+    // 分隔线
+    UIView* sepView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.issueTableView.frame.origin.y, self.issueTableView.frame.size.width, 1.0f)];
+    sepView.backgroundColor = [UIColor colorWithRGBHex:0xe2e2e0];
+    
+    [self.issueRecordBgView addSubview:sepView];
+    
+    // 护士列表
+    self.nurseTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.issueRecordBgView.frame.size.width - NSVNurseListWidth,
+                                                                       0.0f,
+                                                                       NSVNurseListWidth,
+                                                                       self.issueRecordBgView.frame.size.height - NSVIssueRecordCommitButtonHeight)
+                                                      style:UITableViewStylePlain];
+    
+    self.nurseTableView.dataSource = self;
+    self.nurseTableView.delegate = self;
+    self.nurseTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.nurseTableView.backgroundColor = [UIColor colorWithRGBHex:0xfafafa];
+    [self.issueRecordBgView addSubview:self.nurseTableView];
+    
+    // 提交按钮
+    
+    self.issueRecordCommitButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.issueRecordCommitButton.frame = CGRectMake(self.nurseTableView.frame.origin.x,
+                                                    self.nurseTableView.frame.origin.y + self.nurseTableView.frame.size.height,
+                                                    NSVNurseListWidth,
+                                                    NSVIssueRecordCommitButtonHeight);
+    [self.issueRecordCommitButton setTitle:@"提    交" forState:UIControlStateNormal];
+    [self.issueRecordCommitButton setTitleColor:[UIColor colorWithRGBHex:0x747474] forState:UIControlStateNormal];
+    self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0xd7d7d5];
+    [self.issueRecordBgView addSubview:self.issueRecordCommitButton];
+    
+    // 分隔线
+    sepView = [[UIView alloc] initWithFrame:CGRectMake(self.nurseTableView.frame.origin.x, 0.0f, 1.0f, self.issueRecordBgView.frame.size.height)];
+    sepView.backgroundColor = [UIColor colorWithRGBHex:0xe2e2e0];
+    
+    [self.issueRecordBgView addSubview:sepView];
+}
+
+#pragma mark - 私有函数
+-(void) refreshNursesData{
+    
+    // 清空本地缓存
+    [self.nurses removeAllObjects];
+    
+    NSArray* pinyinArray = @[@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+    
+    NSArray* nurses = [NSVDataCenter defaultCenter].nurses.nurses;
+    
+    
+    // 按拼音首字母排序
+    for (NSString* py in pinyinArray) {
+        NSMutableDictionary* d = [NSMutableDictionary dictionary];
+        
+        NSMutableArray* ns = [NSMutableArray array];
+        
+        for (NSVNurse* nurse in nurses) {
+            if ([py isEqualToString:[nurse.namePinyin uppercaseString]]) {
+                [ns addObject:nurse];
+            }
+        }
+        
+        
+        if (ns.count > 0) {
+            d[@"pinyin"] = py;
+            d[@"nurses"] = ns;
+        }
+    }
+    
+    
+}
 @end

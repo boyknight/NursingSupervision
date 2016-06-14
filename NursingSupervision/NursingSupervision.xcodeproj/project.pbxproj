@@ -25,6 +25,8 @@
 		B0B22D3E1C82F6450040DA49 /* NSVAssessment.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B22D3D1C82F6450040DA49 /* NSVAssessment.m */; };
 		B0B22D401C82FB080040DA49 /* init.json in Resources */ = {isa = PBXBuildFile; fileRef = B0B22D3F1C82FB080040DA49 /* init.json */; };
 		B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */; };
+		C5821A151D0FDCC0007D4D34 /* NSVNurses.m in Sources */ = {isa = PBXBuildFile; fileRef = C5821A141D0FDCC0007D4D34 /* NSVNurses.m */; };
+		C5821A181D0FE756007D4D34 /* NSVRecords.m in Sources */ = {isa = PBXBuildFile; fileRef = C5821A171D0FE756007D4D34 /* NSVRecords.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +64,10 @@
 		B0B22D3F1C82FB080040DA49 /* init.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = init.json; sourceTree = "<group>"; };
 		B0C963A11C7DF4BE002F1A38 /* NSVDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVDataCenter.h; sourceTree = "<group>"; };
 		B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVDataCenter.m; sourceTree = "<group>"; };
+		C5821A131D0FDCC0007D4D34 /* NSVNurses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVNurses.h; sourceTree = "<group>"; };
+		C5821A141D0FDCC0007D4D34 /* NSVNurses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNurses.m; sourceTree = "<group>"; };
+		C5821A161D0FE756007D4D34 /* NSVRecords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVRecords.h; sourceTree = "<group>"; };
+		C5821A171D0FE756007D4D34 /* NSVRecords.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVRecords.m; sourceTree = "<group>"; };
 		C93001A78EEBC5F567E285A0 /* Pods-NursingSupervision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NursingSupervision.release.xcconfig"; path = "Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,6 +166,10 @@
 				B085483F1C7DBF950004991B /* NSVRecord.m */,
 				B0C963A11C7DF4BE002F1A38 /* NSVDataCenter.h */,
 				B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */,
+				C5821A131D0FDCC0007D4D34 /* NSVNurses.h */,
+				C5821A141D0FDCC0007D4D34 /* NSVNurses.m */,
+				C5821A161D0FE756007D4D34 /* NSVRecords.h */,
+				C5821A171D0FE756007D4D34 /* NSVRecords.m */,
 			);
 			path = DataCenter;
 			sourceTree = "<group>";
@@ -305,6 +315,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5821A181D0FE756007D4D34 /* NSVRecords.m in Sources */,
 				B085482B1C7DB2B20004991B /* NSVMainViewController.m in Sources */,
 				B08548121C7DAC600004991B /* AppDelegate.m in Sources */,
 				B08548341C7DBE8F0004991B /* NSVClassify.m in Sources */,
@@ -319,6 +330,7 @@
 				B08548401C7DBF950004991B /* NSVRecord.m in Sources */,
 				B02243F41CF487DA004E2E6F /* UIColor+NSVAdditions.m in Sources */,
 				B085482E1C7DB6EC0004991B /* NSVClassifyViewController.m in Sources */,
+				C5821A151D0FDCC0007D4D34 /* NSVNurses.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
