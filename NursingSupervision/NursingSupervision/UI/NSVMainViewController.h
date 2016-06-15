@@ -11,6 +11,8 @@
 #import "NSVIssueViewController.h"
 
 
-@interface NSVMainViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface NSVMainViewController : UIViewController <UITableViewDataSource,
+UITableViewDelegate,
+UISearchBarDelegate>
 
 @end

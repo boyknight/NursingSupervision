@@ -15,6 +15,7 @@
 
 #import "NSVProjectItemTableViewCell.h"
 #import "NSVNurseTableViewCell.h"
+#import "NSVIssueRecordTableViewCell.h"
 
 
 #define NSVLeftAreaWidth 225.0f
@@ -74,13 +75,17 @@ static NSString * const reuseIdentifier = @"Cell";
 @property (nonatomic, strong) UITableView* issueTableView;
 @property (nonatomic, strong) UITableView* nurseTableView;
 @property (nonatomic, strong) UIButton* issueRecordCommitButton;
+@property (nonatomic, strong) UIView* maskGrayLeftView;
+@property (nonatomic, strong) UIView* maskGrayMidView;
+@property (nonatomic, strong) UIView* maskGrayRightView;
+@property (nonatomic, strong) UITableView* issueSearchResultTableView;
 
 
 
 
 @property (nonatomic, weak) NSVAssessment* assessment;
-
 @property (nonatomic, strong) NSMutableArray* nurses;
+@property (nonatomic, strong) NSMutableArray* issueSearchResultArray;
 
 @property (nonatomic, copy) NSIndexPath* lastSelectedProjectIndexPath;
 @property (nonatomic, copy) NSIndexPath* lastSelectedIssueIndexPath;
@@ -102,6 +107,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     if (self != nil) {
         self.nurses = [NSMutableArray array];
+        self.issueSearchResultArray = [NSMutableArray array];
     }
     
     return self;
@@ -144,6 +150,8 @@ static NSString * const reuseIdentifier = @"Cell";
     [self refreshNursesData];
     
     self.lastSelectedProjectIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    [self.projectTableView selectRowAtIndexPath:self.lastSelectedProjectIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
     
 }
 
@@ -198,6 +206,8 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     else if (tableView == self.projectManagementTableView){
         count = 1;
+    }else if(tableView == self.issueSearchResultTableView){
+        count = 1;
     }
     
     return count;
@@ -229,13 +239,13 @@ static NSString * const reuseIdentifier = @"Cell";
             
             count = project.issues.count;
         }
-    }
-    else if (tableView == self.nurseTableView){
+    }else if (tableView == self.nurseTableView){
         NSArray* nurses = self.nurses[section][@"nurses"];
         count = nurses.count;
-    }
-    else if (tableView == self.projectManagementTableView){
+    }else if (tableView == self.projectManagementTableView){
         count = 2;
+    }else if (tableView == self.issueSearchResultTableView){
+        count = self.issueSearchResultArray.count;
     }
     
     return count;
@@ -275,14 +285,14 @@ static NSString * const reuseIdentifier = @"Cell";
     else if (tableView == self.issueTableView){
         NSString* cellid = @"issue_table_cell";
         
-        cell = [self.projectTableView dequeueReusableCellWithIdentifier:cellid];
+        cell = [self.issueTableView dequeueReusableCellWithIdentifier:cellid];
         
         if (cell == nil) {
-            cell = [[NSVProjectItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
+            cell = [[NSVIssueRecordTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
         
-        NSVProjectItemTableViewCell* tableCell = (NSVProjectItemTableViewCell*)cell;
+        NSVIssueRecordTableViewCell* tableCell = (NSVIssueRecordTableViewCell*)cell;
 
         if (self.lastSelectedProjectIndexPath.section == 0) {
             NSMutableArray* issueArray = [NSMutableArray array];
@@ -294,7 +304,7 @@ static NSString * const reuseIdentifier = @"Cell";
             
             NSVIssue* issue = issueArray[indexPath.row];
             
-            tableCell.textLabel.text = issue.name;
+            tableCell.issueLabel.text = issue.name;
             
         }
         else
@@ -303,7 +313,7 @@ static NSString * const reuseIdentifier = @"Cell";
             NSVProject* project = classify.projects[self.lastSelectedProjectIndexPath.row];
             NSVIssue* issue = project.issues[indexPath.row];
             
-            tableCell.textLabel.text = issue.name;
+            tableCell.issueLabel.text = issue.name;
         }
     }
     else if (tableView == self.nurseTableView){
@@ -321,8 +331,7 @@ static NSString * const reuseIdentifier = @"Cell";
         NSVNurse* nurse = nurses[indexPath.row];
         
         tableCell.nameLabel.text = nurse.name;
-    }
-    else if (tableView == self.projectManagementTableView){
+    }else if (tableView == self.projectManagementTableView){
         NSString* cellid = @"project_table_cell";
         
         cell = [self.projectTableView dequeueReusableCellWithIdentifier:cellid];
@@ -341,6 +350,22 @@ static NSString * const reuseIdentifier = @"Cell";
         }else{
             cell.textLabel.text = @"科室 / 人";
         }
+    }else if (tableView == self.issueSearchResultTableView){
+        NSString* cellid = @"issue_search_result_table_cell";
+        
+        cell = [self.issueSearchResultTableView dequeueReusableCellWithIdentifier:cellid];
+        
+        if (cell == nil) {
+            cell = [[NSVIssueRecordTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        
+        NSVIssueRecordTableViewCell* tableCell = (NSVIssueRecordTableViewCell*)cell;
+        tableCell.isSeperatorOnTop = YES;
+        
+        NSVIssue* issue = self.issueSearchResultArray[indexPath.row];
+        
+        tableCell.issueLabel.text = issue.name;
     }
     
     return cell;
@@ -371,6 +396,8 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     }else if (tableView == self.nurseTableView){
         height = 25.0f;
+    }else if (tableView == self.issueSearchResultTableView){
+        height = 0.0f;
     }
     
     return height;
@@ -390,6 +417,8 @@ static NSString * const reuseIdentifier = @"Cell";
         height = 60.0f;
     }else if (tableView == self.nurseTableView){
         height = 45.0f;
+    }else if (tableView == self.issueSearchResultTableView){
+        height = 60.0f;
     }
     
     return height;
@@ -767,6 +796,8 @@ static NSString * const reuseIdentifier = @"Cell";
     self.issueSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.issueSearchBar.placeholder = @"请输入关键词或项目名称搜索问题";
     self.issueSearchBar.backgroundColor = [UIColor whiteColor];
+    self.issueSearchBar.showsCancelButton = YES;
+    self.issueSearchBar.delegate = self;
     [self.issueRecordBgView addSubview:self.issueSearchBar];
     
     
@@ -779,6 +810,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     self.issueTableView.dataSource = self;
     self.issueTableView.delegate = self;
+    self.issueTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.issueRecordBgView addSubview:self.issueTableView];
     
     // 分隔线
@@ -821,6 +853,30 @@ static NSString * const reuseIdentifier = @"Cell";
     sepView.backgroundColor = [UIColor colorWithRGBHex:0xe2e2e0];
     
     [self.issueRecordBgView addSubview:sepView];
+    
+    // 搜索 遮罩 左侧 半透灰 视图
+    self.maskGrayLeftView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, self.height)];
+    self.maskGrayLeftView.backgroundColor = [UIColor blackColor];
+    self.maskGrayLeftView.alpha = 0.4f;
+    
+    // 搜索 遮罩 中间 半透灰 视图
+    self.maskGrayMidView = [[UIView alloc] initWithFrame:CGRectMake(NSVLeftAreaWidth, self.issueSearchBar.frame.size.height + 20.0f, self.width - NSVLeftAreaWidth - NSVNurseListWidth, self.height)];
+    self.maskGrayMidView.backgroundColor = [UIColor blackColor];
+    self.maskGrayMidView.alpha = 0.4f;
+    
+    // 搜索 遮罩 右侧 半透灰 视图
+    self.maskGrayRightView = [[UIView alloc] initWithFrame:CGRectMake(self.width - NSVNurseListWidth, 0.0f, NSVNurseListWidth, self.height)];
+    self.maskGrayRightView.backgroundColor = [UIColor blackColor];
+    self.maskGrayRightView.alpha = 0.4f;
+    
+    // 搜索结果 列表
+    self.issueSearchResultTableView = [[UITableView alloc] initWithFrame:CGRectMake(NSVLeftAreaWidth,
+                                                                                    self.maskGrayMidView.frame.origin.y,
+                                                                                    self.maskGrayMidView.frame.size.width,
+                                                                                    240.0f) style:UITableViewStylePlain];
+    self.issueSearchResultTableView.delegate = self;
+    self.issueSearchResultTableView.dataSource = self;
+    self.issueSearchResultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 #pragma mark - 私有函数
@@ -857,4 +913,104 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [self.nurseTableView reloadData];
 }
+
+-(void) startSearchIssue{
+    
+    [self.view addSubview:self.maskGrayLeftView];
+    [self.view addSubview:self.maskGrayMidView];
+    [self.view addSubview:self.maskGrayRightView];
+    
+    [self.view addSubview:self.issueSearchResultTableView];
+    
+}
+
+-(void) endSearchIssue{
+    self.issueSearchBar.text = @"";
+    [self.issueSearchResultArray removeAllObjects];
+    [self.issueSearchResultTableView reloadData];
+    
+    [self.maskGrayLeftView removeFromSuperview];
+    [self.maskGrayMidView removeFromSuperview];
+    [self.maskGrayRightView removeFromSuperview];
+    
+    [self.issueSearchResultTableView removeFromSuperview];
+}
+
+-(NSArray*) searchIssueWithKeyword:(NSString*)keyword{
+    
+    NSMutableArray* startMatchArray = [NSMutableArray array];
+    NSMutableArray* middleMatchArray = [NSMutableArray array];
+    
+    
+    NSMutableArray* result = [NSMutableArray array];
+    
+    for (NSVClassify* classify in self.assessment.classifies) {
+        for (NSVProject* project in classify.projects) {
+            for (NSVIssue* issue in project.issues) {
+                
+                NSRange r = [issue.namePinYinShouZiMu localizedStandardRangeOfString:[keyword lowercaseString]];
+                if (r.location == 0) {
+                    [startMatchArray addObject:issue];
+                    continue;
+                }else if(r.location > 0 && r.location != NSNotFound){
+                    [middleMatchArray addObject:issue];
+                    continue;
+                }
+                
+                r = [issue.nameQuanPin localizedStandardRangeOfString:[keyword lowercaseString]];
+                if (r.location == 0) {
+                    [startMatchArray addObject:issue];
+                    continue;
+                }else if(r.location > 0 && r.location != NSNotFound){
+                    [middleMatchArray addObject:issue];
+                    continue;
+                }
+                
+                r = [issue.name localizedStandardRangeOfString:[keyword lowercaseString]];
+                if (r.location == 0) {
+                    [startMatchArray addObject:issue];
+                    continue;
+                }else if(r.location > 0 && r.location != NSNotFound){
+                    [middleMatchArray addObject:issue];
+                    continue;
+                }
+            }
+        }
+    }
+    
+    [result addObjectsFromArray:startMatchArray];
+    [result addObjectsFromArray:middleMatchArray];
+    
+    return result;
+}
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    [self.issueSearchBar resignFirstResponder];
+    
+    [self endSearchIssue];
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    [self startSearchIssue];
+    
+    return YES;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    if (searchText == nil || searchText.length == 0) {
+        [self.issueSearchResultArray removeAllObjects];
+        [self.issueSearchResultTableView reloadData];
+        
+
+    }else{
+        
+        [self.issueSearchResultArray removeAllObjects];
+        [self.issueSearchResultArray addObjectsFromArray:[self searchIssueWithKeyword:searchText]];
+        [self.issueSearchResultTableView reloadData];
+    }
+    
+    
+}
+
 @end
