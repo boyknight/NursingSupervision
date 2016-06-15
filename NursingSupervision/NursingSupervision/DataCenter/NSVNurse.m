@@ -33,7 +33,7 @@
     NSString* firstWordPinyin = [PinyinHelper toHanyuPinyinStringWithNSString:firstWord
                                                 withHanyuPinyinOutputFormat:outputFormat
                                                                withNSString:@" "];
-    self.namePinyin = firstWordPinyin;
+    self.namePinyin = [firstWordPinyin substringToIndex:1];
     
     NSLog(@"拼音：%@", self.namePinyin);
 }

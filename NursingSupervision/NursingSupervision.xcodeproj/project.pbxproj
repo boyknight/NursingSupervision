@@ -25,6 +25,7 @@
 		B0B22D3E1C82F6450040DA49 /* NSVAssessment.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B22D3D1C82F6450040DA49 /* NSVAssessment.m */; };
 		B0B22D401C82FB080040DA49 /* init.json in Resources */ = {isa = PBXBuildFile; fileRef = B0B22D3F1C82FB080040DA49 /* init.json */; };
 		B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */; };
+		B0DD79FA1D1029BF00E6843E /* NSVNurseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B0DD79F91D1029BF00E6843E /* NSVNurseTableViewCell.m */; };
 		C5821A151D0FDCC0007D4D34 /* NSVNurses.m in Sources */ = {isa = PBXBuildFile; fileRef = C5821A141D0FDCC0007D4D34 /* NSVNurses.m */; };
 		C5821A181D0FE756007D4D34 /* NSVRecords.m in Sources */ = {isa = PBXBuildFile; fileRef = C5821A171D0FE756007D4D34 /* NSVRecords.m */; };
 /* End PBXBuildFile section */
@@ -64,6 +65,8 @@
 		B0B22D3F1C82FB080040DA49 /* init.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = init.json; sourceTree = "<group>"; };
 		B0C963A11C7DF4BE002F1A38 /* NSVDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVDataCenter.h; sourceTree = "<group>"; };
 		B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVDataCenter.m; sourceTree = "<group>"; };
+		B0DD79F81D1029BF00E6843E /* NSVNurseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVNurseTableViewCell.h; sourceTree = "<group>"; };
+		B0DD79F91D1029BF00E6843E /* NSVNurseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNurseTableViewCell.m; sourceTree = "<group>"; };
 		C5821A131D0FDCC0007D4D34 /* NSVNurses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVNurses.h; sourceTree = "<group>"; };
 		C5821A141D0FDCC0007D4D34 /* NSVNurses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNurses.m; sourceTree = "<group>"; };
 		C5821A161D0FE756007D4D34 /* NSVRecords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVRecords.h; sourceTree = "<group>"; };
@@ -145,6 +148,8 @@
 				B08548301C7DB7110004991B /* NSVIssueViewController.m */,
 				B07FE80E1CF5E4360052F2DA /* NSVProjectItemTableViewCell.h */,
 				B07FE80F1CF5E4360052F2DA /* NSVProjectItemTableViewCell.m */,
+				B0DD79F81D1029BF00E6843E /* NSVNurseTableViewCell.h */,
+				B0DD79F91D1029BF00E6843E /* NSVNurseTableViewCell.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -322,6 +327,7 @@
 				B0B22D3E1C82F6450040DA49 /* NSVAssessment.m in Sources */,
 				B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */,
 				B085480F1C7DAC600004991B /* main.m in Sources */,
+				B0DD79FA1D1029BF00E6843E /* NSVNurseTableViewCell.m in Sources */,
 				B08548311C7DB7110004991B /* NSVIssueViewController.m in Sources */,
 				B085483D1C7DBF370004991B /* NSVNurse.m in Sources */,
 				B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */,

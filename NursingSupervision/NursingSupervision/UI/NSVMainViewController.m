@@ -14,6 +14,7 @@
 #import "UIColor+NSVAdditions.h"
 
 #import "NSVProjectItemTableViewCell.h"
+#import "NSVNurseTableViewCell.h"
 
 
 #define NSVLeftAreaWidth 225.0f
@@ -193,6 +194,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     else if (tableView == self.nurseTableView){
         count = self.nurses.count;
+        NSLog(@"nurse section count: %ld", (long)count);
     }
     else if (tableView == self.projectManagementTableView){
         count = 1;
@@ -310,16 +312,15 @@ static NSString * const reuseIdentifier = @"Cell";
         cell = [self.nurseTableView dequeueReusableCellWithIdentifier:cellid];
         
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.backgroundColor = [UIColor colorWithRGBHex:0xfafafa];
-            
+            cell = [[NSVNurseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
         }
+        
+        NSVNurseTableViewCell* tableCell = (NSVNurseTableViewCell*)cell;
         
         NSArray* nurses = self.nurses[indexPath.section][@"nurses"];
         NSVNurse* nurse = nurses[indexPath.row];
         
-        cell.textLabel.text = nurse.name;
+        tableCell.nameLabel.text = nurse.name;
     }
     else if (tableView == self.projectManagementTableView){
         NSString* cellid = @"project_table_cell";
@@ -345,6 +346,18 @@ static NSString * const reuseIdentifier = @"Cell";
     return cell;
 }
 
+- (nullable NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
+    NSMutableArray* indexArray = [NSMutableArray array];
+    
+    if (tableView == self.nurseTableView) {
+        for (NSDictionary* info in self.nurses) {
+            [indexArray addObject:info[@"pinyin"]];
+        }
+    }
+    
+    return indexArray;
+}
+
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
@@ -356,49 +369,82 @@ static NSString * const reuseIdentifier = @"Cell";
         if (section == 0) {
             height = 4.0f;
         }
+    }else if (tableView == self.nurseTableView){
+        height = 25.0f;
     }
     
     return height;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 49.0f;
+    
+    CGFloat height = 0.0f;
+    
+    if (tableView == self.projectTableView) {
+        height = 49.0f;
+    }else if(tableView == self.projectManagementTableView){
+        height = 49.0f;
+    }else if(tableView == self.historyTableView){
+        height = 49.0f;
+    }else if (tableView == self.issueTableView){
+        height = 60.0f;
+    }else if (tableView == self.nurseTableView){
+        height = 45.0f;
+    }
+    
+    return height;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+
+    UIView* bgView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    
-    
-    UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, NSVProjectHeaderHeight)];
-    bgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
-    
-    if (section == 0) {
-        bgView.frame = CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, 4.0f);
+    if (tableView == self.projectTableView) {
+        bgView.frame = CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, NSVProjectHeaderHeight);
+        bgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
         
-    }else{
-        UIView* titleLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 4.0f, NSVLeftAreaWidth, 25.0f)];
-        titleLabelBgView.backgroundColor = [UIColor colorWithRGBHex:0xd6dbd2];
-        
-        [bgView addSubview:titleLabelBgView];
-        
-        NSString* title = nil;
-        
-        if (tableView == self.projectTableView) {
-            if (section == 0) {
+        if (section == 0) {
+            bgView.frame = CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, 4.0f);
+            
+        }else{
+            UIView* titleLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 4.0f, NSVLeftAreaWidth, 25.0f)];
+            titleLabelBgView.backgroundColor = [UIColor colorWithRGBHex:0xd6dbd2];
+            
+            [bgView addSubview:titleLabelBgView];
+            
+            NSString* title = nil;
+            
+            if (tableView == self.projectTableView) {
+                if (section == 0) {
+                }
+                else if (section <= self.assessment.classifies.count){
+                    NSVClassify* classify = self.assessment.classifies[section - 1];
+                    title = classify.name;
+                }
             }
-            else if (section <= self.assessment.classifies.count){
-                NSVClassify* classify = self.assessment.classifies[section - 1];
-                title = classify.name;
-            }
+            
+            UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 4.0f, NSVLeftAreaWidth - 2.0f * 15.0f, 25.0f)];
+            titleLabel.text = title;
+            titleLabel.font = [UIFont systemFontOfSize:13.0f];
+            titleLabel.textColor = [UIColor colorWithRGBHex:0x747474];
+            
+            [bgView addSubview:titleLabel];
         }
+    }else if(tableView == self.nurseTableView){
         
-        UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 4.0f, NSVLeftAreaWidth - 2.0f * 15.0f, 25.0f)];
-        titleLabel.text = title;
+        bgView.frame = CGRectMake(0.0f, 0.0f, NSVNurseListWidth, 45.0f);
+        bgView.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+        
+        NSDictionary* info = self.nurses[section];
+        
+        UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 0.0f, NSVNurseListWidth - 2.0f * 20.0f, 25.0f)];
+        titleLabel.text = info[@"pinyin"];
         titleLabel.font = [UIFont systemFontOfSize:13.0f];
-        titleLabel.textColor = [UIColor colorWithRGBHex:0x747474];
+        titleLabel.textColor = [UIColor colorWithRGBHex:0x53993f];
         
         [bgView addSubview:titleLabel];
     }
+
     
     return bgView;
 }
@@ -412,10 +458,34 @@ static NSString * const reuseIdentifier = @"Cell";
         }
         
 
-    }
-    else if (tableView == self.issueTableView){
+    }else if (tableView == self.issueTableView){
             self.lastSelectedIssueIndexPath = indexPath;
+    }else if (tableView == self.nurseTableView){
+        NSArray* selected = [self.nurseTableView indexPathsForSelectedRows];
+        
+        if (selected.count == 0) {
+            self.issueRecordCommitButton.enabled = NO;
+            self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0xd7d7d5];
+        }else{
+            self.issueRecordCommitButton.enabled = YES;
+            self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0x71a960];
+        }
     }
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView == self.nurseTableView){
+        NSArray* selected = [self.nurseTableView indexPathsForSelectedRows];
+        
+        if (selected.count == 0) {
+            self.issueRecordCommitButton.enabled = NO;
+            self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0xd7d7d5];
+        }else{
+            self.issueRecordCommitButton.enabled = YES;
+            self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0x71a960];
+        }
+    }
+
 }
 
 #pragma mark - button clicked
@@ -728,6 +798,7 @@ static NSString * const reuseIdentifier = @"Cell";
     self.nurseTableView.delegate = self;
     self.nurseTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.nurseTableView.backgroundColor = [UIColor colorWithRGBHex:0xfafafa];
+    self.nurseTableView.allowsMultipleSelection = YES;
     [self.issueRecordBgView addSubview:self.nurseTableView];
     
     // 提交按钮
@@ -738,8 +809,11 @@ static NSString * const reuseIdentifier = @"Cell";
                                                     NSVNurseListWidth,
                                                     NSVIssueRecordCommitButtonHeight);
     [self.issueRecordCommitButton setTitle:@"提    交" forState:UIControlStateNormal];
-    [self.issueRecordCommitButton setTitleColor:[UIColor colorWithRGBHex:0x747474] forState:UIControlStateNormal];
+    [self.issueRecordCommitButton setTitleColor:[UIColor colorWithRGBHex:0x747474] forState:UIControlStateDisabled];
+    [self.issueRecordCommitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
     self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0xd7d7d5];
+    self.issueRecordCommitButton.enabled = NO;
     [self.issueRecordBgView addSubview:self.issueRecordCommitButton];
     
     // 分隔线
@@ -776,9 +850,11 @@ static NSString * const reuseIdentifier = @"Cell";
         if (ns.count > 0) {
             d[@"pinyin"] = py;
             d[@"nurses"] = ns;
+            
+            [self.nurses addObject:d];
         }
     }
     
-    
+    [self.nurseTableView reloadData];
 }
 @end
