@@ -499,6 +499,33 @@ static NSString * const reuseIdentifier = @"Cell";
             self.issueRecordCommitButton.enabled = YES;
             self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0x71a960];
         }
+    }else if(tableView == self.issueSearchResultTableView){
+        NSVIssue* issueSelected = self.issueSearchResultArray[indexPath.row];
+        
+        BOOL isFound = NO;
+        
+        NSInteger classifyIndex = 0;
+        NSInteger projectIndex = 0;
+        NSInteger issueIndex = 0;
+        
+        for (NSVClassify* classify in self.assessment.classifies) {
+            projectIndex = 0;
+            for (NSVProject* project in classify.projects) {
+                issueIndex = 0;
+                for (NSVIssue* issue in project.issues) {
+                    
+                    if (issue == issueSelected) {
+                        // 选择
+                    }
+                    
+                    issueIndex++;
+                }
+                
+                projectIndex++;
+            }
+            
+            classifyIndex++;
+        }
     }
 }
 
