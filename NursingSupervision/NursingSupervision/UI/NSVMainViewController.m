@@ -1011,6 +1011,10 @@ static NSString * const reuseIdentifier = @"Cell";
     return result;
 }
 
+-(void) selectProjectAndIssue:(NSVIssue*)issue{
+    
+}
+
 #pragma mark - UISearchBarDelegate
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     [self.issueSearchBar resignFirstResponder];
