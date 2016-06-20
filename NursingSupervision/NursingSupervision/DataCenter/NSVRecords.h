@@ -11,6 +11,6 @@
 
 @interface NSVRecords : JSONModel
 
-@property (nonatomic, strong) NSArray<NSVRecord>* records;
+@property (nonatomic, strong) NSMutableArray<NSVRecord>* records;
 
 @end

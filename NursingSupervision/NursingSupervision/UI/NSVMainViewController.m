@@ -17,6 +17,8 @@
 #import "NSVNurseTableViewCell.h"
 #import "NSVIssueRecordTableViewCell.h"
 
+#import "SIAlertView.h"
+
 
 #define NSVLeftAreaWidth 225.0f
 
@@ -80,6 +82,10 @@ static NSString * const reuseIdentifier = @"Cell";
 @property (nonatomic, strong) UIView* maskGrayRightView;
 @property (nonatomic, strong) UITableView* issueSearchResultTableView;
 
+// 问题和人员管理
+@property (nonatomic, strong) UIView* projectAndNurseManagementBgView;
+
+
 
 
 
@@ -87,8 +93,8 @@ static NSString * const reuseIdentifier = @"Cell";
 @property (nonatomic, strong) NSMutableArray* nurses;
 @property (nonatomic, strong) NSMutableArray* issueSearchResultArray;
 
-@property (nonatomic, copy) NSIndexPath* lastSelectedProjectIndexPath;
-@property (nonatomic, copy) NSIndexPath* lastSelectedIssueIndexPath;
+@property (nonatomic, copy) NSIndexPath* selectedProjectIndexPath;
+@property (nonatomic, copy) NSVIssue* selectedIssue;
 
 
 @property (nonatomic, assign) CGFloat width;
@@ -139,6 +145,9 @@ static NSString * const reuseIdentifier = @"Cell";
     
     // ------------------------ 右侧栏 ------------------------ //
     
+    // 问题和人员管理
+    [self initProjectAndNurseManagementOfRightSide];
+    
     // 问题记录
     [self initIssueRecordOfRightSide];
     
@@ -149,9 +158,7 @@ static NSString * const reuseIdentifier = @"Cell";
     self.assessment = [NSVDataCenter defaultCenter].assessment;
     [self refreshNursesData];
     
-    self.lastSelectedProjectIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    
-    [self.projectTableView selectRowAtIndexPath:self.lastSelectedProjectIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self.projectTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
     
 }
 
@@ -159,36 +166,6 @@ static NSString * const reuseIdentifier = @"Cell";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-//- (void)viewWillLayoutSubviews{
-//    [super viewWillLayoutSubviews];
-//    
-//    NSLog(@"project bg view frame: %@, issue: %@, nurse: %@", NSStringFromCGRect(self.projectBgView.frame), NSStringFromCGRect(self.issueBgView.frame), NSStringFromCGRect(self.nurseBgView.frame));
-//    
-//    self.projectLabel.frame = CGRectMake(0.0f, 0.0f, self.projectBgView.frame.size.width, 40.0f);
-//    self.issueLabel.frame = CGRectMake(0.0f, 0.0f, self.issueBgView.frame.size.width, 40.0f);
-//    self.nurseLabel.frame = CGRectMake(0.0f, 0.0f, self.nurseBgView.frame.size.width, 40.0f);
-//    
-//    NSLog(@"project label view frame: %@, issue: %@, nurse: %@", NSStringFromCGRect(self.projectLabel.frame), NSStringFromCGRect(self.issueLabel.frame), NSStringFromCGRect(self.nurseLabel.frame));
-//    
-//    self.projectTableView.frame = CGRectMake(0.0f,
-//                                             self.projectLabel.frame.origin.y + self.projectLabel.frame.size.height,
-//                                             self.projectBgView.frame.size.width,
-//                                             self.projectBgView.frame.size.height - self.projectLabel.frame.size.height);
-//    
-//    self.issueTableView.frame = CGRectMake(0.0f,
-//                                           self.issueLabel.frame.origin.y + self.issueLabel.frame.size.height,
-//                                           self.issueBgView.frame.size.width,
-//                                           self.issueBgView.frame.size.height - self.issueLabel.frame.size.height);
-//    
-//    self.nurseTableView.frame = CGRectMake(0.0f,
-//                                           self.nurseLabel.frame.origin.y + self.nurseLabel.frame.size.height,
-//                                           self.nurseBgView.frame.size.width,
-//                                           self.nurseBgView.frame.size.height - self.nurseLabel.frame.size.height);
-//    
-//    NSLog(@"project table view frame: %@, issue: %@, nurse: %@", NSStringFromCGRect(self.projectTableView.frame), NSStringFromCGRect(self.issueTableView.frame), NSStringFromCGRect(self.nurseTableView.frame));
-//    
-//}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -226,7 +203,7 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     }
     else if (tableView == self.issueTableView){
-        if (self.lastSelectedProjectIndexPath.section == 0) {
+        if (self.selectedProjectIndexPath.section == 0) {
             for (NSVClassify* classify in self.assessment.classifies) {
                 for (NSVProject* project in classify.projects) {
                     count += project.issues.count;
@@ -234,8 +211,8 @@ static NSString * const reuseIdentifier = @"Cell";
             }
         }
         else{
-            NSVClassify* classify = self.assessment.classifies[self.lastSelectedProjectIndexPath.section - 1];
-            NSVProject* project = classify.projects[self.lastSelectedProjectIndexPath.row];
+            NSVClassify* classify = self.assessment.classifies[self.selectedProjectIndexPath.section - 1];
+            NSVProject* project = classify.projects[self.selectedProjectIndexPath.row];
             
             count = project.issues.count;
         }
@@ -294,7 +271,7 @@ static NSString * const reuseIdentifier = @"Cell";
         
         NSVIssueRecordTableViewCell* tableCell = (NSVIssueRecordTableViewCell*)cell;
 
-        if (self.lastSelectedProjectIndexPath.section == 0) {
+        if (self.selectedProjectIndexPath.section == 0) {
             NSMutableArray* issueArray = [NSMutableArray array];
             for (NSVClassify* classify in self.assessment.classifies) {
                 for (NSVProject* project in classify.projects) {
@@ -309,8 +286,8 @@ static NSString * const reuseIdentifier = @"Cell";
         }
         else
         {
-            NSVClassify* classify = self.assessment.classifies[self.lastSelectedProjectIndexPath.section - 1];
-            NSVProject* project = classify.projects[self.lastSelectedProjectIndexPath.row];
+            NSVClassify* classify = self.assessment.classifies[self.selectedProjectIndexPath.section - 1];
+            NSVProject* project = classify.projects[self.selectedProjectIndexPath.row];
             NSVIssue* issue = project.issues[indexPath.row];
             
             tableCell.issueLabel.text = issue.name;
@@ -398,6 +375,8 @@ static NSString * const reuseIdentifier = @"Cell";
         height = 25.0f;
     }else if (tableView == self.issueSearchResultTableView){
         height = 0.0f;
+    }else if (tableView == self.projectManagementTableView){
+        height = 4.0f;
     }
     
     return height;
@@ -472,6 +451,10 @@ static NSString * const reuseIdentifier = @"Cell";
         titleLabel.textColor = [UIColor colorWithRGBHex:0x53993f];
         
         [bgView addSubview:titleLabel];
+    }else if (tableView == self.projectManagementTableView){
+        bgView.frame = CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, 4.0f);
+        bgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+        
     }
 
     
@@ -481,14 +464,40 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.projectTableView) {
         
-        if (indexPath != self.lastSelectedProjectIndexPath) {
-            self.lastSelectedProjectIndexPath = indexPath;
+        if (indexPath != self.selectedProjectIndexPath) {
+            self.selectedProjectIndexPath = indexPath;
             [self.issueTableView reloadData];
         }
-        
-
     }else if (tableView == self.issueTableView){
-            self.lastSelectedIssueIndexPath = indexPath;
+        
+        NSVIssue* issue = nil;
+        
+        if (self.selectedProjectIndexPath.section == 0) {
+            NSMutableArray* issueArray = [NSMutableArray array];
+            for (NSVClassify* classify in self.assessment.classifies) {
+                for (NSVProject* project in classify.projects) {
+                    [issueArray addObjectsFromArray:project.issues];
+                }
+            }
+            
+            issue = issueArray[indexPath.row];
+            
+        }
+        else
+        {
+            NSVClassify* classify = self.assessment.classifies[self.selectedProjectIndexPath.section - 1];
+            NSVProject* project = classify.projects[self.selectedProjectIndexPath.row];
+            issue = project.issues[indexPath.row];
+        }
+        
+        
+        if(self.selectedIssue != issue){
+            self.selectedIssue = issue;
+            [self.nurseTableView reloadData];
+            self.issueRecordCommitButton.enabled = NO;
+            self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0xd7d7d5];
+        }
+        
     }else if (tableView == self.nurseTableView){
         NSArray* selected = [self.nurseTableView indexPathsForSelectedRows];
         
@@ -502,30 +511,8 @@ static NSString * const reuseIdentifier = @"Cell";
     }else if(tableView == self.issueSearchResultTableView){
         NSVIssue* issueSelected = self.issueSearchResultArray[indexPath.row];
         
-        BOOL isFound = NO;
-        
-        NSInteger classifyIndex = 0;
-        NSInteger projectIndex = 0;
-        NSInteger issueIndex = 0;
-        
-        for (NSVClassify* classify in self.assessment.classifies) {
-            projectIndex = 0;
-            for (NSVProject* project in classify.projects) {
-                issueIndex = 0;
-                for (NSVIssue* issue in project.issues) {
-                    
-                    if (issue == issueSelected) {
-                        // 选择
-                    }
-                    
-                    issueIndex++;
-                }
-                
-                projectIndex++;
-            }
-            
-            classifyIndex++;
-        }
+        [self selectProjectAndIssue:issueSelected];
+        [self searchBarCancelButtonClicked:self.issueSearchBar];
     }
 }
 
@@ -546,11 +533,21 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark - button clicked
 -(void) projectSwitchButtonClicked:(UIButton*)button{
+    
+
+    
+    
     CGFloat selfHeight = self.view.frame.size.height;
     
     CGFloat delta = selfHeight - 3.0f * NSVProjectLabelHeight - StatusBarHeight;
     
     if (self.projectBgView.frame.size.height <= NSVProjectLabelHeight) {
+        // 右侧视图
+//        CGRect issueRecordBgViewFrame = self.issueRecordBgView.frame;
+//        issueRecordBgViewFrame.origin.y = self.height;
+//        self.issueRecordBgView.frame = issueRecordBgViewFrame;
+        [self.view bringSubviewToFront:self.issueRecordBgView];
+        
         __weak NSVMainViewController* blockSelf = self;
         
         [UIView animateWithDuration:0.3f animations:^{
@@ -571,16 +568,35 @@ static NSString * const reuseIdentifier = @"Cell";
             blockSelf.projectBgView.frame = projectBgViewFrame;
             blockSelf.projectManagementBgView.frame = projectManagementBgViewFrame;
             blockSelf.historyBgView.frame = historybgViewFrame;
+            
+//            // 右侧视图
+//            CGRect bgViewFrame = self.issueRecordBgView.frame;
+//            bgViewFrame.origin.y = StatusBarHeight;
+//            
+//            self.issueRecordBgView.frame = bgViewFrame;
+            
         }];
     }
+    
+
 }
 
 -(void) projectManageSwitchButtonClicked:(UIButton*)button{
+    
+
+    
     CGFloat selfHeight = self.view.frame.size.height;
     
     CGFloat delta = selfHeight - 3.0f * NSVProjectLabelHeight - StatusBarHeight;
     
     if (self.projectManagementBgView.frame.size.height <= NSVProjectLabelHeight) {
+        
+//        // 右侧视图
+//        CGRect manageBgViewFrame = self.projectAndNurseManagementBgView.frame;
+//        manageBgViewFrame.origin.y = self.height;
+//        self.projectAndNurseManagementBgView.frame = manageBgViewFrame;
+        [self.view bringSubviewToFront:self.projectAndNurseManagementBgView];
+        
         __weak NSVMainViewController* blockSelf = self;
         
         [UIView animateWithDuration:0.3f animations:^{
@@ -602,6 +618,13 @@ static NSString * const reuseIdentifier = @"Cell";
             blockSelf.projectBgView.frame = projectBgViewFrame;
             blockSelf.projectManagementBgView.frame = projectManagementBgViewFrame;
             blockSelf.historyBgView.frame = historybgViewFrame;
+            
+            
+//            // 右侧视图
+//            CGRect bgViewFrame = self.projectAndNurseManagementBgView.frame;
+//            bgViewFrame.origin.y = StatusBarHeight;
+//            
+//            self.projectAndNurseManagementBgView.frame = bgViewFrame;
             
         }];
     }
@@ -634,6 +657,31 @@ static NSString * const reuseIdentifier = @"Cell";
             blockSelf.historyBgView.frame = historybgViewFrame;
         }];
     }
+}
+
+-(void) issueRecordCommitButtonClicked:(UIButton*)button{
+    if (self.selectedIssue == nil) {
+        [self showMessageBox:@"请先选择一个问题。"];
+        return;
+    }
+    
+    NSArray* selectedNurseCells = [self.nurseTableView indexPathsForSelectedRows];
+    
+    for (NSIndexPath* index in selectedNurseCells) {
+        NSVNurse* n = self.nurses[index.row];
+        
+        NSVRecord* record = [[NSVRecord alloc] initWithNuser:n issue:self.selectedIssue];
+        [[NSVDataCenter defaultCenter] addNewRecord:record];
+    }
+    
+    [self.nurseTableView reloadData];
+    
+    self.issueRecordCommitButton.enabled = NO;
+    self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0xd7d7d5];
+    
+    [self showMessageBox:@"成功记录！"];
+    
+    
 }
 
 #pragma mark - 初始化界面
@@ -737,6 +785,8 @@ static NSString * const reuseIdentifier = @"Cell";
     self.projectManagementTableView.delegate = self;
     self.projectManagementTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
     self.projectManagementTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.projectManagementTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
     
     [self.projectManagementBgView addSubview:self.projectManagementTableView];
     
@@ -873,6 +923,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0xd7d7d5];
     self.issueRecordCommitButton.enabled = NO;
+    [self.issueRecordCommitButton addTarget:self action:@selector(issueRecordCommitButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.issueRecordBgView addSubview:self.issueRecordCommitButton];
     
     // 分隔线
@@ -904,6 +955,13 @@ static NSString * const reuseIdentifier = @"Cell";
     self.issueSearchResultTableView.delegate = self;
     self.issueSearchResultTableView.dataSource = self;
     self.issueSearchResultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+}
+
+-(void) initProjectAndNurseManagementOfRightSide{
+    self.projectAndNurseManagementBgView = [[UIView alloc] initWithFrame:CGRectMake(NSVLeftAreaWidth, StatusBarHeight, self.width - NSVLeftAreaWidth, self.height - StatusBarHeight)];
+    self.projectAndNurseManagementBgView.backgroundColor = [UIColor blueColor];
+    
+    [self.view addSubview:self.projectAndNurseManagementBgView];
 }
 
 #pragma mark - 私有函数
@@ -1012,7 +1070,50 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 -(void) selectProjectAndIssue:(NSVIssue*)issue{
+    NSInteger classifyIndex = 1;
+    NSInteger projectIndex = 0;
+    NSInteger issueIndex = 0;
     
+    for (NSVClassify* classify in self.assessment.classifies) {
+        projectIndex = 0;
+        for (NSVProject* project in classify.projects) {
+            issueIndex = 0;
+            for (NSVIssue* i in project.issues) {
+                
+                if (i == issue) {
+                    NSIndexPath* projectIndexPath = [NSIndexPath indexPathForRow:projectIndex inSection:classifyIndex];
+                    
+                    [self.projectTableView selectRowAtIndexPath:projectIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+                    
+                    [self tableView:self.projectTableView didSelectRowAtIndexPath:projectIndexPath];
+                    
+                    
+                    NSIndexPath* issueIndexPath = [NSIndexPath indexPathForRow:issueIndex inSection:0];
+                    
+                    [self.issueTableView selectRowAtIndexPath:issueIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+                    
+                    [self tableView:self.issueTableView didSelectRowAtIndexPath:issueIndexPath];
+                    
+                    return;
+                }
+                
+                issueIndex++;
+            }
+            
+            projectIndex++;
+        }
+        
+        classifyIndex++;
+    }
+}
+
+-(void) showMessageBox:(NSString*)message{
+    UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@""
+                                                   message:message
+                                                  delegate:nil
+                                         cancelButtonTitle:@"好的"
+                                         otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - UISearchBarDelegate

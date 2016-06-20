@@ -15,4 +15,14 @@
     return @"recordId";
 }
 
+-(nonnull instancetype) initWithNuser:(nonnull NSVNurse*) nurse issue:(nonnull NSVIssue*)issue{
+    self = [super init];
+    if (self != nil) {
+        self.nurse = nurse;
+        self.issue = issue;
+        self.recordDate = [NSDate date];
+    }
+    return self;
+}
+
 @end

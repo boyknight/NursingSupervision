@@ -21,7 +21,11 @@
 
 @property (nonatomic, assign) NSInteger recordId;
 
-@property (nonatomic, strong) NSVNurse* nurse;
-@property (nonatomic, strong) NSVIssue* issue;
+@property (nonatomic, strong, nonnull) NSVNurse* nurse;
+@property (nonatomic, strong, nonnull) NSVIssue* issue;
+@property (nonnull, strong, nonatomic) NSDate* recordDate;
+
+
+-(nonnull instancetype) initWithNuser:(nonnull NSVNurse*) nurse issue:(nonnull NSVIssue*)issue;
 
 @end

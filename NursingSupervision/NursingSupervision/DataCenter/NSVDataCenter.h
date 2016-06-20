@@ -19,4 +19,7 @@
 
 +(_Nonnull instancetype) defaultCenter;
 
+
+-(void) addNewRecord:(nonnull NSVRecord*)record;
+
 @end

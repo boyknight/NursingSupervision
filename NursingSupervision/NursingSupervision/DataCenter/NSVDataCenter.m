@@ -182,5 +182,38 @@
     return self;
 }
 
+-(void) addNewRecord:(nonnull NSVRecord*)record{
+    if (self.records.records == nil) {
+        self.records.records = [NSMutableArray<NSVRecord> array];
+    }
+    
+    [self.records.records addObject:record];
+    
+    NSString* jsonString = [self.records toJSONString];
+    [jsonString writeToFile:self.recordsPath
+                 atomically:YES
+                   encoding:NSUTF8StringEncoding
+                      error:nil];
+}
+
+-(void) removeRecord:(nonnull NSVRecord*)record{
+    if (self.records.records == nil) {
+        return;
+    }
+    
+    for (NSVRecord* r in self.records.records) {
+        if ([r compare:record] == NSOrderedSame) {
+            [self.records.records removeObject:r];
+            break;
+        }
+    }
+    
+    NSString* jsonString = [self.records toJSONString];
+    [jsonString writeToFile:self.recordsPath
+                 atomically:YES
+                   encoding:NSUTF8StringEncoding
+                      error:nil];
+}
+
 
 @end
