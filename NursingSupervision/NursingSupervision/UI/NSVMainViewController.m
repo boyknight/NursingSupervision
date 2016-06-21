@@ -16,6 +16,7 @@
 #import "NSVProjectItemTableViewCell.h"
 #import "NSVNurseTableViewCell.h"
 #import "NSVIssueRecordTableViewCell.h"
+#import "NSVManagementEditTableViewCell.h"
 
 #import "SIAlertView.h"
 
@@ -39,7 +40,11 @@
 static NSString * const reuseIdentifier = @"Cell";
 
 
-
+typedef enum{
+    NSVClassifyLevel = 0,
+    NSVProjectLevel = 1,
+    NSVIssueLevel = 2
+} NSVLevel;
 
 
 @interface NSVMainViewController ()
@@ -84,6 +89,13 @@ static NSString * const reuseIdentifier = @"Cell";
 
 // 问题和人员管理
 @property (nonatomic, strong) UIView* projectAndNurseManagementBgView;
+@property (nonatomic, strong) UIView* panMgmNavView;
+@property (nonatomic, strong) UIButton* panMgmNavBackButton;
+@property (nonatomic, strong) UILabel* panMgmNavTitleLabel;
+@property (nonatomic, strong) UIButton* panMgmNavEditButton;
+@property (nonatomic, strong) UITableView* panMgmProjectTableView;
+@property (nonatomic, strong) UITableView* panMgmNurseTableView;
+@property (nonatomic, assign) NSVLevel panMgmLevel;
 
 
 
@@ -185,6 +197,8 @@ static NSString * const reuseIdentifier = @"Cell";
         count = 1;
     }else if(tableView == self.issueSearchResultTableView){
         count = 1;
+    }else if (tableView == self.panMgmProjectTableView){
+        count = 1;
     }
     
     return count;
@@ -223,6 +237,8 @@ static NSString * const reuseIdentifier = @"Cell";
         count = 2;
     }else if (tableView == self.issueSearchResultTableView){
         count = self.issueSearchResultArray.count;
+    }else if (tableView == self.panMgmProjectTableView){
+        count = self.assessment.classifies.count;
     }
     
     return count;
@@ -343,6 +359,22 @@ static NSString * const reuseIdentifier = @"Cell";
         NSVIssue* issue = self.issueSearchResultArray[indexPath.row];
         
         tableCell.issueLabel.text = issue.name;
+    }else if (tableView == self.panMgmProjectTableView) {
+        NSString* cellid = @"issue_edit_table_cell";
+        
+        cell = [self.panMgmProjectTableView dequeueReusableCellWithIdentifier:cellid];
+        
+        if (cell == nil) {
+            cell = [[NSVManagementEditTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        
+        NSVManagementEditTableViewCell* tableCell = (NSVManagementEditTableViewCell*)cell;
+//        tableCell.isSeperatorOnTop = YES;
+//        
+//        NSVIssue* issue = self.issueSearchResultArray[indexPath.row];
+//        
+//        tableCell.issueLabel.text = issue.name;
     }
     
     return cell;
@@ -359,6 +391,38 @@ static NSString * const reuseIdentifier = @"Cell";
     
     return indexArray;
 }
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath{
+    BOOL canMove = NO;
+    
+    if (tableView == self.panMgmProjectTableView) {
+        canMove = YES;
+    }
+    
+    return canMove;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
+    if (tableView == self.panMgmProjectTableView) {
+        
+    }
+}
+- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCellAccessoryType type = UITableViewCellAccessoryNone;
+    if (tableView == self.panMgmProjectTableView) {
+        type = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    return type;
+}
+
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
+    if (tableView == self.panMgmProjectTableView) {
+        NSLog(@"index path: %d, %d", indexPath.section, indexPath.row);
+    }
+}
+
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -397,6 +461,8 @@ static NSString * const reuseIdentifier = @"Cell";
     }else if (tableView == self.nurseTableView){
         height = 45.0f;
     }else if (tableView == self.issueSearchResultTableView){
+        height = 60.0f;
+    }else if (tableView == self.panMgmProjectTableView){
         height = 60.0f;
     }
     
@@ -513,6 +579,8 @@ static NSString * const reuseIdentifier = @"Cell";
         
         [self selectProjectAndIssue:issueSelected];
         [self searchBarCancelButtonClicked:self.issueSearchBar];
+    }else if (tableView == self.panMgmProjectTableView){
+        NSLog(@"select cell index path: %d, %d", indexPath.section, indexPath.row);
     }
 }
 
@@ -530,6 +598,17 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 
 }
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCellEditingStyle style = UITableViewCellEditingStyleNone;
+    
+    if (tableView == self.panMgmProjectTableView) {
+        style = UITableViewCellEditingStyleDelete;
+    }
+    
+    return style;
+}
+
 
 #pragma mark - button clicked
 -(void) projectSwitchButtonClicked:(UIButton*)button{
@@ -682,6 +761,16 @@ static NSString * const reuseIdentifier = @"Cell";
     [self showMessageBox:@"成功记录！"];
     
     
+}
+
+-(void) panMgmNavEditButtonClicked:(UIButton*)button{
+    if (self.panMgmProjectTableView.isEditing) {
+        [button setTitle:@"编辑" forState:UIControlStateNormal];
+        [self.panMgmProjectTableView setEditing:NO animated:YES];
+    }else{
+        [button setTitle:@"取消编辑" forState:UIControlStateNormal];
+        [self.panMgmProjectTableView setEditing:YES animated:YES];
+    }
 }
 
 #pragma mark - 初始化界面
@@ -959,9 +1048,65 @@ static NSString * const reuseIdentifier = @"Cell";
 
 -(void) initProjectAndNurseManagementOfRightSide{
     self.projectAndNurseManagementBgView = [[UIView alloc] initWithFrame:CGRectMake(NSVLeftAreaWidth, StatusBarHeight, self.width - NSVLeftAreaWidth, self.height - StatusBarHeight)];
-    self.projectAndNurseManagementBgView.backgroundColor = [UIColor blueColor];
+    self.projectAndNurseManagementBgView.backgroundColor = [UIColor whiteColor];
     
     [self.view addSubview:self.projectAndNurseManagementBgView];
+    
+    // 顶部导航栏
+    self.panMgmNavView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.width - NSVLeftAreaWidth, 44.0f)];
+    self.panMgmNavView.backgroundColor = [UIColor whiteColor];
+    
+    [self.projectAndNurseManagementBgView addSubview:self.panMgmNavView];
+    
+    // 顶部导航分隔线
+    UIView* sep = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 43.0f, self.projectAndNurseManagementBgView.frame.size.width, 1.0f)];
+    
+    sep.backgroundColor = [UIColor colorWithRGBHex:0xc0c0c0];
+    [self.projectAndNurseManagementBgView addSubview:sep];
+    
+    
+    // 返回按钮
+    self.panMgmNavBackButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.panMgmNavBackButton.frame = CGRectMake(25.0f, 0.0f, 40.0f, 44.0f);
+    [self.panMgmNavBackButton setTitle:@"返回" forState:UIControlStateNormal];
+    self.panMgmNavBackButton.enabled = NO;
+    
+    [self.panMgmNavView addSubview:self.panMgmNavBackButton];
+    
+    // 编辑按钮
+    self.panMgmNavEditButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.panMgmNavEditButton.frame = CGRectMake(self.panMgmNavView.frame.size.width - 85.0f, 0.0f, 60.0f, 44.0f);
+    [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
+    self.panMgmNavEditButton.enabled = YES;
+    self.panMgmNavEditButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    [self.panMgmNavEditButton addTarget:self action:@selector(panMgmNavEditButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.panMgmNavView addSubview:self.panMgmNavEditButton];
+    self.panMgmNavEditButton.alpha = 0.0f;
+    
+    // 导航栏 标题
+    self.panMgmNavTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.panMgmNavBackButton.frame.origin.x + self.panMgmNavBackButton.frame.size.width + 20.0f,
+                                                                         0.0f,
+                                                                         self.width - NSVLeftAreaWidth - 2.0f * (self.panMgmNavBackButton.frame.origin.x + self.panMgmNavBackButton.frame.size.width + 20.0f),
+                                                                         44.0f)];
+    self.panMgmNavTitleLabel.text = @"标准";
+    self.panMgmNavTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    self.panMgmNavTitleLabel.textAlignment = NSTextAlignmentCenter;
+    self.panMgmNavTitleLabel.textColor = [UIColor colorWithRGBHex:0x36363d];
+    [self.panMgmNavView addSubview:self.panMgmNavTitleLabel];
+    
+    // 项目管理列表
+    self.panMgmProjectTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 44.0f, self.width - NSVLeftAreaWidth, self.height - 44.0f - StatusBarHeight) style:UITableViewStylePlain];
+    
+    self.panMgmProjectTableView.delegate = self;
+    self.panMgmProjectTableView.dataSource =self;
+    self.panMgmProjectTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.panMgmProjectTableView setEditing:YES animated:YES];
+    
+    self.panMgmProjectTableView.allowsSelectionDuringEditing = YES;
+    
+    [self.projectAndNurseManagementBgView addSubview:self.panMgmProjectTableView];
+    
+    self.panMgmLevel = NSVClassifyLevel;
 }
 
 #pragma mark - 私有函数
