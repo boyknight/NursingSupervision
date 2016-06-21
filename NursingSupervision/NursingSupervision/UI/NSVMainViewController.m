@@ -369,7 +369,18 @@ typedef enum{
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
         
+        
+        
         NSVManagementEditTableViewCell* tableCell = (NSVManagementEditTableViewCell*)cell;
+        
+        if (indexPath.row % 2 == 0) {
+            tableCell.score = [NSNumber numberWithFloat:0.5f];
+        }
+        
+        NSVClassify* c = self.assessment.classifies[indexPath.row];
+        
+        tableCell.name = c.name;
+        
 //        tableCell.isSeperatorOnTop = YES;
 //        
 //        NSVIssue* issue = self.issueSearchResultArray[indexPath.row];
@@ -407,14 +418,15 @@ typedef enum{
         
     }
 }
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCellAccessoryType type = UITableViewCellAccessoryNone;
-    if (tableView == self.panMgmProjectTableView) {
-        type = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    
-    return type;
-}
+
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath{
+//    UITableViewCellAccessoryType type = UITableViewCellAccessoryNone;
+//    if (tableView == self.panMgmProjectTableView) {
+//        type = UITableViewCellAccessoryDisclosureIndicator;
+//    }
+//    
+//    return type;
+//}
 
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
@@ -603,7 +615,7 @@ typedef enum{
     UITableViewCellEditingStyle style = UITableViewCellEditingStyleNone;
     
     if (tableView == self.panMgmProjectTableView) {
-        style = UITableViewCellEditingStyleDelete;
+        style = UITableViewCellEditingStyleNone;
     }
     
     return style;
@@ -1081,7 +1093,7 @@ typedef enum{
     self.panMgmNavEditButton.titleLabel.textAlignment = NSTextAlignmentRight;
     [self.panMgmNavEditButton addTarget:self action:@selector(panMgmNavEditButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.panMgmNavView addSubview:self.panMgmNavEditButton];
-    self.panMgmNavEditButton.alpha = 0.0f;
+//    self.panMgmNavEditButton.alpha = 0.0f;
     
     // 导航栏 标题
     self.panMgmNavTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.panMgmNavBackButton.frame.origin.x + self.panMgmNavBackButton.frame.size.width + 20.0f,
@@ -1100,7 +1112,7 @@ typedef enum{
     self.panMgmProjectTableView.delegate = self;
     self.panMgmProjectTableView.dataSource =self;
     self.panMgmProjectTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.panMgmProjectTableView setEditing:YES animated:YES];
+//    [self.panMgmProjectTableView setEditing:YES animated:YES];
     
     self.panMgmProjectTableView.allowsSelectionDuringEditing = YES;
     

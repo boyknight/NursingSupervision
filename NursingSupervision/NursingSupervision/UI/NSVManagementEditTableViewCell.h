@@ -10,4 +10,7 @@
 
 @interface NSVManagementEditTableViewCell : UITableViewCell
 
+@property (nonatomic, strong) NSNumber* score;
+@property (nonatomic, strong) NSString* name;
+
 @end
