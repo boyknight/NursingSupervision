@@ -18,6 +18,6 @@
 
 @property (nonatomic, strong) NSString* name;
 
-@property (nonatomic, strong) NSArray<NSVIssue>* issues;
+@property (nonatomic, strong) NSMutableArray<NSVIssue>* issues;
 
 @end

@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "NSVClassifyViewController.h"
 #import "NSVIssueViewController.h"
+#import "NSVManagementEditTableViewCell.h"
 
 
 @interface NSVMainViewController : UIViewController <UITableViewDataSource,
 UITableViewDelegate,
-UISearchBarDelegate>
+UISearchBarDelegate,
+NSVManagementEditTableViewCellDelegate>
 
 @end

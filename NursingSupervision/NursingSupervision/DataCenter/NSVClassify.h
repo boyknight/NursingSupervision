@@ -17,6 +17,6 @@
 
 @property (nonatomic, strong) NSString* name;
 
-@property (nonatomic, strong) NSArray<NSVProject>* projects;
+@property (nonatomic, strong) NSMutableArray<NSVProject>* projects;
 
 @end

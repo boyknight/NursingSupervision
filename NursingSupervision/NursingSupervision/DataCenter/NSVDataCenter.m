@@ -59,7 +59,7 @@
             }
             else{
                 _assessment = [[NSVAssessment alloc] init];
-                _assessment.classifies = [NSArray<NSVClassify> array];
+                _assessment.classifies = [NSMutableArray<NSVClassify> array];
             }
             
             NSString* jsonString = [self.assessment toJSONString];
@@ -120,7 +120,7 @@
         // 加载问题记录
         if (![fileManager fileExistsAtPath:self.recordsPath]) {
             _records = [[NSVRecords alloc] init];
-            _records.records = [NSArray<NSVRecord> array];
+            _records.records = [NSMutableArray<NSVRecord> array];
             
             NSString* jsonString = [self.records toJSONString];
             [jsonString writeToFile:self.recordsPath
@@ -175,8 +175,6 @@
 //        }
 //        
 //        [[self.assessment toJSONString] writeToFile:assessmentPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
-        
-        NSLog(@"assessment path: %@", self.assessmentPath);
 
     }
     return self;
@@ -215,5 +213,24 @@
                       error:nil];
 }
 
+-(void) save{
+    NSString* jsonString = [self.assessment toJSONString];
+    [jsonString writeToFile:self.assessmentPath
+                 atomically:YES
+                   encoding:NSUTF8StringEncoding
+                      error:nil];
+    
+    jsonString = [self.nurses toJSONString];
+    [jsonString writeToFile:self.nuresesPath
+                 atomically:YES
+                   encoding:NSUTF8StringEncoding
+                      error:nil];
+    
+    jsonString = [self.records toJSONString];
+    [jsonString writeToFile:self.recordsPath
+                 atomically:YES
+                   encoding:NSUTF8StringEncoding
+                      error:nil];
+}
 
 @end

@@ -12,6 +12,6 @@
 
 @interface NSVAssessment : JSONModel
 
-@property (nonatomic, strong) NSArray<NSVClassify>* classifies;
+@property (nonatomic, strong) NSMutableArray<NSVClassify>* classifies;
 
 @end

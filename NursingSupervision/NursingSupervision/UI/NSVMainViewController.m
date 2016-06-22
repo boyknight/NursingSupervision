@@ -96,12 +96,13 @@ typedef enum{
 @property (nonatomic, strong) UITableView* panMgmProjectTableView;
 @property (nonatomic, strong) UITableView* panMgmNurseTableView;
 @property (nonatomic, assign) NSVLevel panMgmLevel;
+@property (nonatomic, strong) NSIndexPath* panMgnIndexPath;
 
 
 
 
 
-@property (nonatomic, weak) NSVAssessment* assessment;
+//@property (nonatomic, weak) NSVAssessment* assessment;
 @property (nonatomic, strong) NSMutableArray* nurses;
 @property (nonatomic, strong) NSMutableArray* issueSearchResultArray;
 
@@ -167,7 +168,6 @@ typedef enum{
     // ------------------------ 右侧栏 结束 ------------------------ //
 
     
-    self.assessment = [NSVDataCenter defaultCenter].assessment;
     [self refreshNursesData];
     
     [self.projectTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
@@ -202,14 +202,13 @@ typedef enum{
     NSInteger count = 0;
     
     if (tableView == self.projectTableView) {
-        count = self.assessment.classifies.count + 1;
+        count = [NSVDataCenter defaultCenter].assessment.classifies.count + 1;
     }
     else if (tableView == self.issueTableView){
         count = 1;
     }
     else if (tableView == self.nurseTableView){
         count = self.nurses.count;
-        NSLog(@"nurse section count: %ld", (long)count);
     }
     else if (tableView == self.projectManagementTableView){
         count = 1;
@@ -229,21 +228,21 @@ typedef enum{
         if (section == 0) {
             count = 1;
         }
-        else if (section <= self.assessment.classifies.count){
-            NSVClassify* classify = self.assessment.classifies[section - 1];
+        else if (section <= [NSVDataCenter defaultCenter].assessment.classifies.count){
+            NSVClassify* classify = [NSVDataCenter defaultCenter].assessment.classifies[section - 1];
             count = classify.projects.count;
         }
     }
     else if (tableView == self.issueTableView){
         if (self.selectedProjectIndexPath.section == 0) {
-            for (NSVClassify* classify in self.assessment.classifies) {
+            for (NSVClassify* classify in [NSVDataCenter defaultCenter].assessment.classifies) {
                 for (NSVProject* project in classify.projects) {
                     count += project.issues.count;
                 }
             }
         }
         else{
-            NSVClassify* classify = self.assessment.classifies[self.selectedProjectIndexPath.section - 1];
+            NSVClassify* classify = [NSVDataCenter defaultCenter].assessment.classifies[self.selectedProjectIndexPath.section - 1];
             NSVProject* project = classify.projects[self.selectedProjectIndexPath.row];
             
             count = project.issues.count;
@@ -256,7 +255,7 @@ typedef enum{
     }else if (tableView == self.issueSearchResultTableView){
         count = self.issueSearchResultArray.count;
     }else if (tableView == self.panMgmProjectTableView){
-        count = self.assessment.classifies.count;
+        count = [NSVDataCenter defaultCenter].assessment.classifies.count;
     }
     
     return count;
@@ -285,8 +284,8 @@ typedef enum{
         if (indexPath.section == 0) {
             tableCell.textLabel.text = @"全部";
         }
-        else if (indexPath.section <= self.assessment.classifies.count){
-            NSVClassify* classify = self.assessment.classifies[indexPath.section - 1];
+        else if (indexPath.section <= [NSVDataCenter defaultCenter].assessment.classifies.count){
+            NSVClassify* classify = [NSVDataCenter defaultCenter].assessment.classifies[indexPath.section - 1];
             
             NSVProject* project = classify.projects[indexPath.row];
             
@@ -307,7 +306,7 @@ typedef enum{
 
         if (self.selectedProjectIndexPath.section == 0) {
             NSMutableArray* issueArray = [NSMutableArray array];
-            for (NSVClassify* classify in self.assessment.classifies) {
+            for (NSVClassify* classify in [NSVDataCenter defaultCenter].assessment.classifies) {
                 for (NSVProject* project in classify.projects) {
                     [issueArray addObjectsFromArray:project.issues];
                 }
@@ -320,7 +319,7 @@ typedef enum{
         }
         else
         {
-            NSVClassify* classify = self.assessment.classifies[self.selectedProjectIndexPath.section - 1];
+            NSVClassify* classify = [NSVDataCenter defaultCenter].assessment.classifies[self.selectedProjectIndexPath.section - 1];
             NSVProject* project = classify.projects[self.selectedProjectIndexPath.row];
             NSVIssue* issue = project.issues[indexPath.row];
             
@@ -395,7 +394,7 @@ typedef enum{
             tableCell.score = [NSNumber numberWithFloat:0.5f];
         }
         
-        NSVClassify* c = self.assessment.classifies[indexPath.row];
+        NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[indexPath.row];
         
         tableCell.name = c.name;
         
@@ -434,6 +433,31 @@ typedef enum{
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
     if (tableView == self.panMgmProjectTableView) {
         
+        switch (self.panMgmLevel) {
+            case NSVClassifyLevel:{
+                NSMutableArray* classfies = [NSVDataCenter defaultCenter].assessment.classifies;
+                
+                NSVClassify* source = classfies[sourceIndexPath.row];
+                
+                if (sourceIndexPath.row > destinationIndexPath.row) {
+                    [classfies removeObjectAtIndex:sourceIndexPath.row];
+                    [classfies insertObject:source atIndex:destinationIndexPath.row];
+                }else{
+                    [classfies removeObjectAtIndex:sourceIndexPath.row];
+                    [classfies insertObject:source atIndex:destinationIndexPath.row];
+                }
+                
+                [[NSVDataCenter defaultCenter] save];
+                [self.projectTableView reloadData];
+                
+            }
+                break;
+                
+            default:
+                break;
+        }
+        
+        NSLog(@"from: %ld, %ld; to: %ld, %ld", (long)sourceIndexPath.section, (long)sourceIndexPath.row, (long)destinationIndexPath.section, (long)destinationIndexPath.row);
     }
 }
 
@@ -449,7 +473,6 @@ typedef enum{
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.panMgmProjectTableView) {
-        NSLog(@"index path: %d, %d", indexPath.section, indexPath.row);
     }
 }
 
@@ -521,8 +544,8 @@ typedef enum{
             if (tableView == self.projectTableView) {
                 if (section == 0) {
                 }
-                else if (section <= self.assessment.classifies.count){
-                    NSVClassify* classify = self.assessment.classifies[section - 1];
+                else if (section <= [NSVDataCenter defaultCenter].assessment.classifies.count){
+                    NSVClassify* classify = [NSVDataCenter defaultCenter].assessment.classifies[section - 1];
                     title = classify.name;
                 }
             }
@@ -570,7 +593,7 @@ typedef enum{
         
         if (self.selectedProjectIndexPath.section == 0) {
             NSMutableArray* issueArray = [NSMutableArray array];
-            for (NSVClassify* classify in self.assessment.classifies) {
+            for (NSVClassify* classify in [NSVDataCenter defaultCenter].assessment.classifies) {
                 for (NSVProject* project in classify.projects) {
                     [issueArray addObjectsFromArray:project.issues];
                 }
@@ -581,7 +604,7 @@ typedef enum{
         }
         else
         {
-            NSVClassify* classify = self.assessment.classifies[self.selectedProjectIndexPath.section - 1];
+            NSVClassify* classify = [NSVDataCenter defaultCenter].assessment.classifies[self.selectedProjectIndexPath.section - 1];
             NSVProject* project = classify.projects[self.selectedProjectIndexPath.row];
             issue = project.issues[indexPath.row];
         }
@@ -645,9 +668,6 @@ typedef enum{
 
 #pragma mark - button clicked
 -(void) projectSwitchButtonClicked:(UIButton*)button{
-    
-
-    
     
     CGFloat selfHeight = self.view.frame.size.height;
     
@@ -1207,7 +1227,7 @@ typedef enum{
     
     NSMutableArray* result = [NSMutableArray array];
     
-    for (NSVClassify* classify in self.assessment.classifies) {
+    for (NSVClassify* classify in [NSVDataCenter defaultCenter].assessment.classifies) {
         for (NSVProject* project in classify.projects) {
             for (NSVIssue* issue in project.issues) {
                 
@@ -1252,7 +1272,7 @@ typedef enum{
     NSInteger projectIndex = 0;
     NSInteger issueIndex = 0;
     
-    for (NSVClassify* classify in self.assessment.classifies) {
+    for (NSVClassify* classify in [NSVDataCenter defaultCenter].assessment.classifies) {
         projectIndex = 0;
         for (NSVProject* project in classify.projects) {
             issueIndex = 0;
@@ -1359,5 +1379,15 @@ typedef enum{
     self.panMgmProjectTableView.frame = panProjectTableViewFrame;
 }
 
+#pragma mark - NSVManagementEditTableViewCellDelegate
 
+-(void) tableViewCell:(NSVManagementEditTableViewCell*)cell nameTextChanged:(NSString*)text level:(NSNumber*)level indexPathRow:(NSInteger)row{
+    if(self.panMgmLevel == [level integerValue]){
+        
+    }
+}
+
+-(void) tableViewCell:(NSVManagementEditTableViewCell*)cell scoreTextChanged:(NSString*)text level:(NSNumber*)level indexPathRow:(NSInteger)row{
+    
+}
 @end
