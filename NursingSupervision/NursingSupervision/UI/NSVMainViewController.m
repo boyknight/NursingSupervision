@@ -174,6 +174,24 @@ typedef enum{
     
 }
 
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
+
+}
+
+-(void) viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -592,7 +610,10 @@ typedef enum{
         [self selectProjectAndIssue:issueSelected];
         [self searchBarCancelButtonClicked:self.issueSearchBar];
     }else if (tableView == self.panMgmProjectTableView){
-        NSLog(@"select cell index path: %d, %d", indexPath.section, indexPath.row);
+        
+        if (!self.panMgmProjectTableView.isEditing) {
+            NSLog(@"select cell index path: %ld, %ld", (long)indexPath.section, (long)indexPath.row);
+        }
     }
 }
 
@@ -1301,5 +1322,42 @@ typedef enum{
     
     
 }
+
+#pragma mark - 响应键盘事件
+-(void) keyboardWillShow:(NSNotification*)notification{
+    NSLog(@"show keyboard: %@", notification);
+    
+}
+
+-(void) keyboardWillHide:(NSNotification*)notification{
+    NSLog(@"hide keyboard: %@", notification);
+    
+    CGRect panBgViewFrame = self.projectAndNurseManagementBgView.frame;
+    panBgViewFrame.size.height = self.view.frame.size.height - StatusBarHeight;
+    self.projectAndNurseManagementBgView.frame = panBgViewFrame;
+    
+    CGRect panProjectTableViewFrame = self.panMgmProjectTableView.frame;
+    panProjectTableViewFrame.size.height = self.view.frame.size.height - StatusBarHeight - 44.0f;
+    self.panMgmProjectTableView.frame = panProjectTableViewFrame;
+}
+
+-(void) keyboardWillChange:(NSNotification*)notification{
+    NSLog(@"change keyboard: %@", notification);
+    
+    
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    
+    CGRect panBgViewFrame = self.projectAndNurseManagementBgView.frame;
+    panBgViewFrame.size.height = self.view.frame.size.height - StatusBarHeight - keyboardRect.size.height;
+    self.projectAndNurseManagementBgView.frame = panBgViewFrame;
+    
+    
+    CGRect panProjectTableViewFrame = self.panMgmProjectTableView.frame;
+    panProjectTableViewFrame.size.height = self.view.frame.size.height - StatusBarHeight - 44.0f - keyboardRect.size.height;
+    self.panMgmProjectTableView.frame = panProjectTableViewFrame;
+}
+
 
 @end

@@ -15,7 +15,6 @@
 @property (nonatomic, strong, nonnull) UITextField* scoreTextField;
 @property (nonatomic, strong, nonnull) UIView*  sepView;
 @property (nonatomic, strong, nonnull) UIButton* deleteButton;
-@property (nonatomic, strong, nonnull) UIButton* reorderButton;
 @property (nonatomic, strong, nonnull) UIImageView* rightIconImageView;
 
 @end
@@ -52,11 +51,6 @@
         self.scoreTextField.textColor = [UIColor colorWithRGBHex:0x36363d];
         [self addSubview:self.scoreTextField];
         
-        // 排序按钮
-        self.reorderButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.reorderButton setImage:[UIImage imageNamed:@"reorder_icon"] forState:UIControlStateNormal];
-        [self addSubview:self.reorderButton];
-        
         // 删除按钮
         self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.deleteButton setImage:[UIImage imageNamed:@"delete_icon"] forState:UIControlStateNormal];
@@ -84,10 +78,9 @@
 {
     [super setEditing:editing animated:animated];
     
-    self.showsReorderControl = NO;
-    self.editingAccessoryView = editing ? [[UIImageView alloc] initWithImage:nil] : nil;
+    [self.nameTextField resignFirstResponder];
+    [self.scoreTextField resignFirstResponder];
     
-
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -99,29 +92,22 @@
 -(void) layoutSubviews{
     [super layoutSubviews];
     
+    CGFloat scoreWidth = 107.0f;
+    CGFloat marginOfControls = 15.0f;
+    CGFloat marginOfSides = 25.0f;
+    CGFloat indicatorWidth = 8.0f;
+    CGFloat indicatorHeight = 13.0f;
+    CGFloat deleteWidth = 21.0f;
+    CGFloat reorderWidth = 15.0f;
+    CGFloat textFieldHeight = 40.0f;
+    
     if (self.isEditing) {
-        self.reorderButton.alpha = 1.0f;
-        self.reorderButton.frame = CGRectMake(25.0f, 19.0f, 21.0f, 21.0f);
         
+        // 删除 按钮
+        self.deleteButton.alpha = 1.0f;
+        self.deleteButton.frame = CGRectMake(self.frame.size.width - (marginOfSides + reorderWidth + marginOfControls +  deleteWidth), 19.0f, deleteWidth, deleteWidth);
         
-        CGRect nameTextFieldFrame;
-        nameTextFieldFrame.origin.x = self.reorderButton.frame.origin.x + self.reorderButton.frame.size.width + 15.0f;
-        nameTextFieldFrame.origin.y = 10.0f;
-        
-        if (self.score == nil) {
-            nameTextFieldFrame.size.width = self.frame.size.width - nameTextFieldFrame.origin.x - (15.0f + 21.0f + 25.0f);
-        }else{
-            nameTextFieldFrame.size.width = self.frame.size.width - nameTextFieldFrame.origin.x - (15.0f + 107.0f + 15.0f + 21.0f + 25.0f);
-        }
-        
-        nameTextFieldFrame.size.height = 40.0f;
-        
-        self.nameTextField.frame = nameTextFieldFrame;
-        self.nameTextField.text = self.name;
-        self.nameTextField.userInteractionEnabled = YES;
-        self.nameTextField.backgroundColor = [UIColor whiteColor];
-        self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
-        
+        // 分数
         if (self.score == nil) {
             self.scoreTextField.alpha = 0.0f;
         }else{
@@ -133,29 +119,70 @@
             self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
         }
         
-        self.scoreTextField.frame = CGRectMake(self.frame.size.width - (107.0f + 15.0f + 21.0f + 25.0f), 10.0f, 107.0f, 40.0f);
+        self.scoreTextField.frame = CGRectMake(self.deleteButton.frame.origin.x - (marginOfControls + scoreWidth),
+                                               (NSInteger)((self.frame.size.height - textFieldHeight) / 2.0f),
+                                               scoreWidth,
+                                               textFieldHeight);
         
-        self.deleteButton.alpha = 1.0f;
-        self.deleteButton.frame = CGRectMake(self.frame.size.width - (25.0f + 21.0f), 19.0f, 21.0f, 21.0f);
-        
-        self.rightIconImageView.alpha = 0.0f;
-        self.rightIconImageView.frame = CGRectMake(self.frame.size.width - 33.0f, 23.0f, 8.0f, 13.0f);
-        
-    }else{
-        self.reorderButton.alpha = 0.0f;
-        self.reorderButton.frame = CGRectMake(25.0f, 19.0f, 21.0f, 21.0f);
-        
+        // 内容
         CGRect nameTextFieldFrame;
-        nameTextFieldFrame.origin.x = 25.0f;
-        nameTextFieldFrame.origin.y = 10.0f;
+        nameTextFieldFrame.origin.x = marginOfSides;
+        nameTextFieldFrame.origin.y = self.scoreTextField.frame.origin.y;
         
         if (self.score == nil) {
-            nameTextFieldFrame.size.width = self.frame.size.width - nameTextFieldFrame.origin.x - 48.0f;
+            nameTextFieldFrame.size.width = self.frame.size.width - marginOfSides - (self.frame.size.width - self.deleteButton.frame.origin.x + marginOfControls);
         }else{
-            nameTextFieldFrame.size.width = self.frame.size.width - nameTextFieldFrame.origin.x - 48.0f - (107.0f + 15.0f);
+            nameTextFieldFrame.size.width = self.frame.size.width - marginOfSides - (self.frame.size.width - self.scoreTextField.frame.origin.x + marginOfControls);
         }
         
-        nameTextFieldFrame.size.height = 40.0f;
+        nameTextFieldFrame.size.height = textFieldHeight;
+        
+        self.nameTextField.frame = nameTextFieldFrame;
+        self.nameTextField.text = self.name;
+        self.nameTextField.userInteractionEnabled = YES;
+        self.nameTextField.backgroundColor = [UIColor whiteColor];
+        self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
+
+        self.rightIconImageView.alpha = 0.0f;
+        self.rightIconImageView.frame = CGRectMake(self.frame.size.width - (marginOfSides + indicatorWidth),
+                                                   (NSInteger)((self.frame.size.height - indicatorHeight) / 2.0f),
+                                                   indicatorWidth,
+                                                   indicatorHeight);
+        
+    }else{
+        // 删除 按钮
+        self.deleteButton.alpha = 0.0f;
+        self.deleteButton.frame = CGRectMake(self.frame.size.width - (marginOfSides + reorderWidth + marginOfControls +  deleteWidth), 19.0f, deleteWidth, deleteWidth);
+        
+        // 分数
+        if (self.score == nil) {
+            self.scoreTextField.alpha = 0.0f;
+        }else{
+            self.scoreTextField.alpha = 1.0f;
+            self.scoreTextField.text = [NSString stringWithFormat:@"%@", self.score];
+            
+            self.scoreTextField.userInteractionEnabled = NO;
+            self.scoreTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+            self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
+        }
+        
+        self.scoreTextField.frame = CGRectMake(self.deleteButton.frame.origin.x - (marginOfControls + scoreWidth),
+                                               (NSInteger)((self.frame.size.height - textFieldHeight) / 2.0f),
+                                               scoreWidth,
+                                               textFieldHeight);
+        
+        // 内容
+        CGRect nameTextFieldFrame;
+        nameTextFieldFrame.origin.x = marginOfSides;
+        nameTextFieldFrame.origin.y = self.scoreTextField.frame.origin.y;
+        
+        if (self.score == nil) {
+            nameTextFieldFrame.size.width = self.frame.size.width - marginOfSides - (self.frame.size.width - self.deleteButton.frame.origin.x + marginOfControls);
+        }else{
+            nameTextFieldFrame.size.width = self.frame.size.width - marginOfSides - (self.frame.size.width - self.scoreTextField.frame.origin.x + marginOfControls);
+        }
+        
+        nameTextFieldFrame.size.height = textFieldHeight;
         
         self.nameTextField.frame = nameTextFieldFrame;
         self.nameTextField.text = self.name;
@@ -163,24 +190,59 @@
         self.nameTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
         self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
         
+        self.rightIconImageView.alpha = 0.0f;
+        self.rightIconImageView.frame = CGRectMake(self.frame.size.width - (marginOfSides + indicatorWidth),
+                                                   (NSInteger)((self.frame.size.height - indicatorHeight) / 2.0f),
+                                                   indicatorWidth,
+                                                   indicatorHeight);
         
-        if (self.score == nil) {
-            self.scoreTextField.alpha = 0.0f;
-        }else{
-            self.scoreTextField.alpha = 1.0f;
-            self.scoreTextField.text = [NSString stringWithFormat:@"%@", self.score];
-            self.scoreTextField.userInteractionEnabled = NO;
-            self.scoreTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
-            self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
-        }
         
-        self.scoreTextField.frame = CGRectMake(self.frame.size.width - (25.0f + 8.0f + 107.0f + 15.0f), 10.0f, 107.0f, 40.0f);
-        
-        self.deleteButton.alpha = 0.0f;
-        self.deleteButton.frame = CGRectMake(self.frame.size.width - 46.0f, 19.0f, 21.0f, 21.0f);
         
         self.rightIconImageView.alpha = 1.0f;
-        self.rightIconImageView.frame = CGRectMake(self.frame.size.width - (25.0f + 8.0f), 23.0f, 8.0f, 13.0f);
+        self.rightIconImageView.frame = CGRectMake(self.frame.size.width - (marginOfSides + indicatorWidth),
+                                                   (NSInteger)((self.frame.size.height - indicatorHeight) / 2.0f),
+                                                   indicatorWidth,
+                                                   indicatorHeight);
+        
+        
+        
+        
+//        CGRect nameTextFieldFrame;
+//        nameTextFieldFrame.origin.x = 25.0f;
+//        nameTextFieldFrame.origin.y = 10.0f;
+//        
+//        if (self.score == nil) {
+//            nameTextFieldFrame.size.width = self.frame.size.width - nameTextFieldFrame.origin.x - 48.0f;
+//        }else{
+//            nameTextFieldFrame.size.width = self.frame.size.width - nameTextFieldFrame.origin.x - 48.0f - (107.0f + 15.0f);
+//        }
+//        
+//        nameTextFieldFrame.size.height = 40.0f;
+//        
+//        self.nameTextField.frame = nameTextFieldFrame;
+//        self.nameTextField.text = self.name;
+//        self.nameTextField.userInteractionEnabled = NO;
+//        self.nameTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+//        self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
+        
+        
+//        if (self.score == nil) {
+//            self.scoreTextField.alpha = 0.0f;
+//        }else{
+//            self.scoreTextField.alpha = 1.0f;
+//            self.scoreTextField.text = [NSString stringWithFormat:@"%@", self.score];
+//            self.scoreTextField.userInteractionEnabled = NO;
+//            self.scoreTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+//            self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
+//        }
+//        
+//        self.scoreTextField.frame = CGRectMake(self.frame.size.width - (25.0f + 8.0f + 107.0f + 15.0f), 10.0f, 107.0f, 40.0f);
+        
+//        self.deleteButton.alpha = 0.0f;
+//        self.deleteButton.frame = CGRectMake(self.frame.size.width - 46.0f, 19.0f, 21.0f, 21.0f);
+//        
+//        self.rightIconImageView.alpha = 1.0f;
+//        self.rightIconImageView.frame = CGRectMake(self.frame.size.width - (25.0f + 8.0f), 23.0f, 8.0f, 13.0f);
     }
     
     self.sepView.frame = CGRectMake(0.0f, self.frame.size.height - 1.0f, self.frame.size.width, 1.0f);
