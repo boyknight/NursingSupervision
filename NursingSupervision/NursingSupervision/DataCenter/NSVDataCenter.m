@@ -99,9 +99,9 @@
             
             
             _nurses = [[NSVNurses alloc] init];
-            _nurses.nurses = [NSArray<NSVNurse> array];
+            _nurses.nurses = [NSMutableArray<NSVNurse> array];
             
-            _nurses.nurses = @[n1, n2, n3, n4, n5, n6];
+            _nurses.nurses = [NSMutableArray<NSVNurse> arrayWithArray:@[n1, n2, n3, n4, n5, n6]];
             
             
             NSString* jsonString = [self.nurses toJSONString];

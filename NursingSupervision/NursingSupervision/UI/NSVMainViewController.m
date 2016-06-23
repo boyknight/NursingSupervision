@@ -389,6 +389,8 @@ typedef enum{
         
         
         NSVManagementEditTableViewCell* tableCell = (NSVManagementEditTableViewCell*)cell;
+        tableCell.delegate = self;
+        
         
         if (indexPath.row % 2 == 0) {
             tableCell.score = [NSNumber numberWithFloat:0.5f];
@@ -821,7 +823,7 @@ typedef enum{
         [button setTitle:@"编辑" forState:UIControlStateNormal];
         [self.panMgmProjectTableView setEditing:NO animated:YES];
     }else{
-        [button setTitle:@"取消编辑" forState:UIControlStateNormal];
+        [button setTitle:@"完成" forState:UIControlStateNormal];
         [self.panMgmProjectTableView setEditing:YES animated:YES];
     }
 }
@@ -1383,11 +1385,55 @@ typedef enum{
 
 -(void) tableViewCell:(NSVManagementEditTableViewCell*)cell nameTextChanged:(NSString*)text level:(NSNumber*)level indexPathRow:(NSInteger)row{
     if(self.panMgmLevel == [level integerValue]){
-        
+        if (self.panMgmLevel == NSVClassifyLevel) {
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[row];
+            
+            c.name = text;
+            
+            [[NSVDataCenter defaultCenter] save];
+            
+            [self.projectTableView reloadData];
+        }else if(self.panMgmLevel == NSVProjectLevel){
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+            
+            NSVProject* p = c.projects[row];
+            
+            p.name = text;
+            
+            [[NSVDataCenter defaultCenter] save];
+            
+            [self.projectTableView reloadData];
+        }else if (self.panMgmLevel == NSVIssueLevel){
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+            
+            NSVProject* p = c.projects[self.panMgnIndexPath.row];
+            
+            NSVIssue* i = p.issues[row];
+            
+            i.name = text;
+            
+            [[NSVDataCenter defaultCenter] save];
+            
+            [self.issueTableView reloadData];
+        }
     }
 }
 
 -(void) tableViewCell:(NSVManagementEditTableViewCell*)cell scoreTextChanged:(NSString*)text level:(NSNumber*)level indexPathRow:(NSInteger)row{
-    
+    if(self.panMgmLevel == [level integerValue]){
+        if (self.panMgmLevel == NSVIssueLevel){
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+            
+            NSVProject* p = c.projects[self.panMgnIndexPath.row];
+            
+            NSVIssue* i = p.issues[row];
+            
+            i.score = [text floatValue];
+            
+            [[NSVDataCenter defaultCenter] save];
+            
+            [self.issueTableView reloadData];
+        }
+    }
 }
 @end

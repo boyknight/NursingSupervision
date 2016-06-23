@@ -10,7 +10,6 @@
 #import "NSVMainViewController.h"
 #import "NSVDataCenter.h"
 #import "NSVClassifyViewController.h"
-#import "NSVIssueViewController.h"
 #import "ChineseToPinyinResource.h"
 
 

@@ -17,7 +17,7 @@
 @end
 
 
-@interface NSVManagementEditTableViewCell : UITableViewCell
+@interface NSVManagementEditTableViewCell : UITableViewCell <UITextFieldDelegate>
 
 @property (nonatomic, strong) NSNumber* score;
 @property (nonatomic, strong) NSString* name;

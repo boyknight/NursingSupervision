@@ -16,7 +16,7 @@
 @interface NSVIssue : JSONModel
 
 @property (nonatomic, strong) NSString* name;
-@property (nonatomic, strong) NSNumber* score;
+@property (nonatomic, assign) float score;
 @property (nonatomic, strong) NSString<Optional>* nameQuanPin; // 全拼
 @property (nonatomic, strong) NSString<Optional>* namePinYinShouZiMu; // 拼音首字母
 

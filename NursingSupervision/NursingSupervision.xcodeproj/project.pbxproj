@@ -16,7 +16,6 @@
 		B085481D1C7DAC600004991B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B085481B1C7DAC600004991B /* LaunchScreen.storyboard */; };
 		B085482B1C7DB2B20004991B /* NSVMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B085482A1C7DB2B20004991B /* NSVMainViewController.m */; };
 		B085482E1C7DB6EC0004991B /* NSVClassifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B085482D1C7DB6EC0004991B /* NSVClassifyViewController.m */; };
-		B08548311C7DB7110004991B /* NSVIssueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548301C7DB7110004991B /* NSVIssueViewController.m */; };
 		B08548341C7DBE8F0004991B /* NSVClassify.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548331C7DBE8F0004991B /* NSVClassify.m */; };
 		B08548371C7DBE9D0004991B /* NSVProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548361C7DBE9D0004991B /* NSVProject.m */; };
 		B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548391C7DBEA80004991B /* NSVIssue.m */; };
@@ -50,8 +49,6 @@
 		B085482A1C7DB2B20004991B /* NSVMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVMainViewController.m; sourceTree = "<group>"; };
 		B085482C1C7DB6EC0004991B /* NSVClassifyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVClassifyViewController.h; sourceTree = "<group>"; };
 		B085482D1C7DB6EC0004991B /* NSVClassifyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVClassifyViewController.m; sourceTree = "<group>"; };
-		B085482F1C7DB7110004991B /* NSVIssueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVIssueViewController.h; sourceTree = "<group>"; };
-		B08548301C7DB7110004991B /* NSVIssueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVIssueViewController.m; sourceTree = "<group>"; };
 		B08548321C7DBE8F0004991B /* NSVClassify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVClassify.h; sourceTree = "<group>"; };
 		B08548331C7DBE8F0004991B /* NSVClassify.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVClassify.m; sourceTree = "<group>"; };
 		B08548351C7DBE9D0004991B /* NSVProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVProject.h; sourceTree = "<group>"; };
@@ -150,8 +147,6 @@
 				B085482A1C7DB2B20004991B /* NSVMainViewController.m */,
 				B085482C1C7DB6EC0004991B /* NSVClassifyViewController.h */,
 				B085482D1C7DB6EC0004991B /* NSVClassifyViewController.m */,
-				B085482F1C7DB7110004991B /* NSVIssueViewController.h */,
-				B08548301C7DB7110004991B /* NSVIssueViewController.m */,
 				B07FE80E1CF5E4360052F2DA /* NSVProjectItemTableViewCell.h */,
 				B07FE80F1CF5E4360052F2DA /* NSVProjectItemTableViewCell.m */,
 				B0DD79F81D1029BF00E6843E /* NSVNurseTableViewCell.h */,
@@ -338,7 +333,6 @@
 				B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */,
 				B085480F1C7DAC600004991B /* main.m in Sources */,
 				B0DD79FA1D1029BF00E6843E /* NSVNurseTableViewCell.m in Sources */,
-				B08548311C7DB7110004991B /* NSVIssueViewController.m in Sources */,
 				B085483D1C7DBF370004991B /* NSVNurse.m in Sources */,
 				B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */,
 				B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */,

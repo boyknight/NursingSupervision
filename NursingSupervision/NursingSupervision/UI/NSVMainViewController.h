@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "NSVClassifyViewController.h"
-#import "NSVIssueViewController.h"
 #import "NSVManagementEditTableViewCell.h"
 
 

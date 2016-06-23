@@ -11,6 +11,6 @@
 
 @interface NSVNurses : JSONModel
 
-@property (nonatomic, strong) NSArray<NSVNurse>* nurses;
+@property (nonatomic, strong) NSMutableArray<NSVNurse>* nurses;
 
 @end

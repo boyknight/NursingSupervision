@@ -39,6 +39,7 @@
         self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
         self.nameTextField.layer.sublayerTransform = CATransform3DMakeTranslation(15.0f, 0.0f, 0.0f);
         self.nameTextField.textColor = [UIColor colorWithRGBHex:0x36363d];
+        [self.nameTextField addTarget:self action:@selector(nameTextFieldChanged:) forControlEvents:UIControlEventEditingChanged];
         [self addSubview:self.nameTextField];
         
         // 分数编辑框
@@ -49,6 +50,8 @@
         self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
         self.scoreTextField.layer.sublayerTransform = CATransform3DMakeTranslation(15.0f, 0.0f, 0.0f);
         self.scoreTextField.textColor = [UIColor colorWithRGBHex:0x36363d];
+        self.scoreTextField.delegate = self;
+        [self.scoreTextField addTarget:self action:@selector(scoreTextFieldChanged:) forControlEvents:UIControlEventEditingChanged];
         [self addSubview:self.scoreTextField];
         
         // 删除按钮
@@ -248,4 +251,15 @@
     self.sepView.frame = CGRectMake(0.0f, self.frame.size.height - 1.0f, self.frame.size.width, 1.0f);
 }
 
+-(void) nameTextFieldChanged:(UITextField*)textField{
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(tableViewCell:nameTextChanged:level:indexPathRow:)]) {
+        [self.delegate tableViewCell:self nameTextChanged:textField.text level:self.level indexPathRow:self.row];
+    }
+}
+
+-(void) scoreTextFieldChanged:(UITextField*)textField{
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(tableViewCell:scoreTextChanged:level:indexPathRow:)]) {
+        [self.delegate tableViewCell:self scoreTextChanged:textField.text level:self.level indexPathRow:self.row];
+    }
+}
 @end
