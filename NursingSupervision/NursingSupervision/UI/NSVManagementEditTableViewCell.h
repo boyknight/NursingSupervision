@@ -13,6 +13,7 @@
 
 -(void) tableViewCell:(NSVManagementEditTableViewCell*)cell nameTextChanged:(NSString*)text level:(NSNumber*)level indexPathRow:(NSInteger)row;
 -(void) tableViewCell:(NSVManagementEditTableViewCell*)cell scoreTextChanged:(NSString*)text level:(NSNumber*)level indexPathRow:(NSInteger)row;
+-(void) tableViewCell:(NSVManagementEditTableViewCell*)cell deleteButtonClickedWithLevel:(NSNumber*)level indexPathRow:(NSInteger)row;
 
 @end
 
@@ -24,6 +25,8 @@
 
 @property (nonatomic, strong) NSNumber* level;
 @property (nonatomic, assign) NSInteger row;
+
+@property (nonatomic, assign) BOOL showIndicator;
 
 @property (nonatomic, weak) id<NSVManagementEditTableViewCellDelegate> delegate;
 

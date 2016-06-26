@@ -29,6 +29,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.accessoryType = UITableViewCellAccessoryNone;
         self.editingAccessoryType = UITableViewCellAccessoryNone;
+        self.showIndicator = NO;
         
         
         // 内容编辑框
@@ -57,6 +58,7 @@
         // 删除按钮
         self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.deleteButton setImage:[UIImage imageNamed:@"delete_icon"] forState:UIControlStateNormal];
+        [self.deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.deleteButton];
         
         // 下一级 指示图标
@@ -206,46 +208,9 @@
                                                    (NSInteger)((self.frame.size.height - indicatorHeight) / 2.0f),
                                                    indicatorWidth,
                                                    indicatorHeight);
-        
-        
-        
-        
-//        CGRect nameTextFieldFrame;
-//        nameTextFieldFrame.origin.x = 25.0f;
-//        nameTextFieldFrame.origin.y = 10.0f;
-//        
-//        if (self.score == nil) {
-//            nameTextFieldFrame.size.width = self.frame.size.width - nameTextFieldFrame.origin.x - 48.0f;
-//        }else{
-//            nameTextFieldFrame.size.width = self.frame.size.width - nameTextFieldFrame.origin.x - 48.0f - (107.0f + 15.0f);
-//        }
-//        
-//        nameTextFieldFrame.size.height = 40.0f;
-//        
-//        self.nameTextField.frame = nameTextFieldFrame;
-//        self.nameTextField.text = self.name;
-//        self.nameTextField.userInteractionEnabled = NO;
-//        self.nameTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
-//        self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
-        
-        
-//        if (self.score == nil) {
-//            self.scoreTextField.alpha = 0.0f;
-//        }else{
-//            self.scoreTextField.alpha = 1.0f;
-//            self.scoreTextField.text = [NSString stringWithFormat:@"%@", self.score];
-//            self.scoreTextField.userInteractionEnabled = NO;
-//            self.scoreTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
-//            self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
-//        }
-//        
-//        self.scoreTextField.frame = CGRectMake(self.frame.size.width - (25.0f + 8.0f + 107.0f + 15.0f), 10.0f, 107.0f, 40.0f);
-        
-//        self.deleteButton.alpha = 0.0f;
-//        self.deleteButton.frame = CGRectMake(self.frame.size.width - 46.0f, 19.0f, 21.0f, 21.0f);
-//        
-//        self.rightIconImageView.alpha = 1.0f;
-//        self.rightIconImageView.frame = CGRectMake(self.frame.size.width - (25.0f + 8.0f), 23.0f, 8.0f, 13.0f);
+        if (!self.showIndicator) {
+            self.rightIconImageView.alpha = 0.0f;
+        }
     }
     
     self.sepView.frame = CGRectMake(0.0f, self.frame.size.height - 1.0f, self.frame.size.width, 1.0f);
@@ -260,6 +225,12 @@
 -(void) scoreTextFieldChanged:(UITextField*)textField{
     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(tableViewCell:scoreTextChanged:level:indexPathRow:)]) {
         [self.delegate tableViewCell:self scoreTextChanged:textField.text level:self.level indexPathRow:self.row];
+    }
+}
+
+-(void) deleteButtonClicked:(UIButton*) button{
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(tableViewCell:deleteButtonClickedWithLevel:indexPathRow:)]) {
+        [self.delegate tableViewCell:self deleteButtonClickedWithLevel:self.level indexPathRow:self.row];
     }
 }
 @end

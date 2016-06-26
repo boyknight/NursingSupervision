@@ -46,6 +46,11 @@ typedef enum{
     NSVIssueLevel = 2
 } NSVLevel;
 
+typedef enum{
+    NSVPanMgmProject,
+    NSVPanMgmNurse
+}NSVPanMgmType;
+
 
 @interface NSVMainViewController ()
 
@@ -97,6 +102,7 @@ typedef enum{
 @property (nonatomic, strong) UITableView* panMgmNurseTableView;
 @property (nonatomic, assign) NSVLevel panMgmLevel;
 @property (nonatomic, strong) NSIndexPath* panMgnIndexPath;
+@property (nonatomic, assign) NSVPanMgmType panMgmType;
 
 
 
@@ -139,6 +145,7 @@ typedef enum{
     self.width = self.view.frame.size.width;
     self.height = self.view.frame.size.height;
     self.deltaOfLeftHeight = self.height - 3.0f * NSVProjectLabelHeight - StatusBarHeight;
+    self.panMgmType = NSVPanMgmProject;
     
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -255,7 +262,19 @@ typedef enum{
     }else if (tableView == self.issueSearchResultTableView){
         count = self.issueSearchResultArray.count;
     }else if (tableView == self.panMgmProjectTableView){
-        count = [NSVDataCenter defaultCenter].assessment.classifies.count;
+        if (self.panMgmLevel == NSVClassifyLevel) {
+            count = [NSVDataCenter defaultCenter].assessment.classifies.count;
+        }else if (self.panMgmLevel == NSVProjectLevel){
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+            
+            count = c.projects.count;
+        }else if (self.panMgmLevel == NSVIssueLevel){
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+            NSVProject* p  = c.projects[self.panMgnIndexPath.row];
+            
+            count = p.issues.count;
+        }
+        
     }
     
     return count;
@@ -385,26 +404,39 @@ typedef enum{
             cell = [[NSVManagementEditTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
-        
-        
-        
+
         NSVManagementEditTableViewCell* tableCell = (NSVManagementEditTableViewCell*)cell;
         tableCell.delegate = self;
         
-        
-        if (indexPath.row % 2 == 0) {
-            tableCell.score = [NSNumber numberWithFloat:0.5f];
+        if (self.panMgmLevel == NSVClassifyLevel) {
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[indexPath.row];
+            tableCell.name = c.name;
+            tableCell.score = nil;
+            tableCell.level = [NSNumber numberWithInteger:NSVClassifyLevel];
+            tableCell.row = indexPath.row;
+            tableCell.showIndicator = YES;
+            
+        }else if (self.panMgmLevel == NSVProjectLevel){
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+            NSVProject* p = c.projects[indexPath.row];
+            
+            tableCell.name = p.name;
+            tableCell.score = nil;
+            tableCell.level = [NSNumber numberWithInteger:NSVProjectLevel];
+            tableCell.row = indexPath.row;
+            tableCell.showIndicator = YES;
+        }else if (self.panMgmLevel == NSVIssueLevel){
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+            NSVProject* p = c.projects[self.panMgnIndexPath.row];
+            
+            NSVIssue* i = p.issues[indexPath.row];
+            
+            tableCell.name = i.name;
+            tableCell.score = [NSNumber numberWithFloat:i.score];
+            tableCell.level = [NSNumber numberWithInteger:NSVIssueLevel];
+            tableCell.row = indexPath.row;
+            tableCell.showIndicator = NO;
         }
-        
-        NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[indexPath.row];
-        
-        tableCell.name = c.name;
-        
-//        tableCell.isSeperatorOnTop = YES;
-//        
-//        NSVIssue* issue = self.issueSearchResultArray[indexPath.row];
-//        
-//        tableCell.issueLabel.text = issue.name;
     }
     
     return cell;
@@ -451,6 +483,52 @@ typedef enum{
                 
                 [[NSVDataCenter defaultCenter] save];
                 [self.projectTableView reloadData];
+                
+            }
+                break;
+                
+            case NSVProjectLevel:{
+                NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+                
+                NSMutableArray* projects = c.projects;
+                
+                
+                NSVProject* source = projects[sourceIndexPath.row];
+                
+                if (sourceIndexPath.row > destinationIndexPath.row) {
+                    [projects removeObjectAtIndex:sourceIndexPath.row];
+                    [projects insertObject:source atIndex:destinationIndexPath.row];
+                }else{
+                    [projects removeObjectAtIndex:sourceIndexPath.row];
+                    [projects insertObject:source atIndex:destinationIndexPath.row];
+                }
+                
+                [[NSVDataCenter defaultCenter] save];
+                [self.projectTableView reloadData];
+                
+            }
+                break;
+                
+            case NSVIssueLevel:{
+                NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+                
+                NSVProject* p = c.projects[self.panMgnIndexPath.row];
+                
+                NSMutableArray* issues = p.issues;
+                
+                
+                NSVProject* source = issues[sourceIndexPath.row];
+                
+                if (sourceIndexPath.row > destinationIndexPath.row) {
+                    [issues removeObjectAtIndex:sourceIndexPath.row];
+                    [issues insertObject:source atIndex:destinationIndexPath.row];
+                }else{
+                    [issues removeObjectAtIndex:sourceIndexPath.row];
+                    [issues insertObject:source atIndex:destinationIndexPath.row];
+                }
+                
+                [[NSVDataCenter defaultCenter] save];
+                [self.issueTableView reloadData];
                 
             }
                 break;
@@ -589,6 +667,24 @@ typedef enum{
             self.selectedProjectIndexPath = indexPath;
             [self.issueTableView reloadData];
         }
+    }else if (tableView == self.projectManagementTableView){
+        
+        
+        if (indexPath.row == 0) {
+            if(self.panMgmType != NSVPanMgmProject){
+                self.panMgmType = NSVPanMgmProject;
+                
+                
+            }
+            
+        }else if (indexPath.row == 1){
+            
+            if (self.panMgmType != NSVPanMgmNurse) {
+                self.panMgmType = NSVPanMgmNurse;
+            }
+            
+        }
+        
     }else if (tableView == self.issueTableView){
         
         NSVIssue* issue = nil;
@@ -637,7 +733,26 @@ typedef enum{
     }else if (tableView == self.panMgmProjectTableView){
         
         if (!self.panMgmProjectTableView.isEditing) {
-            NSLog(@"select cell index path: %ld, %ld", (long)indexPath.section, (long)indexPath.row);
+            NSLog(@"select cell index path: %ld, %ld, level: %ld", (long)indexPath.section, (long)indexPath.row, (long)self.panMgmLevel);
+            
+            if (self.panMgmLevel == NSVClassifyLevel) {
+                self.panMgmLevel = NSVProjectLevel;
+                
+                self.panMgnIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.row];
+                
+                [self.panMgmProjectTableView reloadData];
+                
+                self.panMgmNavBackButton.enabled = YES;
+                
+            }else if (self.panMgmLevel == NSVProjectLevel){
+                self.panMgmLevel = NSVIssueLevel;
+                
+                NSInteger section = self.panMgnIndexPath.section;
+                self.panMgnIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:section];
+                
+                [self.panMgmProjectTableView reloadData];
+                self.panMgmNavBackButton.enabled = YES;
+            }
         }
     }
 }
@@ -822,9 +937,21 @@ typedef enum{
     if (self.panMgmProjectTableView.isEditing) {
         [button setTitle:@"编辑" forState:UIControlStateNormal];
         [self.panMgmProjectTableView setEditing:NO animated:YES];
+        [self.panMgmProjectTableView reloadData];
     }else{
         [button setTitle:@"完成" forState:UIControlStateNormal];
         [self.panMgmProjectTableView setEditing:YES animated:YES];
+    }
+}
+
+-(void) panMgmNavBackButtonClicked:(UIButton*)button{
+    if (self.panMgmLevel == NSVProjectLevel) {
+        self.panMgmLevel = NSVClassifyLevel;
+        button.enabled = NO;
+        [self.panMgmProjectTableView reloadData];
+    }else if (self.panMgmLevel == NSVIssueLevel) {
+        self.panMgmLevel = NSVProjectLevel;
+        [self.panMgmProjectTableView reloadData];
     }
 }
 
@@ -1125,6 +1252,7 @@ typedef enum{
     self.panMgmNavBackButton.frame = CGRectMake(25.0f, 0.0f, 40.0f, 44.0f);
     [self.panMgmNavBackButton setTitle:@"返回" forState:UIControlStateNormal];
     self.panMgmNavBackButton.enabled = NO;
+    [self.panMgmNavBackButton addTarget:self action:@selector(panMgmNavBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.panMgmNavView addSubview:self.panMgmNavBackButton];
     
@@ -1347,13 +1475,9 @@ typedef enum{
 
 #pragma mark - 响应键盘事件
 -(void) keyboardWillShow:(NSNotification*)notification{
-    NSLog(@"show keyboard: %@", notification);
-    
 }
 
 -(void) keyboardWillHide:(NSNotification*)notification{
-    NSLog(@"hide keyboard: %@", notification);
-    
     CGRect panBgViewFrame = self.projectAndNurseManagementBgView.frame;
     panBgViewFrame.size.height = self.view.frame.size.height - StatusBarHeight;
     self.projectAndNurseManagementBgView.frame = panBgViewFrame;
@@ -1364,8 +1488,6 @@ typedef enum{
 }
 
 -(void) keyboardWillChange:(NSNotification*)notification{
-    NSLog(@"change keyboard: %@", notification);
-    
     
     NSDictionary *userInfo = [notification userInfo];
     NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
@@ -1436,4 +1558,42 @@ typedef enum{
         }
     }
 }
+
+-(void) tableViewCell:(NSVManagementEditTableViewCell*)cell deleteButtonClickedWithLevel:(NSNumber*)level indexPathRow:(NSInteger)row{
+    if(self.panMgmLevel == [level integerValue]){
+        if (self.panMgmLevel == NSVClassifyLevel) {
+            [[NSVDataCenter defaultCenter].assessment.classifies removeObjectAtIndex:row];
+            
+            [[NSVDataCenter defaultCenter] save];
+            
+            [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            [self.projectTableView reloadData];
+            
+            
+        }else if(self.panMgmLevel == NSVProjectLevel){
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+            
+            [c.projects removeObjectAtIndex:row];
+            
+            [[NSVDataCenter defaultCenter] save];
+            
+            [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.projectTableView reloadData];
+        }else if (self.panMgmLevel == NSVIssueLevel){
+            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnIndexPath.section];
+            
+            NSVProject* p = c.projects[self.panMgnIndexPath.row];
+            
+            [p.issues removeObjectAtIndex:row];
+            
+            [[NSVDataCenter defaultCenter] save];
+            
+            [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.issueTableView reloadData];
+        }
+    }
+}
+
 @end
