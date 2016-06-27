@@ -78,33 +78,83 @@
         // 加载护士
         if (![fileManager fileExistsAtPath:self.nuresesPath]) {
             
-            NSVNurse* n1 = [[NSVNurse alloc] init];
-            n1.name = @"黎明";
+            NSVAllStaff* as = [[NSVAllStaff alloc] init];
+            as.offices = [NSMutableArray<NSVOffice> array];
             
-            NSVNurse* n2 = [[NSVNurse alloc] init];
-            n2.name = @"张学友";
+            NSVOffice* o = [[NSVOffice alloc] init];
+            o.name = @"肝胆外科";
+            o.nurses = [NSMutableArray<NSVNurse> array];
             
-            NSVNurse* n3 = [[NSVNurse alloc] init];
-            n3.name = @"步惊云";
+            [as.offices addObject:o];
             
-            NSVNurse* n4 = [[NSVNurse alloc] init];
-            n4.name = @"聂风";
+            NSVNurse* n = [[NSVNurse alloc] init];
+            n.name = @"黎明";
+            [o.nurses addObject:n];
             
-            NSVNurse* n5 = [[NSVNurse alloc] init];
-            n5.name = @"李丽";
+            n = [[NSVNurse alloc] init];
+            n.name = @"张学友";
+            [o.nurses addObject:n];
             
-            NSVNurse* n6 = [[NSVNurse alloc] init];
-            n6.name = @"陈胜";
+            n = [[NSVNurse alloc] init];
+            n.name = @"刘德华";
+            [o.nurses addObject:n];
+            
+            n = [[NSVNurse alloc] init];
+            n.name = @"郭富城";
+            [o.nurses addObject:n];
             
             
+            o = [[NSVOffice alloc] init];
+            o.name = @"内科";
+            o.nurses = [NSMutableArray<NSVNurse> array];
+            [as.offices addObject:o];
             
-            _nurses = [[NSVNurses alloc] init];
-            _nurses.nurses = [NSMutableArray<NSVNurse> array];
+            n = [[NSVNurse alloc] init];
+            n.name = @"星矢";
+            [o.nurses addObject:n];
             
-            _nurses.nurses = [NSMutableArray<NSVNurse> arrayWithArray:@[n1, n2, n3, n4, n5, n6]];
+            n = [[NSVNurse alloc] init];
+            n.name = @"冰河";
+            [o.nurses addObject:n];
+            
+            n = [[NSVNurse alloc] init];
+            n.name = @"紫龙";
+            [o.nurses addObject:n];
+            
+            n = [[NSVNurse alloc] init];
+            n.name = @"瞬";
+            [o.nurses addObject:n];
+            
+            n = [[NSVNurse alloc] init];
+            n.name = @"一辉";
+            [o.nurses addObject:n];
             
             
-            NSString* jsonString = [self.nurses toJSONString];
+            o = [[NSVOffice alloc] init];
+            o.name = @"眼科";
+            o.nurses = [NSMutableArray<NSVNurse> array];
+            [as.offices addObject:o];
+            
+            n = [[NSVNurse alloc] init];
+            n.name = @"刘备";
+            [o.nurses addObject:n];
+            
+            n = [[NSVNurse alloc] init];
+            n.name = @"关羽";
+            [o.nurses addObject:n];
+            
+            n = [[NSVNurse alloc] init];
+            n.name = @"张飞";
+            [o.nurses addObject:n];
+            
+            n = [[NSVNurse alloc] init];
+            n.name = @"赵云";
+            [o.nurses addObject:n];
+            
+            
+            _staffs = as;
+            
+            NSString* jsonString = [self.staffs toJSONString];
             [jsonString writeToFile:self.nuresesPath
                          atomically:YES
                            encoding:NSUTF8StringEncoding
@@ -114,7 +164,7 @@
             NSString* jsonFileContent = [NSString stringWithContentsOfFile:self.nuresesPath
                                                                   encoding:NSUTF8StringEncoding
                                                                      error:nil];
-            _nurses = [[NSVNurses alloc] initWithString:jsonFileContent error:nil];
+            _staffs = [[NSVAllStaff alloc] initWithString:jsonFileContent error:nil];
         }
         
         // 加载问题记录
@@ -134,48 +184,6 @@
                                                                      error:nil];
             _records = [[NSVRecords alloc] initWithString:jsonFileContent error:nil];
         }
-        
-        // 处理拼音
-//        HanyuPinyinOutputFormat *outputFormat=[[HanyuPinyinOutputFormat alloc] init];
-//        [outputFormat setToneType:ToneTypeWithoutTone];
-//        [outputFormat setVCharType:VCharTypeWithV];
-//        [outputFormat setCaseType:CaseTypeLowercase];
-//        
-//        for (NSVClassify* classify in self.assessment.classifies) {
-//            for (NSVProject* project in classify.projects) {
-//                for (NSVIssue* issue in project.issues) {
-//                    NSArray* ignoreStringArray = @[@"/", @",", @"，", @"、", @">", @"(", @")", @"（", @"）", @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"];
-//                    
-//                    NSString* issueName = issue.name;
-//                    
-//                    for (NSString* ignore in ignoreStringArray) {
-//                        issueName = [issueName stringByReplacingOccurrencesOfString:ignore withString:@""];
-//                    }
-//                    
-//                    NSString* issueNamePinyin=[PinyinHelper toHanyuPinyinStringWithNSString:issueName
-//                                                                withHanyuPinyinOutputFormat:outputFormat
-//                                                                               withNSString:@" "];
-//                    
-//                    NSArray* issueNameQuanPinArray = [issueNamePinyin componentsSeparatedByString:@" "];
-//                    
-//                    NSString* issueNameQuanPin = [issueNamePinyin stringByReplacingOccurrencesOfString:@" " withString:@""];
-//                    
-//                    NSMutableString* issueNamePinYinShou = [NSMutableString string];
-//                    for (NSString* s in issueNameQuanPinArray) {
-//                        if (s.length  == 0) {
-//                            continue;
-//                        }
-//                        [issueNamePinYinShou appendString:[s substringToIndex:1]];
-//                    }
-//                    
-//                    issue.nameQuanPin = issueNameQuanPin;
-//                    issue.namePinYinShouZiMu = issueNamePinYinShou;
-//                }
-//            }
-//        }
-//        
-//        [[self.assessment toJSONString] writeToFile:assessmentPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
-
     }
     return self;
 }
@@ -220,7 +228,7 @@
                    encoding:NSUTF8StringEncoding
                       error:nil];
     
-    jsonString = [self.nurses toJSONString];
+    jsonString = [self.staffs toJSONString];
     [jsonString writeToFile:self.nuresesPath
                  atomically:YES
                    encoding:NSUTF8StringEncoding

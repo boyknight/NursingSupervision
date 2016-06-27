@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "NSVAssessment.h"
-#import "NSVNurses.h"
 #import "NSVRecords.h"
+#import "NSVAllStaff.h"
 
 @interface NSVDataCenter : NSObject
 
 @property (nonatomic, strong, readonly, nonnull) NSVAssessment* assessment;
-@property (nonatomic, nonnull, strong, readonly) NSVNurses* nurses;
+//@property (nonatomic, nonnull, strong, readonly) NSVNurses* nurses;
+@property (nonatomic, nonnull, strong, readonly) NSVAllStaff* staffs;
 @property (nonatomic, nonnull, strong, readonly) NSVRecords* records;
 
 +(_Nonnull instancetype) defaultCenter;

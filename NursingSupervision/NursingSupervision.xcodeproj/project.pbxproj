@@ -28,6 +28,8 @@
 		C5007B491D10FA8900EFABE6 /* NSVIssueRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5007B481D10FA8900EFABE6 /* NSVIssueRecordTableViewCell.m */; };
 		C5821A151D0FDCC0007D4D34 /* NSVNurses.m in Sources */ = {isa = PBXBuildFile; fileRef = C5821A141D0FDCC0007D4D34 /* NSVNurses.m */; };
 		C5821A181D0FE756007D4D34 /* NSVRecords.m in Sources */ = {isa = PBXBuildFile; fileRef = C5821A171D0FE756007D4D34 /* NSVRecords.m */; };
+		C59341851D2111A7005BFCF4 /* NSVOffice.m in Sources */ = {isa = PBXBuildFile; fileRef = C59341841D2111A7005BFCF4 /* NSVOffice.m */; };
+		C59341881D211261005BFCF4 /* NSVAllStaff.m in Sources */ = {isa = PBXBuildFile; fileRef = C59341871D211261005BFCF4 /* NSVAllStaff.m */; };
 		C5A2EFB61D19201900460FFE /* NSVManagementEditTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A2EFB51D19201900460FFE /* NSVManagementEditTableViewCell.m */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +74,10 @@
 		C5821A141D0FDCC0007D4D34 /* NSVNurses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNurses.m; sourceTree = "<group>"; };
 		C5821A161D0FE756007D4D34 /* NSVRecords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVRecords.h; sourceTree = "<group>"; };
 		C5821A171D0FE756007D4D34 /* NSVRecords.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVRecords.m; sourceTree = "<group>"; };
+		C59341831D2111A7005BFCF4 /* NSVOffice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVOffice.h; sourceTree = "<group>"; };
+		C59341841D2111A7005BFCF4 /* NSVOffice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVOffice.m; sourceTree = "<group>"; };
+		C59341861D211261005BFCF4 /* NSVAllStaff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVAllStaff.h; sourceTree = "<group>"; };
+		C59341871D211261005BFCF4 /* NSVAllStaff.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVAllStaff.m; sourceTree = "<group>"; };
 		C5A2EFB41D19201900460FFE /* NSVManagementEditTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVManagementEditTableViewCell.h; sourceTree = "<group>"; };
 		C5A2EFB51D19201900460FFE /* NSVManagementEditTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVManagementEditTableViewCell.m; sourceTree = "<group>"; };
 		DC2BE7B5BB18B0B5DE922931 /* Pods-NursingSupervision.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NursingSupervision.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision.debug.xcconfig"; sourceTree = "<group>"; };
@@ -180,6 +186,10 @@
 				C5821A141D0FDCC0007D4D34 /* NSVNurses.m */,
 				C5821A161D0FE756007D4D34 /* NSVRecords.h */,
 				C5821A171D0FE756007D4D34 /* NSVRecords.m */,
+				C59341831D2111A7005BFCF4 /* NSVOffice.h */,
+				C59341841D2111A7005BFCF4 /* NSVOffice.m */,
+				C59341861D211261005BFCF4 /* NSVAllStaff.h */,
+				C59341871D211261005BFCF4 /* NSVAllStaff.m */,
 			);
 			path = DataCenter;
 			sourceTree = "<group>";
@@ -333,6 +343,7 @@
 				B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */,
 				B085480F1C7DAC600004991B /* main.m in Sources */,
 				B0DD79FA1D1029BF00E6843E /* NSVNurseTableViewCell.m in Sources */,
+				C59341851D2111A7005BFCF4 /* NSVOffice.m in Sources */,
 				B085483D1C7DBF370004991B /* NSVNurse.m in Sources */,
 				B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */,
 				B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */,
@@ -340,6 +351,7 @@
 				B08548371C7DBE9D0004991B /* NSVProject.m in Sources */,
 				B08548401C7DBF950004991B /* NSVRecord.m in Sources */,
 				B02243F41CF487DA004E2E6F /* UIColor+NSVAdditions.m in Sources */,
+				C59341881D211261005BFCF4 /* NSVAllStaff.m in Sources */,
 				B085482E1C7DB6EC0004991B /* NSVClassifyViewController.m in Sources */,
 				C5821A151D0FDCC0007D4D34 /* NSVNurses.m in Sources */,
 				C5A2EFB61D19201900460FFE /* NSVManagementEditTableViewCell.m in Sources */,
