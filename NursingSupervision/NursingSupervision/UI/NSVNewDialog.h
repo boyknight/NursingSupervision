@@ -10,4 +10,10 @@
 
 @interface NSVNewDialog : UIView
 
+@property (nonatomic, assign) BOOL showScore;
+
+-(void) setTitle:(NSString*)title;
+-(void) setNamePlaceHolder:(NSString*)placeHolder;
+
+
 @end

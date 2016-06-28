@@ -18,8 +18,7 @@
 #import "NSVIssueRecordTableViewCell.h"
 #import "NSVManagementEditTableViewCell.h"
 
-#import "XFDialogBuilder.h"
-#import "XFDialogMacro.h"
+#import "NSVNewDialog.h"
 #import "SIAlertView.h"
 
 
@@ -114,11 +113,7 @@ typedef enum{
 @property (nonatomic, strong) NSIndexPath* panMgnNurseIndexPath;
 
 
-@property (nonatomic, strong) XFDialogFrame* dialogView;
 
-
-
-//@property (nonatomic, weak) NSVAssessment* assessment;
 @property (nonatomic, strong) NSMutableArray* nurses;
 @property (nonatomic, strong) NSMutableArray* issueSearchResultArray;
 
@@ -1732,7 +1727,10 @@ typedef enum{
 }
 
 -(void) showNewClassifyDialog{
-    
+    NSVNewDialog* dialog = [[NSVNewDialog alloc] initWithFrame:self.view.bounds];
+    [dialog setTitle:@"新建分类"];
+    [dialog setNamePlaceHolder:@"分类名称"];
+    [self.view addSubview:dialog];
 }
 
 -(void) showNewProjectDialog{
