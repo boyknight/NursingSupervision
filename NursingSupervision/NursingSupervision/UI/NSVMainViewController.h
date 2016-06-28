@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "NSVClassifyViewController.h"
 #import "NSVManagementEditTableViewCell.h"
+#import "NSVNewDialog.h"
 
 
 @interface NSVMainViewController : UIViewController <UITableViewDataSource,
 UITableViewDelegate,
 UISearchBarDelegate,
-NSVManagementEditTableViewCellDelegate>
+NSVManagementEditTableViewCellDelegate,
+NSVNewDialogDelegate,
+UIAlertViewDelegate>
 
 @end

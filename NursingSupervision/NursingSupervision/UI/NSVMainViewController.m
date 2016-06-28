@@ -111,7 +111,7 @@ typedef enum{
 @property (nonatomic, assign) NSVNurseLevel panMgmNurseLevel;
 @property (nonatomic, strong) NSIndexPath* panMgnProjectIndexPath;
 @property (nonatomic, strong) NSIndexPath* panMgnNurseIndexPath;
-
+@property (nonatomic, strong) NSVNewDialog* dialogForNew;
 
 
 @property (nonatomic, strong) NSMutableArray* nurses;
@@ -884,7 +884,7 @@ typedef enum{
                 
                 if (self.panMgmProjectLevel == NSVPanMgmClassifyLevel) {
                     self.panMgmProjectLevel = NSVPanMgmProjectLevel;
-                    
+                    self.panMgmNavTitleLabel.text = @"项目";
                     self.panMgnProjectIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.row];
                     
                     [self.panMgmProjectTableView reloadData];
@@ -893,6 +893,7 @@ typedef enum{
                     
                 }else if (self.panMgmProjectLevel == NSVPanMgmProjectLevel){
                     self.panMgmProjectLevel = NSVPanMgmIssueLevel;
+                    self.panMgmNavTitleLabel.text = @"问题";
                     
                     NSInteger section = self.panMgnProjectIndexPath.section;
                     self.panMgnProjectIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:section];
@@ -908,7 +909,9 @@ typedef enum{
                 NSLog(@"select cell index path: %ld, %ld, level: %ld", (long)indexPath.section, (long)indexPath.row, (long)self.panMgmProjectLevel);
                 
                 if (self.panMgmNurseLevel == NSVPanMgmOfficeLevel) {
-                    self.panMgmNurseLevel = NSVPanMgmNurse;
+                    self.panMgmNurseLevel = NSVPanMgmNurseLevel;
+                    
+                    self.panMgmNavTitleLabel.text = @"人员";
                     
                     self.panMgnNurseIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.row];
                     
@@ -1116,10 +1119,12 @@ typedef enum{
 
 
 -(void) panMgmNavNewButtonClicked:(UIButton*)button{
-    [self showNewClassifyDialog];
+    [self showNewDialog];
 }
 
 -(void) panMgmNavBackButtonClicked:(UIButton*)button{
+    [self.panMgmProjectTableView setEditing:NO animated:YES];
+    self.panMgmNavNewButton.alpha =  1.0f;
     
     if(self.panMgmType == NSVPanMgmProject){
         if (self.panMgmProjectLevel == NSVPanMgmProjectLevel) {
@@ -1503,7 +1508,7 @@ typedef enum{
     // 清空本地缓存
     [self.nurses removeAllObjects];
     
-    NSArray* pinyinArray = @[@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+    NSArray* pinyinArray = @[@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"];
     
     
     NSMutableArray* nurses = [NSMutableArray array];
@@ -1666,6 +1671,8 @@ typedef enum{
                     self.panMgmNavBackButton.enabled = NO;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
+                
+                self.panMgmNavTitleLabel.text = @"标准";
             }
                 break;
                 
@@ -1677,6 +1684,7 @@ typedef enum{
                     self.panMgmNavBackButton.enabled = YES;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
+                self.panMgmNavTitleLabel.text = @"项目";
             }
                 break;
                 
@@ -1688,6 +1696,7 @@ typedef enum{
                     self.panMgmNavBackButton.enabled = YES;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
+                self.panMgmNavTitleLabel.text = @"问题";
             }
                 break;
                 
@@ -1706,6 +1715,8 @@ typedef enum{
                     self.panMgmNavBackButton.enabled = NO;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
+                
+                self.panMgmNavTitleLabel.text = @"科室";
             }
                 break;
                 
@@ -1717,6 +1728,7 @@ typedef enum{
                     self.panMgmNavBackButton.enabled = YES;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
+                self.panMgmNavTitleLabel.text = @"人员";
             }
                 break;
                 
@@ -1726,29 +1738,84 @@ typedef enum{
     }
 }
 
--(void) showNewClassifyDialog{
-    NSVNewDialog* dialog = [[NSVNewDialog alloc] initWithFrame:self.view.bounds];
-    [dialog setTitle:@"新建分类"];
-    [dialog setNamePlaceHolder:@"分类名称"];
-    [self.view addSubview:dialog];
-}
 
--(void) showNewProjectDialog{
+
+
+-(void) showNewDialog{
+    self.dialogForNew = [[NSVNewDialog alloc] initWithFrame:self.view.bounds];
     
-}
+    switch (self.panMgmType) {
+        case NSVPanMgmProject:{
+            switch (self.panMgmProjectLevel) {
+                case NSVPanMgmClassifyLevel:{
+                    [self.dialogForNew setTitle:@"新建标准"];
+                    [self.dialogForNew setNamePlaceHolder:@"标准名称"];
+                    [self.dialogForNew setShowScoreTextField:NO];
+                    self.dialogForNew.panMgmLevel = self.panMgmProjectLevel;
+                    self.dialogForNew.indexPath = self.panMgnProjectIndexPath;
+                }
+                    break;
+                    
+                case NSVPanMgmProjectLevel:{
+                    [self.dialogForNew setTitle:@"新建项目"];
+                    [self.dialogForNew setNamePlaceHolder:@"项目名称"];
+                    [self.dialogForNew setShowScoreTextField:NO];
+                    self.dialogForNew.panMgmLevel = self.panMgmProjectLevel;
+                    self.dialogForNew.indexPath = self.panMgnProjectIndexPath;
+                }
+                    break;
+                    
+                case NSVPanMgmIssueLevel:{
+                    [self.dialogForNew setTitle:@"新建问题"];
+                    [self.dialogForNew setNamePlaceHolder:@"问题名称"];
+                    [self.dialogForNew setScorePlaceHolder:@"分值"];
+                    [self.dialogForNew setShowScoreTextField:YES];
+                    self.dialogForNew.panMgmLevel = self.panMgmProjectLevel;
+                    self.dialogForNew.indexPath = self.panMgnProjectIndexPath;
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
 
--(void)showNewIssueDialog{
+        case NSVPanMgmNurse:{
+            switch (self.panMgmNurseLevel) {
+                case NSVPanMgmOfficeLevel:{
+                    [self.dialogForNew setTitle:@"新建科室"];
+                    [self.dialogForNew setNamePlaceHolder:@"科室名称"];
+                    [self.dialogForNew setShowScoreTextField:NO];
+                    self.dialogForNew.panMgmLevel = self.panMgmNurseLevel;
+                    self.dialogForNew.indexPath = self.panMgnNurseIndexPath;
+                }
+                    break;
+                    
+                case NSVPanMgmNurseLevel:{
+                    [self.dialogForNew setTitle:@"新建人员"];
+                    [self.dialogForNew setNamePlaceHolder:@"姓名"];
+                    [self.dialogForNew setShowScoreTextField:NO];
+                    self.dialogForNew.panMgmLevel = self.panMgmNurseLevel;
+                    self.dialogForNew.indexPath = self.panMgnNurseIndexPath;
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
     
-}
-
--(void)showNewOfficeDialog{
+    self.dialogForNew.panMgmType = self.panMgmType;
     
+    self.dialogForNew.delegate = self;
+    [self.view addSubview:self.dialogForNew];
 }
-
--(void)showNewNurseDialog{
-    
-}
-
 
 
 #pragma mark - UISearchBarDelegate
@@ -1796,18 +1863,29 @@ typedef enum{
 
 -(void) keyboardWillChange:(NSNotification*)notification{
     
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardRect = [aValue CGRectValue];
-    
-    CGRect panBgViewFrame = self.projectAndNurseManagementBgView.frame;
-    panBgViewFrame.size.height = self.view.frame.size.height - StatusBarHeight - keyboardRect.size.height;
-    self.projectAndNurseManagementBgView.frame = panBgViewFrame;
-    
-    
-    CGRect panProjectTableViewFrame = self.panMgmProjectTableView.frame;
-    panProjectTableViewFrame.size.height = self.view.frame.size.height - StatusBarHeight - 44.0f - keyboardRect.size.height;
-    self.panMgmProjectTableView.frame = panProjectTableViewFrame;
+    if (self.panMgmProjectTableView.isEditing) {
+        NSDictionary *userInfo = [notification userInfo];
+        NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+        CGRect keyboardRect = [aValue CGRectValue];
+        
+        CGRect panBgViewFrame = self.projectAndNurseManagementBgView.frame;
+        panBgViewFrame.size.height = self.view.frame.size.height - StatusBarHeight - keyboardRect.size.height;
+        self.projectAndNurseManagementBgView.frame = panBgViewFrame;
+        
+        
+        CGRect panProjectTableViewFrame = self.panMgmProjectTableView.frame;
+        panProjectTableViewFrame.size.height = self.view.frame.size.height - StatusBarHeight - 44.0f - keyboardRect.size.height;
+        self.panMgmProjectTableView.frame = panProjectTableViewFrame;
+    }else if (self.dialogForNew != nil){
+        
+        NSDictionary *userInfo = [notification userInfo];
+        NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+        CGRect keyboardRect = [aValue CGRectValue];
+        
+        CGRect dialogFrame = self.dialogForNew.frame;
+        dialogFrame.size.height = self.view.frame.size.height - StatusBarHeight - keyboardRect.size.height;
+        self.dialogForNew.frame = dialogFrame;
+    }
 }
 
 #pragma mark - NSVManagementEditTableViewCellDelegate
@@ -1867,40 +1945,208 @@ typedef enum{
 }
 
 -(void) tableViewCell:(NSVManagementEditTableViewCell*)cell deleteButtonClickedWithLevel:(NSNumber*)level indexPathRow:(NSInteger)row{
-    if(self.panMgmProjectLevel == [level integerValue]){
-        if (self.panMgmProjectLevel == NSVPanMgmClassifyLevel) {
-            [[NSVDataCenter defaultCenter].assessment.classifies removeObjectAtIndex:row];
-            
-            [[NSVDataCenter defaultCenter] save];
-            
-            [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-            [self.projectTableView reloadData];
-            
-            
-        }else if(self.panMgmProjectLevel == NSVPanMgmProjectLevel){
-            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnProjectIndexPath.section];
-            
-            [c.projects removeObjectAtIndex:row];
-            
-            [[NSVDataCenter defaultCenter] save];
-            
-            [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-            
-            [self.projectTableView reloadData];
-        }else if (self.panMgmProjectLevel == NSVPanMgmIssueLevel){
-            NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnProjectIndexPath.section];
-            
-            NSVProject* p = c.projects[self.panMgnProjectIndexPath.row];
-            
-            [p.issues removeObjectAtIndex:row];
-            
-            [[NSVDataCenter defaultCenter] save];
-            
-            [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-            
-            [self.issueTableView reloadData];
+    
+    UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@""
+                                                   message:@"确定要删除吗?"
+                                                  delegate:self
+                                         cancelButtonTitle:@"取消"
+                                         otherButtonTitles:@"确定", nil];
+    alert.tag = row;
+    [alert show];
+    
+
+}
+
+#pragma mark - NSVNewDialogDelegate
+
+-(void) dialogOkButtonClicked:(NSVNewDialog*)dialog nameField:(NSString *)name scoreField:(NSString *)score panMgmType:(NSInteger)type panMgmLevel:(NSInteger)level indexPath:(NSIndexPath*)indexPath{
+    [self.panMgmProjectTableView reloadData];
+    
+    
+    switch (type) {
+        case NSVPanMgmProject:{
+            switch (level) {
+                case NSVPanMgmClassifyLevel:{
+                    
+                    NSVClassify* c = [[NSVClassify alloc] init];
+                    c.name = name;
+                    c.projects = [NSMutableArray<NSVProject> array];
+                    
+                    [[NSVDataCenter defaultCenter].assessment.classifies addObject:c];
+                    [[NSVDataCenter defaultCenter] save];
+                    [self.panMgmProjectTableView reloadData];
+                    [self.projectTableView reloadData];
+                    
+                }
+                    break;
+                    
+                case NSVPanMgmProjectLevel:{
+                    NSVProject* p = [[NSVProject alloc] init];
+                    p.name = name;
+                    p.issues = [NSMutableArray<NSVIssue> array];
+                    
+                    NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[indexPath.section];
+                    [c.projects addObject:p];
+                    
+                    [[NSVDataCenter defaultCenter] save];
+                    [self.panMgmProjectTableView reloadData];
+                    [self.projectTableView reloadData];
+                }
+                    break;
+                    
+                case NSVPanMgmIssueLevel:{
+                    NSVIssue* i = [[NSVIssue alloc] init];
+                    i.name = name;
+                    i.score = [score floatValue];
+                    
+                    NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[indexPath.section];
+                    NSVProject* p = c.projects[indexPath.row];
+                    
+                    [p.issues addObject:i];
+                    
+                    [[NSVDataCenter defaultCenter] save];
+                    [self.panMgmProjectTableView reloadData];
+                    [self.issueTableView reloadData];
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
         }
+            break;
+            
+        case NSVPanMgmNurse:{
+            switch (level) {
+                case NSVPanMgmOfficeLevel:{
+                    NSVOffice* o = [[NSVOffice alloc] init];
+                    o.name = name;
+                    o.nurses = [NSMutableArray<NSVNurse> array];
+                    
+                    [[NSVDataCenter defaultCenter].staffs.offices addObject:o];
+                    [[NSVDataCenter defaultCenter] save];
+                    [self.panMgmProjectTableView reloadData];
+                    [self.nurseTableView reloadData];
+                }
+                    break;
+                    
+                case NSVPanMgmNurseLevel:{
+                    NSVNurse* n = [[NSVNurse alloc] init];
+                    n.name = name;
+                    
+                    NSVOffice* o = [NSVDataCenter defaultCenter].staffs.offices[indexPath.section];
+                    
+                    [o.nurses addObject:n];
+                    
+                    [[NSVDataCenter defaultCenter] save];
+                    [self.panMgmProjectTableView reloadData];
+                    
+                    [self refreshNursesData];
+                    [self.nurseTableView reloadData];
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        default:
+            break;
     }
+    
+    self.dialogForNew = nil;
+}
+
+-(void) dialogCancelButtonClicked:(NSVNewDialog*)dialog{
+    self.dialogForNew = nil;
+}
+
+#pragma  mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (buttonIndex != 1) {
+        return;
+    }
+    
+    NSInteger row = alertView.tag;
+    
+    switch (self.panMgmType) {
+        case NSVPanMgmProject:{
+//            if(self.panMgmProjectLevel == [level integerValue]){
+                if (self.panMgmProjectLevel == NSVPanMgmClassifyLevel) {
+                    [[NSVDataCenter defaultCenter].assessment.classifies removeObjectAtIndex:row];
+                    
+                    [[NSVDataCenter defaultCenter] save];
+                    
+                    [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    [self.projectTableView reloadData];
+                    
+                    
+                }else if(self.panMgmProjectLevel == NSVPanMgmProjectLevel){
+                    NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnProjectIndexPath.section];
+                    
+                    [c.projects removeObjectAtIndex:row];
+                    
+                    [[NSVDataCenter defaultCenter] save];
+                    
+                    [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [self.projectTableView reloadData];
+                }else if (self.panMgmProjectLevel == NSVPanMgmIssueLevel){
+                    NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnProjectIndexPath.section];
+                    
+                    NSVProject* p = c.projects[self.panMgnProjectIndexPath.row];
+                    
+                    [p.issues removeObjectAtIndex:row];
+                    
+                    [[NSVDataCenter defaultCenter] save];
+                    
+                    [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [self.issueTableView reloadData];
+                }
+//            }
+        }
+            break;
+            
+            
+        case NSVPanMgmNurse:{
+//            if(self.panMgmNurseLevel == [level integerValue]){
+                if (self.panMgmNurseLevel == NSVPanMgmOfficeLevel) {
+                    [[NSVDataCenter defaultCenter].staffs.offices removeObjectAtIndex:row];
+                    
+                    [[NSVDataCenter defaultCenter] save];
+                    
+                    [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    [self refreshNursesData];
+                    [self.nurseTableView reloadData];
+                    
+                    
+                }else if(self.panMgmNurseLevel == NSVPanMgmNurseLevel){
+                    NSVOffice* o = [NSVDataCenter defaultCenter].staffs.offices[self.panMgnNurseIndexPath.section];
+                    
+                    [o.nurses removeObjectAtIndex:row];
+                    
+                    [[NSVDataCenter defaultCenter] save];
+                    
+                    
+                    [self.panMgmProjectTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    [self.panMgmProjectTableView reloadData];
+                    
+                    [self refreshNursesData];
+                    [self.nurseTableView reloadData];
+                }
+//            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+
+
 }
 
 @end
