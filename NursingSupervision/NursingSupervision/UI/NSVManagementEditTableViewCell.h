@@ -30,4 +30,6 @@
 
 @property (nonatomic, weak) id<NSVManagementEditTableViewCellDelegate> delegate;
 
+-(void) setPlaceHolder:(NSString*)placeHolder;
+
 @end

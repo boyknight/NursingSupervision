@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1C4D14C7884C5FB22F6BE6A3 /* libPods-NursingSupervision.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B43E7F4770DBA37A1444FAE /* libPods-NursingSupervision.a */; };
 		B02243F41CF487DA004E2E6F /* UIColor+NSVAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */; };
+		B0527B2A1D21677F00DC0472 /* NSVNewDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = B0527B291D21677F00DC0472 /* NSVNewDialog.m */; };
 		B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B07FE80F1CF5E4360052F2DA /* NSVProjectItemTableViewCell.m */; };
 		B085480F1C7DAC600004991B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B085480E1C7DAC600004991B /* main.m */; };
 		B08548121C7DAC600004991B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548111C7DAC600004991B /* AppDelegate.m */; };
@@ -38,6 +39,8 @@
 		61A5B5541A3BB4A0A046B12B /* Pods-NursingSupervision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NursingSupervision.release.xcconfig"; path = "Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision.release.xcconfig"; sourceTree = "<group>"; };
 		B02243F21CF487DA004E2E6F /* UIColor+NSVAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+NSVAdditions.h"; sourceTree = "<group>"; };
 		B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NSVAdditions.m"; sourceTree = "<group>"; };
+		B0527B281D21677F00DC0472 /* NSVNewDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVNewDialog.h; sourceTree = "<group>"; };
+		B0527B291D21677F00DC0472 /* NSVNewDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNewDialog.m; sourceTree = "<group>"; };
 		B07FE80E1CF5E4360052F2DA /* NSVProjectItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVProjectItemTableViewCell.h; sourceTree = "<group>"; };
 		B07FE80F1CF5E4360052F2DA /* NSVProjectItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVProjectItemTableViewCell.m; sourceTree = "<group>"; };
 		B085480A1C7DAC600004991B /* NursingSupervision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NursingSupervision.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,6 +164,8 @@
 				C5007B481D10FA8900EFABE6 /* NSVIssueRecordTableViewCell.m */,
 				C5A2EFB41D19201900460FFE /* NSVManagementEditTableViewCell.h */,
 				C5A2EFB51D19201900460FFE /* NSVManagementEditTableViewCell.m */,
+				B0527B281D21677F00DC0472 /* NSVNewDialog.h */,
+				B0527B291D21677F00DC0472 /* NSVNewDialog.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -340,6 +345,7 @@
 				B08548121C7DAC600004991B /* AppDelegate.m in Sources */,
 				B08548341C7DBE8F0004991B /* NSVClassify.m in Sources */,
 				B0B22D3E1C82F6450040DA49 /* NSVAssessment.m in Sources */,
+				B0527B2A1D21677F00DC0472 /* NSVNewDialog.m in Sources */,
 				B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */,
 				B085480F1C7DAC600004991B /* main.m in Sources */,
 				B0DD79FA1D1029BF00E6843E /* NSVNurseTableViewCell.m in Sources */,

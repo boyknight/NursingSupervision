@@ -233,4 +233,9 @@
         [self.delegate tableViewCell:self deleteButtonClickedWithLevel:self.level indexPathRow:self.row];
     }
 }
+
+-(void) setPlaceHolder:(NSString*)placeHolder{
+    self.nameTextField.placeholder = placeHolder;
+}
+
 @end

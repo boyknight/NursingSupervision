@@ -18,6 +18,8 @@
 #import "NSVIssueRecordTableViewCell.h"
 #import "NSVManagementEditTableViewCell.h"
 
+#import "XFDialogBuilder.h"
+#import "XFDialogMacro.h"
 #import "SIAlertView.h"
 
 
@@ -100,11 +102,11 @@ typedef enum{
 // 问题和人员管理
 @property (nonatomic, strong) UIView* projectAndNurseManagementBgView;
 @property (nonatomic, strong) UIView* panMgmNavView;
-@property (nonatomic, strong) UIButton* panMgmNavBackButton;
 @property (nonatomic, strong) UILabel* panMgmNavTitleLabel;
+@property (nonatomic, strong) UIButton* panMgmNavBackButton;
+@property (nonatomic, strong) UIButton* panMgmNavNewButton;
 @property (nonatomic, strong) UIButton* panMgmNavEditButton;
 @property (nonatomic, strong) UITableView* panMgmProjectTableView;
-@property (nonatomic, strong) UITableView* panMgmNurseTableView;
 @property (nonatomic, assign) NSVPanMgmType panMgmType;
 @property (nonatomic, assign) NSVProjectLevel panMgmProjectLevel;
 @property (nonatomic, assign) NSVNurseLevel panMgmNurseLevel;
@@ -112,7 +114,7 @@ typedef enum{
 @property (nonatomic, strong) NSIndexPath* panMgnNurseIndexPath;
 
 
-
+@property (nonatomic, strong) XFDialogFrame* dialogView;
 
 
 
@@ -292,6 +294,7 @@ typedef enum{
                 
                 count = p.issues.count;
             }
+
         }
         // 护士 编辑
         else if (self.panMgmType == NSVPanMgmNurse){
@@ -457,7 +460,6 @@ typedef enum{
                 tableCell.level = [NSNumber numberWithInteger:NSVPanMgmClassifyLevel];
                 tableCell.row = indexPath.row;
                 tableCell.showIndicator = YES;
-                
             }else if (self.panMgmProjectLevel == NSVPanMgmProjectLevel){
                 NSVClassify* c = [NSVDataCenter defaultCenter].assessment.classifies[self.panMgnProjectIndexPath.section];
                 NSVProject* p = c.projects[indexPath.row];
@@ -786,20 +788,27 @@ typedef enum{
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    // 左侧 项目列表
     if (tableView == self.projectTableView) {
         
         if (indexPath != self.selectedProjectIndexPath) {
             self.selectedProjectIndexPath = indexPath;
             [self.issueTableView reloadData];
         }
-    }else if (tableView == self.projectManagementTableView){
+    }
+    // 左侧 项目管理列表
+    else if (tableView == self.projectManagementTableView){
         
         
         if (indexPath.row == 0) {
             if(self.panMgmType != NSVPanMgmProject){
                 self.panMgmType = NSVPanMgmProject;
                 
+                [self.panMgmProjectTableView setEditing:NO animated:YES];
                 [self.panMgmProjectTableView reloadData];
+                
+                [self refreshPanMgmButtonStatus];
                 
             }
             
@@ -809,12 +818,17 @@ typedef enum{
                 self.panMgmType = NSVPanMgmNurse;
                 
                 [self refreshNursesData];
+                [self.panMgmProjectTableView setEditing:NO animated:YES];
                 [self.panMgmProjectTableView reloadData];
+                
+                [self refreshPanMgmButtonStatus];
             }
             
         }
         
-    }else if (tableView == self.issueTableView){
+    }
+    // 右侧 问题记录列表
+    else if (tableView == self.issueTableView){
         
         NSVIssue* issue = nil;
         
@@ -844,7 +858,9 @@ typedef enum{
             self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0xd7d7d5];
         }
         
-    }else if (tableView == self.nurseTableView){
+    }
+    // 右侧 护士列表
+    else if (tableView == self.nurseTableView){
         NSArray* selected = [self.nurseTableView indexPathsForSelectedRows];
         
         if (selected.count == 0) {
@@ -854,35 +870,62 @@ typedef enum{
             self.issueRecordCommitButton.enabled = YES;
             self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0x71a960];
         }
-    }else if(tableView == self.issueSearchResultTableView){
+    }
+    
+    // 右侧 问题搜索结果列表
+    else if(tableView == self.issueSearchResultTableView){
         NSVIssue* issueSelected = self.issueSearchResultArray[indexPath.row];
         
         [self selectProjectAndIssue:issueSelected];
         [self searchBarCancelButtonClicked:self.issueSearchBar];
-    }else if (tableView == self.panMgmProjectTableView){
+    }
+    
+    // 右侧 项目和护士编辑列表
+    else if (tableView == self.panMgmProjectTableView){
         
-        if (!self.panMgmProjectTableView.isEditing) {
-            NSLog(@"select cell index path: %ld, %ld, level: %ld", (long)indexPath.section, (long)indexPath.row, (long)self.panMgmProjectLevel);
-            
-            if (self.panMgmProjectLevel == NSVPanMgmClassifyLevel) {
-                self.panMgmProjectLevel = NSVPanMgmProjectLevel;
+        if (self.panMgmType == NSVPanMgmProject) {
+            if (!self.panMgmProjectTableView.isEditing) {
+                NSLog(@"select cell index path: %ld, %ld, level: %ld", (long)indexPath.section, (long)indexPath.row, (long)self.panMgmProjectLevel);
                 
-                self.panMgnProjectIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.row];
-                
-                [self.panMgmProjectTableView reloadData];
-                
-                self.panMgmNavBackButton.enabled = YES;
-                
-            }else if (self.panMgmProjectLevel == NSVPanMgmProjectLevel){
-                self.panMgmProjectLevel = NSVPanMgmIssueLevel;
-                
-                NSInteger section = self.panMgnProjectIndexPath.section;
-                self.panMgnProjectIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:section];
-                
-                [self.panMgmProjectTableView reloadData];
-                self.panMgmNavBackButton.enabled = YES;
+                if (self.panMgmProjectLevel == NSVPanMgmClassifyLevel) {
+                    self.panMgmProjectLevel = NSVPanMgmProjectLevel;
+                    
+                    self.panMgnProjectIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.row];
+                    
+                    [self.panMgmProjectTableView reloadData];
+                    
+                    self.panMgmNavBackButton.enabled = YES;
+                    
+                }else if (self.panMgmProjectLevel == NSVPanMgmProjectLevel){
+                    self.panMgmProjectLevel = NSVPanMgmIssueLevel;
+                    
+                    NSInteger section = self.panMgnProjectIndexPath.section;
+                    self.panMgnProjectIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:section];
+                    
+                    [self.panMgmProjectTableView reloadData];
+                    self.panMgmNavBackButton.enabled = YES;
+                }
             }
         }
+        
+        else if (self.panMgmType == NSVPanMgmNurse){
+            if (!self.panMgmProjectTableView.isEditing) {
+                NSLog(@"select cell index path: %ld, %ld, level: %ld", (long)indexPath.section, (long)indexPath.row, (long)self.panMgmProjectLevel);
+                
+                if (self.panMgmNurseLevel == NSVPanMgmOfficeLevel) {
+                    self.panMgmNurseLevel = NSVPanMgmNurse;
+                    
+                    self.panMgnNurseIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.row];
+                    
+                    [self.panMgmProjectTableView reloadData];
+                    
+                    self.panMgmNavBackButton.enabled = YES;
+                }
+            }
+        }
+        
+        
+
     }
 }
 
@@ -1064,24 +1107,54 @@ typedef enum{
 
 -(void) panMgmNavEditButtonClicked:(UIButton*)button{
     if (self.panMgmProjectTableView.isEditing) {
+        self.panMgmNavNewButton.alpha = 1.0f;
         [button setTitle:@"编辑" forState:UIControlStateNormal];
         [self.panMgmProjectTableView setEditing:NO animated:YES];
         [self.panMgmProjectTableView reloadData];
     }else{
+        self.panMgmNavNewButton.alpha = 0.0f;
         [button setTitle:@"完成" forState:UIControlStateNormal];
         [self.panMgmProjectTableView setEditing:YES animated:YES];
+        [self.panMgmProjectTableView reloadData];
     }
 }
 
+
+-(void) panMgmNavNewButtonClicked:(UIButton*)button{
+    [self showNewClassifyDialog];
+}
+
 -(void) panMgmNavBackButtonClicked:(UIButton*)button{
-    if (self.panMgmProjectLevel == NSVPanMgmProjectLevel) {
-        self.panMgmProjectLevel = NSVPanMgmClassifyLevel;
-        button.enabled = NO;
-        [self.panMgmProjectTableView reloadData];
-    }else if (self.panMgmProjectLevel == NSVPanMgmIssueLevel) {
-        self.panMgmProjectLevel = NSVPanMgmProjectLevel;
-        [self.panMgmProjectTableView reloadData];
+    
+    if(self.panMgmType == NSVPanMgmProject){
+        if (self.panMgmProjectLevel == NSVPanMgmProjectLevel) {
+            self.panMgmProjectLevel = NSVPanMgmClassifyLevel;
+            button.enabled = NO;
+            [self.panMgmProjectTableView reloadData];
+            
+            self.panMgmNavTitleLabel.text = @"标准";
+            
+            
+        }else if (self.panMgmProjectLevel == NSVPanMgmIssueLevel) {
+            self.panMgmProjectLevel = NSVPanMgmProjectLevel;
+            [self.panMgmProjectTableView reloadData];
+            
+            self.panMgmNavTitleLabel.text = @"项目";
+        }
     }
+    
+    else if (self.panMgmType == NSVPanMgmNurse){
+        if (self.panMgmNurseLevel == NSVPanMgmNurse) {
+            self.panMgmNurseLevel = NSVPanMgmOfficeLevel;
+            button.enabled = NO;
+            
+            [self.panMgmProjectTableView reloadData];
+            
+            self.panMgmNavTitleLabel.text = @"科室";
+        }
+    }
+    
+
 }
 
 #pragma mark - 初始化界面
@@ -1393,7 +1466,15 @@ typedef enum{
     self.panMgmNavEditButton.titleLabel.textAlignment = NSTextAlignmentRight;
     [self.panMgmNavEditButton addTarget:self action:@selector(panMgmNavEditButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.panMgmNavView addSubview:self.panMgmNavEditButton];
-//    self.panMgmNavEditButton.alpha = 0.0f;
+
+    // 新建按钮 panMgmNavNewButton
+    self.panMgmNavNewButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.panMgmNavNewButton.frame = CGRectMake(self.panMgmNavView.frame.size.width - 85.0f - 60.0f - 10.0f, 0.0f, 60.0f, 44.0f);
+    [self.panMgmNavNewButton setTitle:@"新建" forState:UIControlStateNormal];
+    self.panMgmNavNewButton.enabled = YES;
+    self.panMgmNavNewButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    [self.panMgmNavNewButton addTarget:self action:@selector(panMgmNavNewButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.panMgmNavView addSubview:self.panMgmNavNewButton];
     
     // 导航栏 标题
     self.panMgmNavTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.panMgmNavBackButton.frame.origin.x + self.panMgmNavBackButton.frame.size.width + 20.0f,
@@ -1578,6 +1659,99 @@ typedef enum{
                                          otherButtonTitles:nil];
     [alert show];
 }
+
+-(void) refreshPanMgmButtonStatus{
+    if (self.panMgmType == NSVPanMgmProject) {
+        switch (self.panMgmProjectLevel) {
+            case NSVPanMgmClassifyLevel:{
+                if (self.panMgmProjectTableView.isEditing) {
+                    self.panMgmNavBackButton.enabled = NO;
+                    [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
+                }else{
+                    self.panMgmNavBackButton.enabled = NO;
+                    [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
+                }
+            }
+                break;
+                
+            case NSVPanMgmProjectLevel:{
+                if (self.panMgmProjectTableView.isEditing) {
+                    self.panMgmNavBackButton.enabled = NO;
+                    [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
+                }else{
+                    self.panMgmNavBackButton.enabled = YES;
+                    [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
+                }
+            }
+                break;
+                
+            case NSVPanMgmIssueLevel:{
+                if (self.panMgmProjectTableView.isEditing) {
+                    self.panMgmNavBackButton.enabled = NO;
+                    [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
+                }else{
+                    self.panMgmNavBackButton.enabled = YES;
+                    [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
+                }
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    else if(self.panMgmType == NSVPanMgmNurse){
+        switch (self.panMgmNurseLevel) {
+            case NSVPanMgmOfficeLevel:{
+                if (self.panMgmProjectTableView.isEditing) {
+                    self.panMgmNavBackButton.enabled = NO;
+                    [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
+                }else{
+                    self.panMgmNavBackButton.enabled = NO;
+                    [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
+                }
+            }
+                break;
+                
+            case NSVPanMgmNurseLevel:{
+                if (self.panMgmProjectTableView.isEditing) {
+                    self.panMgmNavBackButton.enabled = NO;
+                    [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
+                }else{
+                    self.panMgmNavBackButton.enabled = YES;
+                    [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
+                }
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+-(void) showNewClassifyDialog{
+    
+}
+
+-(void) showNewProjectDialog{
+    
+}
+
+-(void)showNewIssueDialog{
+    
+}
+
+-(void)showNewOfficeDialog{
+    
+}
+
+-(void)showNewNurseDialog{
+    
+}
+
+
 
 #pragma mark - UISearchBarDelegate
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
