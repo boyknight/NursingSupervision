@@ -8,6 +8,8 @@ target 'NursingSupervision' do
 pod 'PinYin4Objc'
 pod 'JSONModel'
 pod 'SIAlertView'
+pod 'AMPopTip'
+
 
 end
 

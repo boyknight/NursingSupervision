@@ -3,7 +3,7 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "icon_29@2x.png",
+      "filename" : "nurse_58-1.png",
       "scale" : "2x"
     },
     {
@@ -15,7 +15,7 @@
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "icon_40@2x.png",
+      "filename" : "nurse_80.png",
       "scale" : "2x"
     },
     {
@@ -39,37 +39,37 @@
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "icon_29.png",
+      "filename" : "nurse_29.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "icon_29@2x-1.png",
+      "filename" : "nurse_58.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "icon_40.png",
+      "filename" : "nurse_40.png",
       "scale" : "1x"
     },
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "icon_40@2x-1.png",
+      "filename" : "nurse_80-1.png",
       "scale" : "2x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "icon_76.png",
+      "filename" : "nurse_76.png",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "icon_76@2x.png",
+      "filename" : "nurse_152.png",
       "scale" : "2x"
     },
     {

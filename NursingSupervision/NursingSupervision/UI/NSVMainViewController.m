@@ -85,6 +85,28 @@ typedef enum{
 @property (nonatomic, strong) UIButton* historySwitchButton;
 
 
+@property (nonatomic, strong) UILabel* pickDateLabel;
+@property (nonatomic, strong) UILabel* pickStartDateLable;
+@property (nonatomic, strong) UILabel* startDateLabel;
+@property (nonatomic, strong) UILabel* pickEndDateLable;
+@property (nonatomic, strong) UILabel* endDateLabel;
+
+@property (nonatomic, strong) UILabel* pickIssueLabel;
+@property (nonatomic, strong) UIImageView* pickIssueIconView;
+@property (nonatomic, strong) UIButton* pickIssueButton;
+@property (nonatomic, strong) UIButton* removePickedIssueButton;
+@property (nonatomic, strong) UILabel* pickNurseLable;
+@property (nonatomic, strong) UIImageView* pickNurseIconView;
+@property (nonatomic, strong) UIButton* pickNurseButton;
+@property (nonatomic, strong) UIButton* removePickedNurseButton;
+
+@property (nonatomic, strong) UIButton* exportHistoryButton;
+
+
+@property (nonatomic, strong) NSDate* historyStartDate;
+@property (nonatomic, strong) NSDate* historyEndDate;
+
+
 // 右侧部分
 
 // 记录问题
@@ -112,6 +134,8 @@ typedef enum{
 @property (nonatomic, strong) NSIndexPath* panMgnProjectIndexPath;
 @property (nonatomic, strong) NSIndexPath* panMgnNurseIndexPath;
 @property (nonatomic, strong) NSVNewDialog* dialogForNew;
+
+// 报表
 
 
 @property (nonatomic, strong) NSMutableArray* nurses;
@@ -146,6 +170,9 @@ typedef enum{
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.historyStartDate = [NSDate date];
+    self.historyEndDate = [NSDate date];
     
     self.width = self.view.frame.size.width;
     self.height = self.view.frame.size.height;
@@ -1309,23 +1336,70 @@ typedef enum{
     
     [self.historyBgView addSubview:self.historyLabel];
     
-    // 历史 列表
-    self.historyTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
-                                                                          NSVProjectLabelHeight,
-                                                                          NSVLeftAreaWidth,
-                                                                          self.deltaOfLeftHeight) style:UITableViewStylePlain];
-    self.historyTableView.dataSource = self;
-    self.historyTableView.delegate = self;
-    self.historyTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
-    self.historyTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    [self.historyBgView addSubview:self.historyTableView];
+    // 选时间 文字标签
+    self.pickDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                   historyLabelBgView.frame.origin.y + historyLabelBgView.frame.size.height + 9.0f,
+                                                                   self.historyBgView.frame.size.width,
+                                                                   25.0f)];
+    NSString* pickDateLabelText = @"选时间";
+    self.pickDateLabel.backgroundColor = [UIColor colorWithRGBHex:0xd6dbd2];
+    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:pickDateLabelText];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13.0f] range:NSMakeRange(0, pickDateLabelText.length)];
+    [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRGBHex:0x747474] range:NSMakeRange(0, pickDateLabelText.length)];
+    
+    NSMutableParagraphStyle* style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    style.headIndent = 15.0f;
+    style.tailIndent = -15.0f;
+    style.firstLineHeadIndent = 15.0f;
+    [attrString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, pickDateLabelText.length)];
+    
+    self.pickDateLabel.attributedText = attrString;
+    
+    [self.historyBgView addSubview:self.pickDateLabel];
+    
+    // 开始时间 文字标签
+    self.pickStartDateLable = [[UILabel alloc] initWithFrame:CGRectMake(25.0f,
+                                                                        self.pickDateLabel.frame.origin.y + self.pickDateLabel.frame.size.height + 4.0f,
+                                                                        30.0f,
+                                                                        25.0f)];
+    
+    NSString* pickStartDateLabelText = @"开始";
+    self.pickDateLabel.backgroundColor = [UIColor clearColor];
+    attrString = [[NSMutableAttributedString alloc] initWithString:pickStartDateLabelText];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:16.0f] range:NSMakeRange(0, pickDateLabelText.length)];
+    [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRGBHex:0x36363d] range:NSMakeRange(0, pickDateLabelText.length)];
+    
+//    NSMutableParagraphStyle* style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+//    style.headIndent = 15.0f;
+//    style.tailIndent = -15.0f;
+//    style.firstLineHeadIndent = 15.0f;
+//    [attrString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, pickDateLabelText.length)];
+    
+    self.pickDateLabel.attributedText = attrString;
+    [self.historyBgView addSubview:self.pickStartDateLable];
+    
+//    // 历史 列表
+//    self.historyTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
+//                                                                          NSVProjectLabelHeight,
+//                                                                          NSVLeftAreaWidth,
+//                                                                          self.deltaOfLeftHeight) style:UITableViewStylePlain];
+//    self.historyTableView.dataSource = self;
+//    self.historyTableView.delegate = self;
+//    self.historyTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+//    self.historyTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    
+//    [self.historyBgView addSubview:self.historyTableView];
     
     // 历史 切换按钮
     self.historySwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.historySwitchButton.frame = historyLabelBgView.frame;
     [self.historySwitchButton addTarget:self action:@selector(historySwitchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.historyBgView addSubview:self.historySwitchButton];
+    
+    
+
+    
 }
 
 -(void) initIssueRecordOfRightSide{
