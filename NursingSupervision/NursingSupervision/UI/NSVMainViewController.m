@@ -20,6 +20,7 @@
 
 #import "NSVNewDialog.h"
 #import "SIAlertView.h"
+#import "AMPopTip.h"
 
 
 #define NSVLeftAreaWidth 225.0f
@@ -90,6 +91,17 @@ typedef enum{
 @property (nonatomic, strong) UILabel* startDateLabel;
 @property (nonatomic, strong) UILabel* pickEndDateLable;
 @property (nonatomic, strong) UILabel* endDateLabel;
+@property (nonatomic, strong) UIButton* pickStartDateButton;
+@property (nonatomic, strong) UIButton* pickEndDateButton;
+@property (nonatomic, strong) UIImageView* startDateIndicatorIcon;
+@property (nonatomic, strong) UIImageView* endDateIndicatorIcon;
+@property (nonatomic, strong) UIView* datePickerBgView;
+@property (nonatomic, strong) UIView* datePickerTitleView;
+@property (nonatomic, strong) UIButton* datePickerCancelButton;
+@property (nonatomic, strong) UIButton* datePickerOKButton;
+@property (nonatomic, strong) UILabel* datePickerTitleLabel;
+@property (nonatomic, strong) UIDatePicker* datePicker;
+@property (nonatomic, strong) AMPopTip* popTip;
 
 @property (nonatomic, strong) UILabel* pickIssueLabel;
 @property (nonatomic, strong) UIImageView* pickIssueIconView;
@@ -105,6 +117,8 @@ typedef enum{
 
 @property (nonatomic, strong) NSDate* historyStartDate;
 @property (nonatomic, strong) NSDate* historyEndDate;
+
+
 
 
 // 右侧部分
@@ -1184,6 +1198,27 @@ typedef enum{
 
 }
 
+-(void)historyStartDateButtonClicked:(UIButton*)button{
+    self.popTip = [AMPopTip popTip];
+    self.popTip.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.popTip.layer.shadowRadius = 4.0f;
+    self.popTip.layer.shadowOpacity = 0.4f;
+    self.popTip.layer.shadowOffset = CGSizeMake(3.0f, 3.0f);
+    self.popTip.popoverColor = [UIColor whiteColor];
+    self.popTip.edgeInsets = UIEdgeInsetsMake(-6.0f, -6.0f, -6.0f, -6.0f);
+    self.popTip.radius = 9.0f;
+    
+    CGRect fromFrame = CGRectMake(self.startDateIndicatorIcon.frame.origin.x + self.startDateIndicatorIcon.frame.size.width,
+                                  self.historyBgView.frame.origin.y + self.startDateIndicatorIcon.frame.origin.y,
+                                  self.startDateIndicatorIcon.frame.size.width,
+                                  self.startDateIndicatorIcon.frame.size.height);
+    [self.popTip showCustomView:self.datePickerBgView direction:AMPopTipDirectionRight inView:self.view fromFrame:fromFrame];
+}
+
+-(void)historyEndDateButtonClicked:(UIButton*)button{
+    
+}
+
 #pragma mark - 初始化界面
 -(void) initIssueRecordOfLeftSide{
     // 记录问题 背景视图
@@ -1358,38 +1393,143 @@ typedef enum{
     
     [self.historyBgView addSubview:self.pickDateLabel];
     
-    // 开始时间 文字标签
+    // 开始 文字标签
     self.pickStartDateLable = [[UILabel alloc] initWithFrame:CGRectMake(25.0f,
-                                                                        self.pickDateLabel.frame.origin.y + self.pickDateLabel.frame.size.height + 4.0f,
-                                                                        30.0f,
+                                                                        self.pickDateLabel.frame.origin.y + self.pickDateLabel.frame.size.height + 10.0f,
+                                                                        40.0f,
                                                                         25.0f)];
     
-    NSString* pickStartDateLabelText = @"开始";
-    self.pickDateLabel.backgroundColor = [UIColor clearColor];
-    attrString = [[NSMutableAttributedString alloc] initWithString:pickStartDateLabelText];
-    [attrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:16.0f] range:NSMakeRange(0, pickDateLabelText.length)];
-    [attrString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRGBHex:0x36363d] range:NSMakeRange(0, pickDateLabelText.length)];
+    self.pickStartDateLable.text = @"开始";
+    self.pickStartDateLable.backgroundColor = [UIColor clearColor];
+    self.pickStartDateLable.font = [UIFont systemFontOfSize:16.0f];
+    self.pickStartDateLable.textColor = [UIColor colorWithRGBHex:0x36363d];
     
-//    NSMutableParagraphStyle* style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-//    style.headIndent = 15.0f;
-//    style.tailIndent = -15.0f;
-//    style.firstLineHeadIndent = 15.0f;
-//    [attrString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, pickDateLabelText.length)];
-    
-    self.pickDateLabel.attributedText = attrString;
     [self.historyBgView addSubview:self.pickStartDateLable];
     
-//    // 历史 列表
-//    self.historyTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f,
-//                                                                          NSVProjectLabelHeight,
-//                                                                          NSVLeftAreaWidth,
-//                                                                          self.deltaOfLeftHeight) style:UITableViewStylePlain];
-//    self.historyTableView.dataSource = self;
-//    self.historyTableView.delegate = self;
-//    self.historyTableView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
-//    self.historyTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    
-//    [self.historyBgView addSubview:self.historyTableView];
+    // 开始时间 文字标签
+    self.startDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.pickStartDateLable.frame.origin.x + self.pickStartDateLable.frame.size.width + 10.0f,
+                                                                    self.pickStartDateLable.frame.origin.y,
+                                                                    NSVLeftAreaWidth - (self.pickStartDateLable.frame.origin.x + self.pickStartDateLable.frame.size.width + 10.0f) - (20.0f + 8.0f + 10.0f),
+                                                                    25.0f)];
+    
+    self.startDateLabel.text = [self dateToYYYYMMDDString:self.historyStartDate];
+    self.startDateLabel.backgroundColor = [UIColor clearColor];
+    self.startDateLabel.textColor = [UIColor colorWithRGBHex:0x53993f];
+    self.startDateLabel.font = [UIFont boldSystemFontOfSize:20.0f];
+    [self.historyBgView addSubview:self.startDateLabel];
+    
+    // 开始时间 图标
+    self.startDateIndicatorIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"indicator_icon"]];
+    self.startDateIndicatorIcon.frame = CGRectMake(self.startDateLabel.frame.origin.x + self.startDateLabel.frame.size.width + 10.0f,
+                                                   self.startDateLabel.frame.origin.y + (NSInteger)( (self.startDateLabel.frame.size.height - 13.0f) / 2.0f),
+                                                   8.0f,
+                                                   13.0f);
+    
+    [self.historyBgView addSubview:self.startDateIndicatorIcon];
+    
+    // 选择开始时间 按钮
+    self.pickStartDateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.pickStartDateButton.frame = CGRectMake(0.0f, self.pickStartDateLable.frame.origin.y, NSVLeftAreaWidth, self.pickStartDateLable.frame.size.height);
+    [self.pickStartDateButton addTarget:self action:@selector(historyStartDateButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.historyBgView addSubview:self.pickStartDateButton];
+    
+    // 结束 文字标签
+    self.pickEndDateLable = [[UILabel alloc] initWithFrame:CGRectMake(25.0f,
+                                                                        self.pickStartDateLable.frame.origin.y + self.pickStartDateLable.frame.size.height + 20.0f,
+                                                                        40.0f,
+                                                                        25.0f)];
+    
+    self.pickEndDateLable.text = @"结束";
+    self.pickEndDateLable.backgroundColor = [UIColor clearColor];
+    self.pickEndDateLable.font = [UIFont systemFontOfSize:16.0f];
+    self.pickEndDateLable.textColor = [UIColor colorWithRGBHex:0x36363d];
+    
+    [self.historyBgView addSubview:self.pickEndDateLable];
+    
+    // 结束时间 文字标签
+    self.endDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.pickEndDateLable.frame.origin.x + self.pickEndDateLable.frame.size.width + 10.0f,
+                                                                    self.pickEndDateLable.frame.origin.y,
+                                                                    NSVLeftAreaWidth - (self.pickEndDateLable.frame.origin.x + self.pickEndDateLable.frame.size.width + 10.0f) - (20.0f + 8.0f + 10.0f),
+                                                                    25.0f)];
+    
+    self.endDateLabel.text = [self dateToYYYYMMDDString:self.historyStartDate];
+    self.endDateLabel.backgroundColor = [UIColor clearColor];
+    self.endDateLabel.textColor = [UIColor colorWithRGBHex:0x53993f];
+    self.endDateLabel.font = [UIFont boldSystemFontOfSize:20.0f];
+    [self.historyBgView addSubview:self.endDateLabel];
+    
+    // 结束时间 图标
+    self.endDateIndicatorIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"indicator_icon"]];
+    self.endDateIndicatorIcon.frame = CGRectMake(self.endDateLabel.frame.origin.x + self.endDateLabel.frame.size.width + 10.0f,
+                                                   self.endDateLabel.frame.origin.y + (NSInteger)( (self.endDateLabel.frame.size.height - 13.0f) / 2.0f),
+                                                   8.0f,
+                                                   13.0f);
+    
+    [self.historyBgView addSubview:self.endDateIndicatorIcon];
+    
+    // 选择结束时间 按钮
+    self.pickEndDateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.pickEndDateButton.frame = CGRectMake(0.0f, self.pickEndDateLable.frame.origin.y, NSVLeftAreaWidth, self.pickEndDateLable.frame.size.height);
+    [self.pickEndDateButton addTarget:self action:@selector(historyStartDateButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.historyBgView addSubview:self.pickEndDateButton];
+    
+    
+    // 选择时间 背景视图
+    self.datePickerBgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 267.0f)];
+    self.datePickerBgView.layer.cornerRadius = 9.0f;
+    self.datePickerBgView.layer.masksToBounds = YES;
+    self.datePickerBgView.backgroundColor = [UIColor whiteColor];
+    
+    // 选择时间 标题背景视图
+    self.datePickerTitleView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.datePickerBgView.frame.size.width, 39.0f)];
+    self.datePickerTitleView.backgroundColor = [UIColor colorWithRGBHex:0x53993f];
+    [self.datePickerBgView addSubview:self.datePickerTitleView];
+    
+    // 选择时间 取消按钮
+    self.datePickerCancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.datePickerCancelButton.frame = CGRectMake(15.0f, 0.0f, 40.0f, self.datePickerTitleView.frame.size.height);
+    [self.datePickerCancelButton setTitle:@"取消" forState:UIControlStateNormal];
+    self.datePickerCancelButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+    
+    [self.datePickerTitleView addSubview:self.datePickerCancelButton];
+    
+    // 选择时间 标题标签
+    self.datePickerTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.datePickerCancelButton.frame.origin.x + self.datePickerCancelButton.frame.size.width + 10.0f,
+                                                                          self.datePickerCancelButton.frame.origin.y,
+                                                                          self.datePickerBgView.frame.size.width - 2.0 * (self.datePickerCancelButton.frame.origin.x + self.datePickerCancelButton.frame.size.width + 10.0f),
+                                                                          self.datePickerCancelButton.frame.size.height)];
+    
+    self.datePickerTitleLabel.text = [self dateToYYYYMMDDChineseString:self.historyStartDate];
+    self.datePickerTitleLabel.textAlignment = NSTextAlignmentCenter;
+    self.datePickerTitleLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.datePickerTitleLabel.textColor = [UIColor whiteColor];
+    
+    [self.datePickerTitleView addSubview:self.datePickerTitleLabel];
+    
+    // 选择时间 确定按钮
+    self.datePickerOKButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.datePickerOKButton.frame = CGRectMake(self.datePickerTitleView.frame.size.width - (40.0f + 15.0f), 0.0f, 40.0f, self.datePickerTitleView.frame.size.height);
+    [self.datePickerOKButton setTitle:@"确定" forState:UIControlStateNormal];
+    self.datePickerOKButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+    
+    [self.datePickerTitleView addSubview:self.datePickerOKButton];
+    
+    // 选择时间控件
+    self.datePicker = [[UIDatePicker alloc] init];
+    self.datePicker.datePickerMode = UIDatePickerModeDate;
+    [self.datePicker setDate:self.historyStartDate animated:YES];
+    self.datePicker.frame = CGRectMake(0.0f,
+                                       self.datePickerTitleView.frame.origin.y + self.datePickerTitleView.frame.size.height,
+                                       self.datePickerBgView.frame.size.width,
+                                       self.datePickerBgView.frame.size.height - self.datePickerTitleView.frame.size.height);
+    
+    [self.datePickerBgView addSubview:self.datePicker];
+    
+    
+    
+
     
     // 历史 切换按钮
     self.historySwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1891,6 +2031,24 @@ typedef enum{
     [self.view addSubview:self.dialogForNew];
 }
 
+
+-(NSString*) dateToYYYYMMDDString:(NSDate*)date{
+    NSCalendar* calender = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSUInteger units = NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit;
+    NSDateComponents *components = [calender components:units fromDate:date];
+    NSString *msg = [NSString stringWithFormat:@"%ld.%ld.%ld", (long)[components year], (long)[components month], (long)[components day]];
+    
+    return msg;
+}
+
+-(NSString*) dateToYYYYMMDDChineseString:(NSDate*)date{
+    NSCalendar* calender = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSUInteger units = NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit;
+    NSDateComponents *components = [calender components:units fromDate:date];
+    NSString *msg = [NSString stringWithFormat:@"%ld年%ld月%ld日", (long)[components year], (long)[components month], (long)[components day]];
+    
+    return msg;
+}
 
 #pragma mark - UISearchBarDelegate
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
