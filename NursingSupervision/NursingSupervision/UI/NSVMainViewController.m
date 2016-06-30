@@ -106,6 +106,9 @@ typedef enum{
 @property (nonatomic, strong) UILabel* pickIssueLabel;
 @property (nonatomic, strong) UIImageView* pickIssueIconView;
 @property (nonatomic, strong) UIButton* pickIssueButton;
+@property (nonatomic, strong) UILabel* pickIssueResultLable;
+@property (nonatomic, strong) UIButton* pickIssueResultRemoveButton;
+
 @property (nonatomic, strong) UIButton* removePickedIssueButton;
 @property (nonatomic, strong) UILabel* pickNurseLable;
 @property (nonatomic, strong) UIImageView* pickNurseIconView;
@@ -1199,24 +1202,53 @@ typedef enum{
 }
 
 -(void)historyStartDateButtonClicked:(UIButton*)button{
-    self.popTip = [AMPopTip popTip];
-    self.popTip.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.popTip.layer.shadowRadius = 4.0f;
-    self.popTip.layer.shadowOpacity = 0.4f;
-    self.popTip.layer.shadowOffset = CGSizeMake(3.0f, 3.0f);
-    self.popTip.popoverColor = [UIColor whiteColor];
-    self.popTip.edgeInsets = UIEdgeInsetsMake(-6.0f, -6.0f, -6.0f, -6.0f);
-    self.popTip.radius = 9.0f;
     
-    CGRect fromFrame = CGRectMake(self.startDateIndicatorIcon.frame.origin.x + self.startDateIndicatorIcon.frame.size.width,
-                                  self.historyBgView.frame.origin.y + self.startDateIndicatorIcon.frame.origin.y,
-                                  self.startDateIndicatorIcon.frame.size.width,
-                                  self.startDateIndicatorIcon.frame.size.height);
-    [self.popTip showCustomView:self.datePickerBgView direction:AMPopTipDirectionRight inView:self.view fromFrame:fromFrame];
+    if (self.popTip == nil) {
+        self.popTip = [AMPopTip popTip];
+        self.popTip.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.popTip.layer.shadowRadius = 4.0f;
+        self.popTip.layer.shadowOpacity = 0.4f;
+        self.popTip.layer.shadowOffset = CGSizeMake(3.0f, 3.0f);
+        self.popTip.popoverColor = [UIColor whiteColor];
+        self.popTip.edgeInsets = UIEdgeInsetsMake(-6.0f, -6.0f, -6.0f, -6.0f);
+        self.popTip.radius = 9.0f;
+        
+        CGRect fromFrame = CGRectMake(self.startDateIndicatorIcon.frame.origin.x + self.startDateIndicatorIcon.frame.size.width,
+                                      self.historyBgView.frame.origin.y + self.startDateIndicatorIcon.frame.origin.y,
+                                      self.startDateIndicatorIcon.frame.size.width,
+                                      self.startDateIndicatorIcon.frame.size.height);
+        [self.popTip showCustomView:self.datePickerBgView direction:AMPopTipDirectionRight inView:self.view fromFrame:fromFrame];
+    }else{
+        [self.popTip hide];
+        self.popTip = nil;
+    }
+
 }
 
 -(void)historyEndDateButtonClicked:(UIButton*)button{
-    
+    if (self.popTip == nil) {
+        self.popTip = [AMPopTip popTip];
+        self.popTip.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.popTip.layer.shadowRadius = 4.0f;
+        self.popTip.layer.shadowOpacity = 0.4f;
+        self.popTip.layer.shadowOffset = CGSizeMake(3.0f, 3.0f);
+        self.popTip.popoverColor = [UIColor whiteColor];
+        self.popTip.edgeInsets = UIEdgeInsetsMake(-6.0f, -6.0f, -6.0f, -6.0f);
+        self.popTip.radius = 9.0f;
+        
+        CGRect fromFrame = CGRectMake(self.endDateIndicatorIcon.frame.origin.x + self.endDateIndicatorIcon.frame.size.width,
+                                      self.historyBgView.frame.origin.y + self.endDateIndicatorIcon.frame.origin.y,
+                                      self.endDateIndicatorIcon.frame.size.width,
+                                      self.endDateIndicatorIcon.frame.size.height);
+        [self.popTip showCustomView:self.datePickerBgView direction:AMPopTipDirectionRight inView:self.view fromFrame:fromFrame];
+    }else{
+        [self.popTip hide];
+        self.popTip = nil;
+    }
+}
+
+-(void) historyPickIssueButtonClicked:(UIButton*)button{
+    NSLog(@"here we go");
 }
 
 #pragma mark - 初始化界面
@@ -1471,7 +1503,7 @@ typedef enum{
     // 选择结束时间 按钮
     self.pickEndDateButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.pickEndDateButton.frame = CGRectMake(0.0f, self.pickEndDateLable.frame.origin.y, NSVLeftAreaWidth, self.pickEndDateLable.frame.size.height);
-    [self.pickEndDateButton addTarget:self action:@selector(historyStartDateButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.pickEndDateButton addTarget:self action:@selector(historyEndDateButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.historyBgView addSubview:self.pickEndDateButton];
     
@@ -1528,11 +1560,55 @@ typedef enum{
     [self.datePickerBgView addSubview:self.datePicker];
     
     
+    // 选问题标签
+    self.pickIssueLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                 self.pickEndDateLable.frame.origin.y + self.pickEndDateLable.frame.size.height + 9.0f,
+                                                                 self.datePickerBgView.frame.size.width,
+                                                                 25.0f)];
+    NSString* issueLabelText = @"排序方式";
+    self.pickIssueLabel.backgroundColor = [UIColor colorWithRGBHex:0xd6dbd2];
+    NSMutableAttributedString* issueLabelAttrString = [[NSMutableAttributedString alloc] initWithString:issueLabelText];
+    [issueLabelAttrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13.0f] range:NSMakeRange(0, issueLabelText.length)];
+    [issueLabelAttrString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRGBHex:0x747474] range:NSMakeRange(0, issueLabelText.length)];
+    
+    NSMutableParagraphStyle* issueLabelstyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    issueLabelstyle.headIndent = 15.0f;
+    issueLabelstyle.tailIndent = -15.0f;
+    issueLabelstyle.firstLineHeadIndent = 15.0f;
+    [issueLabelAttrString addAttribute:NSParagraphStyleAttributeName value:issueLabelstyle range:NSMakeRange(0, issueLabelText.length)];
+    
+    self.pickIssueLabel.attributedText = issueLabelAttrString;
+    
+    [self.historyBgView addSubview:self.pickIssueLabel];
+    
+    // 选问题 图标
+    self.pickIssueIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"add_icon"]];
+    self.pickIssueIconView.frame = CGRectMake(25.0f,
+                                              self.pickIssueLabel.frame.origin.y + self.pickIssueLabel.frame.size.height + 22.0f,
+                                              15.0f,
+                                              15.0f);
+    [self.historyBgView addSubview:self.pickIssueIconView];
+    
+    // 选问题 按钮
+    self.pickIssueButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.pickIssueButton.frame = CGRectMake(15.0f,
+                                            self.pickIssueLabel.frame.origin.y + self.pickIssueLabel.frame.size.height + 4.0f,
+                                            self.historyBgView.frame.size.width - 30.0f,
+                                            50.0f);
+    self.pickIssueButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.pickIssueButton.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 35.0f, 0.0f, 0.0f);
+    [self.pickIssueButton setTitle:@"选择" forState:UIControlStateNormal];
+    self.pickIssueButton.titleLabel.font = [UIFont systemFontOfSize:18.0f];
+    [self.pickIssueButton setTitleColor:[UIColor colorWithRGBHex:0x36363d] forState:UIControlStateNormal];
+    [self.pickIssueButton addTarget:self action:@selector(historyPickIssueButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.historyBgView addSubview:self.pickIssueButton];
+    
+    // 选问题 结果 文本标签
     
 
     
     // 历史 切换按钮
-    self.historySwitchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.historySwitchButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.historySwitchButton.frame = historyLabelBgView.frame;
     [self.historySwitchButton addTarget:self action:@selector(historySwitchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.historyBgView addSubview:self.historySwitchButton];
