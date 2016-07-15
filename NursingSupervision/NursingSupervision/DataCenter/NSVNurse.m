@@ -7,16 +7,20 @@
 //
 
 #import "NSVNurse.h"
-
+#import "NSString+SHA.h"
 #import "PinYin4Objc.h"
 
 @implementation NSVNurse
 
-+ (NSString *) primaryKey
-{
-    return @"nurseId";
+-(instancetype) init{
+    self = [super init];
+    
+    if (self != nil) {
+        self.uid = [NSString sha256Uid];
+    }
+    
+    return self;
 }
-
 
 -(void) setName:(NSString *)name{
     _name = name;

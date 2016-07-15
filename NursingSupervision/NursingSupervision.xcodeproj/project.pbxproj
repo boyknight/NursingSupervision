@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1C4D14C7884C5FB22F6BE6A3 /* libPods-NursingSupervision.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B43E7F4770DBA37A1444FAE /* libPods-NursingSupervision.a */; };
+		B00866D91D33B88200230214 /* NSVHistoryReportTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B00866D81D33B88200230214 /* NSVHistoryReportTableViewCell.m */; };
+		B00866DC1D33D56A00230214 /* NSString+SHA.m in Sources */ = {isa = PBXBuildFile; fileRef = B00866DB1D33D56A00230214 /* NSString+SHA.m */; };
 		B02243F41CF487DA004E2E6F /* UIColor+NSVAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */; };
 		B0527B2A1D21677F00DC0472 /* NSVNewDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = B0527B291D21677F00DC0472 /* NSVNewDialog.m */; };
 		B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B07FE80F1CF5E4360052F2DA /* NSVProjectItemTableViewCell.m */; };
@@ -26,8 +28,8 @@
 		B0B22D401C82FB080040DA49 /* init.json in Resources */ = {isa = PBXBuildFile; fileRef = B0B22D3F1C82FB080040DA49 /* init.json */; };
 		B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */; };
 		B0DD79FA1D1029BF00E6843E /* NSVNurseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B0DD79F91D1029BF00E6843E /* NSVNurseTableViewCell.m */; };
+		B0FBDAAA1D351BEB004000B2 /* NSDate+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = B0FBDAA91D351BEB004000B2 /* NSDate+Format.m */; };
 		C5007B491D10FA8900EFABE6 /* NSVIssueRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5007B481D10FA8900EFABE6 /* NSVIssueRecordTableViewCell.m */; };
-		C5821A151D0FDCC0007D4D34 /* NSVNurses.m in Sources */ = {isa = PBXBuildFile; fileRef = C5821A141D0FDCC0007D4D34 /* NSVNurses.m */; };
 		C5821A181D0FE756007D4D34 /* NSVRecords.m in Sources */ = {isa = PBXBuildFile; fileRef = C5821A171D0FE756007D4D34 /* NSVRecords.m */; };
 		C59341851D2111A7005BFCF4 /* NSVOffice.m in Sources */ = {isa = PBXBuildFile; fileRef = C59341841D2111A7005BFCF4 /* NSVOffice.m */; };
 		C59341881D211261005BFCF4 /* NSVAllStaff.m in Sources */ = {isa = PBXBuildFile; fileRef = C59341871D211261005BFCF4 /* NSVAllStaff.m */; };
@@ -37,6 +39,10 @@
 /* Begin PBXFileReference section */
 		5B43E7F4770DBA37A1444FAE /* libPods-NursingSupervision.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NursingSupervision.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		61A5B5541A3BB4A0A046B12B /* Pods-NursingSupervision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NursingSupervision.release.xcconfig"; path = "Pods/Target Support Files/Pods-NursingSupervision/Pods-NursingSupervision.release.xcconfig"; sourceTree = "<group>"; };
+		B00866D71D33B88200230214 /* NSVHistoryReportTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVHistoryReportTableViewCell.h; sourceTree = "<group>"; };
+		B00866D81D33B88200230214 /* NSVHistoryReportTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVHistoryReportTableViewCell.m; sourceTree = "<group>"; };
+		B00866DA1D33D56A00230214 /* NSString+SHA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SHA.h"; sourceTree = "<group>"; };
+		B00866DB1D33D56A00230214 /* NSString+SHA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SHA.m"; sourceTree = "<group>"; };
 		B02243F21CF487DA004E2E6F /* UIColor+NSVAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+NSVAdditions.h"; sourceTree = "<group>"; };
 		B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NSVAdditions.m"; sourceTree = "<group>"; };
 		B0527B281D21677F00DC0472 /* NSVNewDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVNewDialog.h; sourceTree = "<group>"; };
@@ -71,10 +77,10 @@
 		B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVDataCenter.m; sourceTree = "<group>"; };
 		B0DD79F81D1029BF00E6843E /* NSVNurseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVNurseTableViewCell.h; sourceTree = "<group>"; };
 		B0DD79F91D1029BF00E6843E /* NSVNurseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNurseTableViewCell.m; sourceTree = "<group>"; };
+		B0FBDAA81D351BEB004000B2 /* NSDate+Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Format.h"; sourceTree = "<group>"; };
+		B0FBDAA91D351BEB004000B2 /* NSDate+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Format.m"; sourceTree = "<group>"; };
 		C5007B471D10FA8900EFABE6 /* NSVIssueRecordTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVIssueRecordTableViewCell.h; sourceTree = "<group>"; };
 		C5007B481D10FA8900EFABE6 /* NSVIssueRecordTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVIssueRecordTableViewCell.m; sourceTree = "<group>"; };
-		C5821A131D0FDCC0007D4D34 /* NSVNurses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVNurses.h; sourceTree = "<group>"; };
-		C5821A141D0FDCC0007D4D34 /* NSVNurses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNurses.m; sourceTree = "<group>"; };
 		C5821A161D0FE756007D4D34 /* NSVRecords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVRecords.h; sourceTree = "<group>"; };
 		C5821A171D0FE756007D4D34 /* NSVRecords.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVRecords.m; sourceTree = "<group>"; };
 		C59341831D2111A7005BFCF4 /* NSVOffice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVOffice.h; sourceTree = "<group>"; };
@@ -166,6 +172,8 @@
 				C5A2EFB51D19201900460FFE /* NSVManagementEditTableViewCell.m */,
 				B0527B281D21677F00DC0472 /* NSVNewDialog.h */,
 				B0527B291D21677F00DC0472 /* NSVNewDialog.m */,
+				B00866D71D33B88200230214 /* NSVHistoryReportTableViewCell.h */,
+				B00866D81D33B88200230214 /* NSVHistoryReportTableViewCell.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -187,8 +195,6 @@
 				B085483F1C7DBF950004991B /* NSVRecord.m */,
 				B0C963A11C7DF4BE002F1A38 /* NSVDataCenter.h */,
 				B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */,
-				C5821A131D0FDCC0007D4D34 /* NSVNurses.h */,
-				C5821A141D0FDCC0007D4D34 /* NSVNurses.m */,
 				C5821A161D0FE756007D4D34 /* NSVRecords.h */,
 				C5821A171D0FE756007D4D34 /* NSVRecords.m */,
 				C59341831D2111A7005BFCF4 /* NSVOffice.h */,
@@ -204,6 +210,10 @@
 			children = (
 				B02243F21CF487DA004E2E6F /* UIColor+NSVAdditions.h */,
 				B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */,
+				B00866DA1D33D56A00230214 /* NSString+SHA.h */,
+				B00866DB1D33D56A00230214 /* NSString+SHA.m */,
+				B0FBDAA81D351BEB004000B2 /* NSDate+Format.h */,
+				B0FBDAA91D351BEB004000B2 /* NSDate+Format.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -347,19 +357,21 @@
 				B0B22D3E1C82F6450040DA49 /* NSVAssessment.m in Sources */,
 				B0527B2A1D21677F00DC0472 /* NSVNewDialog.m in Sources */,
 				B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */,
+				B00866DC1D33D56A00230214 /* NSString+SHA.m in Sources */,
 				B085480F1C7DAC600004991B /* main.m in Sources */,
 				B0DD79FA1D1029BF00E6843E /* NSVNurseTableViewCell.m in Sources */,
 				C59341851D2111A7005BFCF4 /* NSVOffice.m in Sources */,
 				B085483D1C7DBF370004991B /* NSVNurse.m in Sources */,
 				B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */,
 				B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */,
+				B0FBDAAA1D351BEB004000B2 /* NSDate+Format.m in Sources */,
 				C5007B491D10FA8900EFABE6 /* NSVIssueRecordTableViewCell.m in Sources */,
 				B08548371C7DBE9D0004991B /* NSVProject.m in Sources */,
 				B08548401C7DBF950004991B /* NSVRecord.m in Sources */,
 				B02243F41CF487DA004E2E6F /* UIColor+NSVAdditions.m in Sources */,
 				C59341881D211261005BFCF4 /* NSVAllStaff.m in Sources */,
 				B085482E1C7DB6EC0004991B /* NSVClassifyViewController.m in Sources */,
-				C5821A151D0FDCC0007D4D34 /* NSVNurses.m in Sources */,
+				B00866D91D33B88200230214 /* NSVHistoryReportTableViewCell.m in Sources */,
 				C5A2EFB61D19201900460FFE /* NSVManagementEditTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

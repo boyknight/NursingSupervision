@@ -24,4 +24,7 @@
 
 -(void) addNewRecord:(nonnull NSVRecord*)record;
 
+-(nullable NSVProject*) findProjectWithIssue:(nonnull NSVIssue*)issue;
+-(nullable NSVOffice*) findOfficeWithNurse:(nonnull NSVNurse*)nurse;
+
 @end

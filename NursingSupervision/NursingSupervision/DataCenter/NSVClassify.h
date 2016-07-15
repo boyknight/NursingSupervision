@@ -15,8 +15,8 @@
 
 @interface NSVClassify : JSONModel
 
+@property (nonatomic, strong) NSString* uid;
 @property (nonatomic, strong) NSString* name;
-
 @property (nonatomic, strong) NSMutableArray<NSVProject>* projects;
 
 @end

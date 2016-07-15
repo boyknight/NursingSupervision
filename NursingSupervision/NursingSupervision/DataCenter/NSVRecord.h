@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "JSONModelLib.h"
 #import "NSVClassify.h"
+#import "NSVOffice.h"
 #import "NSVProject.h"
 #import "NSVIssue.h"
 #import "NSVNurse.h"
@@ -19,13 +20,10 @@
 
 @interface NSVRecord : JSONModel
 
-@property (nonatomic, assign) NSInteger recordId;
+@property (nonatomic, strong, nonnull) NSString* uid;
 
 @property (nonatomic, strong, nonnull) NSVNurse* nurse;
 @property (nonatomic, strong, nonnull) NSVIssue* issue;
 @property (nonnull, strong, nonatomic) NSDate* recordDate;
-
-
--(nonnull instancetype) initWithNuser:(nonnull NSVNurse*) nurse issue:(nonnull NSVIssue*)issue;
 
 @end

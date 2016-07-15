@@ -51,11 +51,43 @@
         if (![fileManager fileExistsAtPath:self.assessmentPath]) {
             NSString* initJsonPath = [NSString stringWithFormat:@"%@/%@", bundleResPath, @"init.json"];
             if ([fileManager fileExistsAtPath:initJsonPath]) {
-                NSString* jsonFileContent = [NSString stringWithContentsOfFile:initJsonPath encoding:NSUTF8StringEncoding error:nil];
                 
-                [jsonFileContent writeToFile:self.assessmentPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+                NSData* jsonData = [NSData dataWithContentsOfFile:initJsonPath];
+                NSDictionary* jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
                 
-                _assessment = [[NSVAssessment alloc] initWithString:jsonFileContent error:nil];
+                _assessment = [[NSVAssessment alloc] init];
+                
+                _assessment.classifies = [NSMutableArray<NSVClassify> array];
+                
+                for (NSDictionary* classify in jsonObject[@"classifies"]) {
+                    NSLog(@"classify: %@", classify);
+                    
+                    NSVClassify* c = [[NSVClassify alloc] init];
+                    c.name = classify[@"name"];
+                    c.projects = [NSMutableArray<NSVProject> array];
+                    [_assessment.classifies addObject:c];
+                    
+                    for (NSDictionary* project in classify[@"projects"]) {
+                        
+                        NSVProject* p = [[NSVProject alloc] init];
+                        p.name = project[@"name"];
+                        p.issues = [NSMutableArray<NSVIssue> array];
+                        
+                        [c.projects addObject:p];
+                        
+                        for (NSDictionary* issue in project[@"issues"]) {
+                            NSVIssue* i = [[NSVIssue alloc] init];
+                            i.name = issue[@"name"];
+                            i.namePinYinShouZiMu = issue[@"namePinYinShouZiMu"];
+                            i.nameQuanPin = issue[@"nameQuanPin"];
+                            i.score = [issue[@"score"] floatValue];
+                            
+                            [p.issues addObject:i];
+                        }
+                    }
+                    
+                }
+                
             }
             else{
                 _assessment = [[NSVAssessment alloc] init];
@@ -179,7 +211,7 @@
                               error:nil];
         }
         else{
-            NSString* jsonFileContent = [NSString stringWithContentsOfFile:self.nuresesPath
+            NSString* jsonFileContent = [NSString stringWithContentsOfFile:self.recordsPath
                                                                   encoding:NSUTF8StringEncoding
                                                                      error:nil];
             _records = [[NSVRecords alloc] initWithString:jsonFileContent error:nil];
@@ -239,6 +271,50 @@
                  atomically:YES
                    encoding:NSUTF8StringEncoding
                       error:nil];
+}
+
+-(nullable NSVProject*) findProjectWithIssue:(nonnull NSVIssue*)issue{
+    NSVProject* project = nil;
+    
+    for (NSVClassify* c in self.assessment.classifies) {
+        for (NSVProject* p in c.projects) {
+            for (NSVIssue* i in p.issues) {
+                if ([i.uid isEqualToString:issue.uid]) {
+                    project = p;
+                    break;
+                }
+            }
+            
+            if (project != nil) {
+                break;
+            }
+        }
+        
+        if (project != nil) {
+            break;
+        }
+    }
+    
+    return project;
+}
+
+-(nullable NSVOffice*) findOfficeWithNurse:(nonnull NSVNurse*)nurse{
+    NSVOffice* office = nil;
+    
+    for (NSVOffice* o in self.staffs.offices) {
+        for (NSVNurse* n in o.nurses) {
+            if ([n.uid isEqualToString:nurse.uid]) {
+                office = o;
+                break;
+            }
+        }
+        
+        if(office != nil){
+            break;
+        }
+    }
+    
+    return office;
 }
 
 @end

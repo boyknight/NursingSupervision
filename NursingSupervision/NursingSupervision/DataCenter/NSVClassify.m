@@ -7,8 +7,18 @@
 //
 
 #import "NSVClassify.h"
+#import "NSString+SHA.h"
 
 @implementation NSVClassify
 
+-(instancetype) init{
+    self = [super init];
+    
+    if (self != nil) {
+        self.uid = [NSString sha256Uid];
+    }
+    
+    return self;
+}
 
 @end

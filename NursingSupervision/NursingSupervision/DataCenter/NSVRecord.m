@@ -7,21 +7,18 @@
 //
 
 #import "NSVRecord.h"
+#import "NSString+SHA.h"
 
 @implementation NSVRecord
 
-+ (NSString *) primaryKey
-{
-    return @"recordId";
-}
-
--(nonnull instancetype) initWithNuser:(nonnull NSVNurse*) nurse issue:(nonnull NSVIssue*)issue{
+-(instancetype) init{
     self = [super init];
+    
     if (self != nil) {
-        self.nurse = nurse;
-        self.issue = issue;
+        self.uid = [NSString sha256Uid];
         self.recordDate = [NSDate date];
     }
+    
     return self;
 }
 

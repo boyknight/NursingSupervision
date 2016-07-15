@@ -17,10 +17,12 @@
 #import "NSVNurseTableViewCell.h"
 #import "NSVIssueRecordTableViewCell.h"
 #import "NSVManagementEditTableViewCell.h"
+#import "NSVHistoryReportTableViewCell.h"
 
 #import "NSVNewDialog.h"
 #import "SIAlertView.h"
 #import "AMPopTip.h"
+#import "NSDate+Format.h"
 
 
 #define NSVLeftAreaWidth 225.0f
@@ -103,17 +105,14 @@ typedef enum{
 @property (nonatomic, strong) UIDatePicker* datePicker;
 @property (nonatomic, strong) AMPopTip* popTip;
 
-@property (nonatomic, strong) UILabel* pickIssueLabel;
-@property (nonatomic, strong) UIImageView* pickIssueIconView;
-@property (nonatomic, strong) UIButton* pickIssueButton;
-@property (nonatomic, strong) UILabel* pickIssueResultLable;
-@property (nonatomic, strong) UIButton* pickIssueResultRemoveButton;
+@property (nonatomic, strong) UILabel* orderHistoryLabel;
 
-@property (nonatomic, strong) UIButton* removePickedIssueButton;
-@property (nonatomic, strong) UILabel* pickNurseLable;
-@property (nonatomic, strong) UIImageView* pickNurseIconView;
-@property (nonatomic, strong) UIButton* pickNurseButton;
-@property (nonatomic, strong) UIButton* removePickedNurseButton;
+@property (nonatomic, strong) NSVProjectItemTableViewCell* orderByTimeCell;
+@property (nonatomic, strong) NSVProjectItemTableViewCell* orderByIssueCell;
+@property (nonatomic, strong) NSVProjectItemTableViewCell* orderByNurseCell;
+@property (nonatomic, strong) UIButton* orderByTimeButton;
+@property (nonatomic, strong) UIButton* orderByIssueButton;
+@property (nonatomic, strong) UIButton* orderByNurseButton;
 
 @property (nonatomic, strong) UIButton* exportHistoryButton;
 
@@ -153,10 +152,43 @@ typedef enum{
 @property (nonatomic, strong) NSVNewDialog* dialogForNew;
 
 // 报表
+@property (nonatomic, strong) UIView* historyReportBgView;
+
+@property (nonatomic, strong) UILabel* nurseRollLabel;
+@property (nonatomic, strong) UILabel* nurseRollFirstLabel;
+@property (nonatomic, strong) UILabel* nurseRollSecondLabel;
+@property (nonatomic, strong) UILabel* nurseRollThirdLabel;
+
+@property (nonatomic, strong) UILabel* nurseRollFirstNameLabel;
+@property (nonatomic, strong) UILabel* nurseRollSecondNameLabel;
+@property (nonatomic, strong) UILabel* nurseRollThirdNameLabel;
+
+@property (nonatomic, strong) UIView* nurseRollFirstNameBgView;
+@property (nonatomic, strong) UIView* nurseRollSecondNameBgView;
+@property (nonatomic, strong) UIView* nurseRollThirdNameBgView;
+
+@property (nonatomic, strong) UILabel* issueRollLabel;
+@property (nonatomic, strong) UILabel* issueRollFirstLabel;
+@property (nonatomic, strong) UILabel* issueRollSecondLabel;
+@property (nonatomic, strong) UILabel* issueRollThirdLabel;
+
+@property (nonatomic, strong) UILabel* issueRollFirstNameLabel;
+@property (nonatomic, strong) UILabel* issueRollSecondNameLabel;
+@property (nonatomic, strong) UILabel* issueRollThirdNameLabel;
+
+@property (nonatomic, strong) UIView* issueRollFirstNameBgView;
+@property (nonatomic, strong) UIView* issueRollSecondNameBgView;
+@property (nonatomic, strong) UIView* issueRollThirdNameBgView;
+
+@property (nonatomic, strong) UITableView* historyReportTableView;
+
+
+
 
 
 @property (nonatomic, strong) NSMutableArray* nurses;
 @property (nonatomic, strong) NSMutableArray* issueSearchResultArray;
+@property (nonatomic, strong) NSMutableArray* historyReportDataSource;
 
 @property (nonatomic, copy) NSIndexPath* selectedProjectIndexPath;
 @property (nonatomic, copy) NSVIssue* selectedIssue;
@@ -179,6 +211,7 @@ typedef enum{
     if (self != nil) {
         self.nurses = [NSMutableArray array];
         self.issueSearchResultArray = [NSMutableArray array];
+        self.historyReportDataSource = [NSMutableArray array];
     }
     
     return self;
@@ -216,6 +249,9 @@ typedef enum{
     
     // ------------------------ 右侧栏 ------------------------ //
     
+    // 历史
+    [self initHistoryOfRightSide];
+    
     // 问题和人员管理
     [self initProjectAndNurseManagementOfRightSide];
     
@@ -227,6 +263,7 @@ typedef enum{
 
     
     [self refreshNursesData];
+    [self refreshHistoryReportDataSource];
     
     [self.projectTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
     
@@ -273,6 +310,8 @@ typedef enum{
     }else if(tableView == self.issueSearchResultTableView){
         count = 1;
     }else if (tableView == self.panMgmProjectTableView){
+        count = 1;
+    }else if (tableView == self.historyReportTableView){
         count = 1;
     }
     
@@ -345,6 +384,10 @@ typedef enum{
                 count = office.nurses.count;
             }
         }
+    }
+    // 历史报表
+    else if (tableView == self.historyReportTableView){
+        count = self.historyReportDataSource.count;
     }
     
     return count;
@@ -556,6 +599,43 @@ typedef enum{
                 tableCell.showIndicator = NO;
             }
         }
+        
+
+    }
+    
+    // 历史报表
+    else if (tableView == self.historyReportTableView){
+        NSString* cellid = @"history_report_table_cell";
+        
+        cell = [self.historyReportTableView dequeueReusableCellWithIdentifier:cellid];
+        
+        if (cell == nil) {
+            cell = [[NSVHistoryReportTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        
+        NSVHistoryReportTableViewCell* tableCell = (NSVHistoryReportTableViewCell*)cell;
+        
+        NSVRecord* record = self.historyReportDataSource[indexPath.row];
+        NSVIssue* issue = record.issue;
+        NSVNurse* nurse = record.nurse;
+        NSVProject* project = [[NSVDataCenter defaultCenter] findProjectWithIssue:issue];
+        NSVOffice* office = [[NSVDataCenter defaultCenter] findOfficeWithNurse:nurse];
+        
+        
+        tableCell.issueLabel.text = issue.name;
+        
+        if (project != nil) {
+            tableCell.projectLabel.text = project.name;
+        }
+        
+        tableCell.nurseLabel.text = nurse.name;
+        
+        if (office != nil) {
+            tableCell.officeLabel.text = office.name;
+        }
+        
+        tableCell.dateLabel.text = [record.recordDate toStringWithFormatYYYY_MM_DD_HH_MM];
     }
     
     return cell;
@@ -740,6 +820,10 @@ typedef enum{
         height = 0.0f;
     }else if (tableView == self.projectManagementTableView){
         height = 4.0f;
+    }else if (tableView == self.historyReportTableView){
+        if (section == 0) {
+            height = 45.0f;
+        }
     }
     
     return height;
@@ -763,6 +847,8 @@ typedef enum{
         height = 60.0f;
     }else if (tableView == self.panMgmProjectTableView){
         height = 60.0f;
+    }else if (tableView == self.historyReportTableView){
+        height = 80.0f;
     }
     
     return height;
@@ -819,6 +905,54 @@ typedef enum{
     }else if (tableView == self.projectManagementTableView){
         bgView.frame = CGRectMake(0.0f, 0.0f, NSVLeftAreaWidth, 4.0f);
         bgView.backgroundColor = [UIColor colorWithRGBHex:NSVProjectCellBackgroundColor];
+        
+    }else if(tableView == self.historyReportTableView){
+        
+        if (section == 0) {
+            bgView.frame = CGRectMake(0.0f, 0.0f, self.historyReportTableView.frame.size.width, 45.0f);
+            bgView.backgroundColor = [UIColor colorWithRGBHex:0x435647];
+            
+            UILabel* issueLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 0.0f, 180.0f, 45.0f)];
+            issueLabel.text = @"问题";
+            issueLabel.textColor = [UIColor whiteColor];
+            issueLabel.font = [UIFont systemFontOfSize:18.0f];
+            issueLabel.textAlignment = NSTextAlignmentCenter;
+            
+            [bgView addSubview:issueLabel];
+            
+            
+            UILabel* projectLabel = [[UILabel alloc] initWithFrame:CGRectMake(issueLabel.frame.origin.x + issueLabel.frame.size.width + 20.0f, 0.0f, 120.0f, 45.0f)];
+            projectLabel.text = @"项目";
+            projectLabel.textColor = [UIColor whiteColor];
+            projectLabel.font = [UIFont systemFontOfSize:18.0f];
+            projectLabel.textAlignment = NSTextAlignmentCenter;
+            
+            [bgView addSubview:projectLabel];
+            
+            UILabel* nurseLabel = [[UILabel alloc] initWithFrame:CGRectMake(projectLabel.frame.origin.x + projectLabel.frame.size.width + 20.0f, 0.0f, 79.0f, 45.0f)];
+            nurseLabel.text = @"负责人";
+            nurseLabel.textColor = [UIColor whiteColor];
+            nurseLabel.font = [UIFont systemFontOfSize:18.0f];
+            nurseLabel.textAlignment = NSTextAlignmentCenter;
+            
+            [bgView addSubview:nurseLabel];
+            
+            UILabel* officeLabel = [[UILabel alloc] initWithFrame:CGRectMake(nurseLabel.frame.origin.x + nurseLabel.frame.size.width + 20.0f, 0.0f, 100.0f, 45.0f)];
+            officeLabel.text = @"科室";
+            officeLabel.textColor = [UIColor whiteColor];
+            officeLabel.font = [UIFont systemFontOfSize:18.0f];
+            officeLabel.textAlignment = NSTextAlignmentCenter;
+            
+            [bgView addSubview:officeLabel];
+            
+            UILabel* dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(officeLabel.frame.origin.x + officeLabel.frame.size.width + 20.0f, 0.0f, 180.0f, 45.0f)];
+            dateLabel.text = @"时间";
+            dateLabel.textColor = [UIColor whiteColor];
+            dateLabel.font = [UIFont systemFontOfSize:18.0f];
+            dateLabel.textAlignment = NSTextAlignmentCenter;
+            
+            [bgView addSubview:dateLabel];
+        }
         
     }
 
@@ -1101,6 +1235,8 @@ typedef enum{
     if (self.historyBgView.frame.size.height <= NSVProjectLabelHeight) {
         __weak NSVMainViewController* blockSelf = self;
         
+        [self.view bringSubviewToFront:self.historyReportBgView];
+        
         [UIView animateWithDuration:0.3f animations:^{
             
             CGRect projectBgViewFrame = blockSelf.projectBgView.frame;
@@ -1131,9 +1267,13 @@ typedef enum{
     NSArray* selectedNurseCells = [self.nurseTableView indexPathsForSelectedRows];
     
     for (NSIndexPath* index in selectedNurseCells) {
-        NSVNurse* n = self.nurses[index.row];
+        NSDictionary* pinyinSection = self.nurses[index.section];
         
-        NSVRecord* record = [[NSVRecord alloc] initWithNuser:n issue:self.selectedIssue];
+        NSVNurse* n = pinyinSection[@"nurses"][index.row];
+        
+        NSVRecord* record = [[NSVRecord alloc] init];
+        record.nurse = n;
+        record.issue = self.selectedIssue;
         [[NSVDataCenter defaultCenter] addNewRecord:record];
     }
     
@@ -1561,12 +1701,12 @@ typedef enum{
     
     
     // 选问题标签
-    self.pickIssueLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+    self.orderHistoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
                                                                  self.pickEndDateLable.frame.origin.y + self.pickEndDateLable.frame.size.height + 9.0f,
                                                                  self.datePickerBgView.frame.size.width,
                                                                  25.0f)];
     NSString* issueLabelText = @"排序方式";
-    self.pickIssueLabel.backgroundColor = [UIColor colorWithRGBHex:0xd6dbd2];
+    self.orderHistoryLabel.backgroundColor = [UIColor colorWithRGBHex:0xd6dbd2];
     NSMutableAttributedString* issueLabelAttrString = [[NSMutableAttributedString alloc] initWithString:issueLabelText];
     [issueLabelAttrString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13.0f] range:NSMakeRange(0, issueLabelText.length)];
     [issueLabelAttrString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRGBHex:0x747474] range:NSMakeRange(0, issueLabelText.length)];
@@ -1577,35 +1717,90 @@ typedef enum{
     issueLabelstyle.firstLineHeadIndent = 15.0f;
     [issueLabelAttrString addAttribute:NSParagraphStyleAttributeName value:issueLabelstyle range:NSMakeRange(0, issueLabelText.length)];
     
-    self.pickIssueLabel.attributedText = issueLabelAttrString;
+    self.orderHistoryLabel.attributedText = issueLabelAttrString;
     
-    [self.historyBgView addSubview:self.pickIssueLabel];
+    [self.historyBgView addSubview:self.orderHistoryLabel];
     
-    // 选问题 图标
-    self.pickIssueIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"add_icon"]];
-    self.pickIssueIconView.frame = CGRectMake(25.0f,
-                                              self.pickIssueLabel.frame.origin.y + self.pickIssueLabel.frame.size.height + 22.0f,
-                                              15.0f,
-                                              15.0f);
-    [self.historyBgView addSubview:self.pickIssueIconView];
-    
-    // 选问题 按钮
-    self.pickIssueButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.pickIssueButton.frame = CGRectMake(15.0f,
-                                            self.pickIssueLabel.frame.origin.y + self.pickIssueLabel.frame.size.height + 4.0f,
-                                            self.historyBgView.frame.size.width - 30.0f,
+    // 按时间排序
+    self.orderByTimeCell = [[NSVProjectItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
+    self.orderByTimeCell.frame = CGRectMake(0.0f,
+                                            self.orderHistoryLabel.frame.origin.y + self.orderHistoryLabel.frame.size.height + 4.0f,
+                                            NSVLeftAreaWidth,
                                             50.0f);
-    self.pickIssueButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    self.pickIssueButton.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 35.0f, 0.0f, 0.0f);
-    [self.pickIssueButton setTitle:@"选择" forState:UIControlStateNormal];
-    self.pickIssueButton.titleLabel.font = [UIFont systemFontOfSize:18.0f];
-    [self.pickIssueButton setTitleColor:[UIColor colorWithRGBHex:0x36363d] forState:UIControlStateNormal];
-    [self.pickIssueButton addTarget:self action:@selector(historyPickIssueButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.historyBgView addSubview:self.pickIssueButton];
     
-    // 选问题 结果 文本标签
+    self.orderByTimeCell.textLabel.text = @"按时间排序";
+    self.orderByTimeCell.selected = YES;
+    self.orderByTimeCell.backgroundColor = [UIColor clearColor];
     
-
+    [self.historyBgView addSubview:self.orderByTimeCell];
+    
+    self.orderByTimeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.orderByTimeButton.frame = CGRectMake(0.0f,
+                                              self.orderHistoryLabel.frame.origin.y + self.orderHistoryLabel.frame.size.height + 4.0f,
+                                              NSVLeftAreaWidth,
+                                              50.0f);
+    self.orderByTimeButton.backgroundColor = [UIColor clearColor];
+    
+    [self.historyBgView addSubview:self.orderByTimeButton];
+    
+    // 按问题排序
+    self.orderByIssueCell = [[NSVProjectItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
+    self.orderByIssueCell.frame = CGRectMake(0.0f,
+                                             self.orderByTimeButton.frame.origin.y + self.orderByTimeButton.frame.size.height + 4.0f,
+                                             NSVLeftAreaWidth,
+                                             50.0f);
+    
+    self.orderByIssueCell.textLabel.text = @"按问题排序";
+    self.orderByIssueCell.selected = NO;
+    self.orderByIssueCell.backgroundColor = [UIColor clearColor];
+    
+    [self.historyBgView addSubview:self.orderByIssueCell];
+    
+    self.orderByIssueButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.orderByIssueButton.frame = CGRectMake(0.0f,
+                                              self.orderByTimeButton.frame.origin.y + self.orderByTimeButton.frame.size.height + 4.0f,
+                                              NSVLeftAreaWidth,
+                                              50.0f);
+    self.orderByIssueButton.backgroundColor = [UIColor clearColor];
+    
+    [self.historyBgView addSubview:self.orderByIssueButton];
+    
+    // 按人员排序
+    self.orderByNurseCell = [[NSVProjectItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
+    self.orderByNurseCell.frame = CGRectMake(0.0f,
+                                             self.orderByIssueButton.frame.origin.y + self.orderByIssueButton.frame.size.height + 4.0f,
+                                             NSVLeftAreaWidth,
+                                             50.0f);
+    
+    self.orderByNurseCell.textLabel.text = @"按人员排序";
+    self.orderByNurseCell.selected = NO;
+    self.orderByNurseCell.backgroundColor = [UIColor clearColor];
+    
+    [self.historyBgView addSubview:self.orderByNurseCell];
+    
+    self.orderByNurseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.orderByNurseButton.frame = CGRectMake(0.0f,
+                                               self.orderByIssueButton.frame.origin.y + self.orderByIssueButton.frame.size.height + 4.0f,
+                                               NSVLeftAreaWidth,
+                                               50.0f);
+    self.orderByNurseButton.backgroundColor = [UIColor clearColor];
+    
+    [self.historyBgView addSubview:self.orderByNurseButton];
+    
+    // 导出按钮
+    self.exportHistoryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.exportHistoryButton.frame = CGRectMake(15.0f,
+                                                self.height - 90.0f - 2.0f * historyLabelBgView.frame.size.height,
+                                                NSVLeftAreaWidth - 30.f,
+                                                60.0f);
+    self.exportHistoryButton.backgroundColor = [UIColor colorWithRGBHex:0x71a960];
+    self.exportHistoryButton.layer.cornerRadius = 8.0f;
+    self.exportHistoryButton.layer.masksToBounds = YES;
+    [self.exportHistoryButton setTitle:@"导出EXCEL" forState:UIControlStateNormal];
+    
+    [self.historyBgView addSubview:self.exportHistoryButton];
+    
+    
     
     // 历史 切换按钮
     self.historySwitchButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -1790,6 +1985,243 @@ typedef enum{
     [self.projectAndNurseManagementBgView addSubview:self.panMgmProjectTableView];
     
     self.panMgmProjectLevel = NSVPanMgmClassifyLevel;
+}
+
+-(void) initHistoryOfRightSide{
+    self.historyReportBgView = [[UIView alloc] initWithFrame:CGRectMake(NSVLeftAreaWidth, StatusBarHeight, self.width - NSVLeftAreaWidth, self.height - StatusBarHeight)];
+    self.historyReportBgView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.historyReportBgView];
+    
+    // 违规人员榜 文字标签
+    self.nurseRollLabel = [[UILabel alloc] initWithFrame:CGRectMake(68.0f, 35.0f, 200.0f, 18.0f)];
+    self.nurseRollLabel.text = @"违规人员榜";
+    self.nurseRollLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.nurseRollLabel.textColor = [UIColor colorWithRGBHex:0x36363d];
+    
+    [self.historyReportBgView addSubview:self.nurseRollLabel];
+    
+    // 违规人员榜 第一名 次数 文字标签
+    self.nurseRollFirstLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 98.0f, 43.0f, 18.0f)];
+    self.nurseRollFirstLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.nurseRollFirstLabel.textColor = [UIColor colorWithRGBHex:0x747474];
+    self.nurseRollFirstLabel.textAlignment = NSTextAlignmentRight;
+    self.nurseRollFirstLabel.text = @"10次";
+    [self.historyReportBgView addSubview:self.nurseRollFirstLabel];
+    
+    // 违规人员榜 第二名 次数 文字标签
+    self.nurseRollSecondLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.nurseRollFirstLabel.frame.origin.x,
+                                                                          self.nurseRollFirstLabel.frame.origin.y + self.nurseRollFirstLabel.frame.size.height + 47.0f,
+                                                                          self.nurseRollFirstLabel.frame.size.width,
+                                                                          self.nurseRollFirstLabel.frame.size.height)];
+    self.nurseRollSecondLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.nurseRollSecondLabel.textColor = [UIColor colorWithRGBHex:0x747474];
+    self.nurseRollSecondLabel.textAlignment = NSTextAlignmentRight;
+    self.nurseRollSecondLabel.text = @"4次";
+    
+    [self.historyReportBgView addSubview:self.nurseRollSecondLabel];
+    
+    // 违规人员榜 第三名 次数 文字标签
+    self.nurseRollThirdLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.nurseRollFirstLabel.frame.origin.x,
+                                                                         self.nurseRollSecondLabel.frame.origin.y + self.nurseRollSecondLabel.frame.size.height + 47.0f,
+                                                                         self.nurseRollFirstLabel.frame.size.width,
+                                                                         self.nurseRollFirstLabel.frame.size.height)];
+    self.nurseRollThirdLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.nurseRollThirdLabel.textColor = [UIColor colorWithRGBHex:0x747474];
+    self.nurseRollThirdLabel.textAlignment = NSTextAlignmentRight;
+    self.nurseRollThirdLabel.text = @"2次";
+    
+    [self.historyReportBgView addSubview:self.nurseRollThirdLabel];
+    
+    // 违规人员榜 第一名 名字 背景
+    self.nurseRollFirstNameBgView = [[UIView alloc] initWithFrame:CGRectMake(68.0f, 75.0f, 305.0f, 65.0f)];
+    self.nurseRollFirstNameBgView.backgroundColor = [UIColor colorWithRGBHex:0x53993f];
+    
+    [self.historyReportBgView addSubview:self.nurseRollFirstNameBgView];
+    
+    
+    // 违规人员榜 第一名 名字 文字标签
+    self.nurseRollFirstNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.nurseRollFirstNameBgView.frame.origin.x + 15.0f,
+                                                                             self.nurseRollFirstLabel.frame.origin.y,
+                                                                             self.nurseRollFirstNameBgView.frame.size.width - 30.0f,
+                                                                             self.nurseRollFirstLabel.frame.size.height)];
+    self.nurseRollFirstNameLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.nurseRollFirstNameLabel.textColor = [UIColor whiteColor];
+    self.nurseRollFirstNameLabel.text = @"李白";
+    
+    [self.historyReportBgView addSubview:self.nurseRollFirstNameLabel];
+    
+    
+    // 违规人员榜 第二名 名字 背景
+    self.nurseRollSecondNameBgView = [[UIView alloc] initWithFrame:CGRectMake(self.nurseRollFirstNameBgView.frame.origin.x,
+                                                                              self.nurseRollFirstNameBgView.frame.origin.y + self.nurseRollFirstNameBgView.frame.size.height,
+                                                                              240.0f,
+                                                                              65.0f)];
+    self.nurseRollSecondNameBgView.backgroundColor = [UIColor colorWithRGBHex:0x75ad65];
+    
+    [self.historyReportBgView addSubview:self.nurseRollSecondNameBgView];
+    
+    
+    // 违规人员榜 第二名 名字 文字标签
+    self.nurseRollSecondNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.nurseRollSecondNameBgView.frame.origin.x + 15.0f,
+                                                                             self.nurseRollSecondLabel.frame.origin.y,
+                                                                             self.nurseRollSecondNameBgView.frame.size.width - 30.0f,
+                                                                             self.nurseRollSecondLabel.frame.size.height)];
+    self.nurseRollSecondNameLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.nurseRollSecondNameLabel.textColor = [UIColor whiteColor];
+    self.nurseRollSecondNameLabel.text = @"杜甫";
+    
+    [self.historyReportBgView addSubview:self.nurseRollSecondNameLabel];
+    
+    // 违规人员榜 第三名 名字 背景
+    self.nurseRollThirdNameBgView = [[UIView alloc] initWithFrame:CGRectMake(self.nurseRollFirstNameBgView.frame.origin.x,
+                                                                              self.nurseRollSecondNameBgView.frame.origin.y + self.nurseRollSecondNameBgView.frame.size.height,
+                                                                              175.0f,
+                                                                              65.0f)];
+    self.nurseRollThirdNameBgView.backgroundColor = [UIColor colorWithRGBHex:0x98c28c];
+    
+    [self.historyReportBgView addSubview:self.nurseRollThirdNameBgView];
+    
+    
+    // 违规人员榜 第三名 名字 文字标签
+    self.nurseRollThirdNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.nurseRollThirdNameBgView.frame.origin.x + 15.0f,
+                                                                              self.nurseRollThirdLabel.frame.origin.y,
+                                                                              self.nurseRollThirdNameBgView.frame.size.width - 30.0f,
+                                                                              self.nurseRollThirdLabel.frame.size.height)];
+    self.nurseRollThirdNameLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.nurseRollThirdNameLabel.textColor = [UIColor whiteColor];
+    self.nurseRollThirdNameLabel.text = @"王晓波";
+    
+    [self.historyReportBgView addSubview:self.nurseRollThirdNameLabel];
+    
+    
+    
+    // 违规问题榜 文字标签
+    self.issueRollLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.nurseRollFirstNameBgView.frame.origin.x + self.nurseRollFirstNameBgView.frame.size.width + 95.0f,
+                                                                    self.nurseRollLabel.frame.origin.y,
+                                                                    self.nurseRollLabel.frame.size.width,
+                                                                    self.nurseRollLabel.frame.size.height)];
+    self.issueRollLabel.text = @"违规问题榜";
+    self.issueRollLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.issueRollLabel.textColor = [UIColor colorWithRGBHex:0x36363d];
+    
+    [self.historyReportBgView addSubview:self.issueRollLabel];
+    
+    // 违规问题榜 第一名 次数 文字标签
+    self.issueRollFirstLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.nurseRollFirstNameBgView.frame.origin.x + self.nurseRollFirstNameBgView.frame.size.width + 27.0f,
+                                                                         self.nurseRollFirstLabel.frame.origin.y,
+                                                                         53.0f,
+                                                                         self.nurseRollFirstLabel.frame.size.height)];
+    self.issueRollFirstLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.issueRollFirstLabel.textColor = [UIColor colorWithRGBHex:0x747474];
+    self.issueRollFirstLabel.textAlignment = NSTextAlignmentRight;
+    self.issueRollFirstLabel.text = @"10次";
+    [self.historyReportBgView addSubview:self.issueRollFirstLabel];
+    
+    // 违规问题榜 第二名 次数 文字标签
+    self.issueRollSecondLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.issueRollFirstLabel.frame.origin.x,
+                                                                          self.nurseRollSecondLabel.frame.origin.y,
+                                                                          self.issueRollFirstLabel.frame.size.width,
+                                                                          self.nurseRollSecondLabel.frame.size.height)];
+    self.issueRollSecondLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.issueRollSecondLabel.textColor = [UIColor colorWithRGBHex:0x747474];
+    self.issueRollSecondLabel.textAlignment = NSTextAlignmentRight;
+    self.issueRollSecondLabel.text = @"4次";
+    
+    [self.historyReportBgView addSubview:self.issueRollSecondLabel];
+    
+    // 违规问题榜 第三名 次数 文字标签
+    self.issueRollThirdLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.issueRollFirstLabel.frame.origin.x,
+                                                                         self.nurseRollThirdLabel.frame.origin.y,
+                                                                         self.issueRollFirstLabel.frame.size.width,
+                                                                         self.nurseRollThirdLabel.frame.size.height)];
+    self.issueRollThirdLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.issueRollThirdLabel.textColor = [UIColor colorWithRGBHex:0x747474];
+    self.issueRollThirdLabel.textAlignment = NSTextAlignmentRight;
+    self.issueRollThirdLabel.text = @"2次";
+    
+    [self.historyReportBgView addSubview:self.issueRollThirdLabel];
+    
+    
+    // 违规问题榜 第一名 名字 背景
+    self.issueRollFirstNameBgView = [[UIView alloc] initWithFrame:CGRectMake(self.issueRollLabel.frame.origin.x,
+                                                                             self.nurseRollFirstNameBgView.frame.origin.y,
+                                                                             305.0f, 65.0f)];
+    self.issueRollFirstNameBgView.backgroundColor = [UIColor colorWithRGBHex:0x53993f];
+    
+    [self.historyReportBgView addSubview:self.issueRollFirstNameBgView];
+    
+    
+    // 违规问题榜 第一名 名字 文字标签
+    self.issueRollFirstNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.issueRollFirstNameBgView.frame.origin.x + 15.0f,
+                                                                             self.issueRollFirstNameBgView.frame.origin.y,
+                                                                             self.issueRollFirstNameBgView.frame.size.width - 30.0f,
+                                                                             self.issueRollFirstNameBgView.frame.size.height)];
+    self.issueRollFirstNameLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.issueRollFirstNameLabel.textColor = [UIColor whiteColor];
+    self.issueRollFirstNameLabel.text = @"病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净";
+    self.issueRollFirstNameLabel.numberOfLines = 2;
+    self.issueRollFirstNameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    [self.historyReportBgView addSubview:self.issueRollFirstNameLabel];
+    
+    // 违规问题榜 第二名 名字 背景
+    self.issueRollSecondNameBgView = [[UIView alloc] initWithFrame:CGRectMake(self.issueRollFirstNameBgView.frame.origin.x,
+                                                                              self.issueRollFirstNameBgView.frame.origin.y + self.issueRollFirstNameBgView.frame.size.height,
+                                                                              240.0f,
+                                                                              65.0f)];
+    self.issueRollSecondNameBgView.backgroundColor = [UIColor colorWithRGBHex:0x75ad65];
+    
+    [self.historyReportBgView addSubview:self.issueRollSecondNameBgView];
+    
+    
+    // 违规问题榜 第二名 名字 文字标签
+    self.issueRollSecondNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.issueRollSecondNameBgView.frame.origin.x + 15.0f,
+                                                                              self.issueRollSecondNameBgView.frame.origin.y,
+                                                                              self.issueRollSecondNameBgView.frame.size.width - 30.0f,
+                                                                              self.issueRollSecondNameBgView.frame.size.height)];
+    self.issueRollSecondNameLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.issueRollSecondNameLabel.textColor = [UIColor whiteColor];
+    self.issueRollSecondNameLabel.text = @"病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净";
+    self.issueRollSecondNameLabel.numberOfLines = 2;
+    self.issueRollSecondNameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    [self.historyReportBgView addSubview:self.issueRollSecondNameLabel];
+    
+    // 违规问题榜 第三名 名字 背景
+    self.issueRollThirdNameBgView = [[UIView alloc] initWithFrame:CGRectMake(self.issueRollFirstNameBgView.frame.origin.x,
+                                                                             self.issueRollSecondNameBgView.frame.origin.y + self.issueRollSecondNameBgView.frame.size.height,
+                                                                             175.0f,
+                                                                             65.0f)];
+    self.issueRollThirdNameBgView.backgroundColor = [UIColor colorWithRGBHex:0x98c28c];
+    
+    [self.historyReportBgView addSubview:self.issueRollThirdNameBgView];
+    
+    
+    // 违规问题榜 第三名 名字 文字标签
+    self.issueRollThirdNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.issueRollThirdNameBgView.frame.origin.x + 15.0f,
+                                                                             self.issueRollThirdNameBgView.frame.origin.y,
+                                                                             self.issueRollThirdNameBgView.frame.size.width - 30.0f,
+                                                                             self.issueRollThirdNameBgView.frame.size.height)];
+    self.issueRollThirdNameLabel.font = [UIFont systemFontOfSize:18.0f];
+    self.issueRollThirdNameLabel.textColor = [UIColor whiteColor];
+    self.issueRollThirdNameLabel.text = @"病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净";
+    self.issueRollThirdNameLabel.numberOfLines = 2;
+    self.issueRollThirdNameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    [self.historyReportBgView addSubview:self.issueRollThirdNameLabel];
+    
+    // 历史报表 列表
+    self.historyReportTableView = [[UITableView alloc] initWithFrame:CGRectMake(15.0f, 310.0f, self.width - NSVLeftAreaWidth - 30.0f, self.height - 350.0f)  style:UITableViewStylePlain];
+    self.historyReportTableView.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+    self.historyReportTableView.layer.cornerRadius = 8.0f;
+    self.historyReportTableView.layer.masksToBounds = YES;
+    self.historyReportTableView.dataSource = self;
+    self.historyReportTableView.delegate = self;
+    self.historyReportTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.historyReportBgView addSubview:self.historyReportTableView];
+
+    
 }
 
 #pragma mark - 私有函数
@@ -2124,6 +2556,23 @@ typedef enum{
     NSString *msg = [NSString stringWithFormat:@"%ld年%ld月%ld日", (long)[components year], (long)[components month], (long)[components day]];
     
     return msg;
+}
+
+-(void) refreshHistoryReportDataSource{
+    if (self.orderByTimeCell.isSelected){
+        [self.historyReportDataSource removeAllObjects];
+        
+        NSVRecords* records = [NSVDataCenter defaultCenter].records;
+        
+        [self.historyReportDataSource addObjectsFromArray:records.records];
+        
+        [self.historyReportTableView reloadData];
+        
+    }else if (self.orderByIssueCell.isSelected){
+        
+    }else if (self.orderByNurseCell.isSelected){
+        
+    }
 }
 
 #pragma mark - UISearchBarDelegate

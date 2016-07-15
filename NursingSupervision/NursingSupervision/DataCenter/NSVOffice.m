@@ -7,7 +7,18 @@
 //
 
 #import "NSVOffice.h"
+#import "NSString+SHA.h"
 
 @implementation NSVOffice
+
+-(instancetype) init{
+    self = [super init];
+    
+    if (self != nil) {
+        self.uid = [NSString sha256Uid];
+    }
+    
+    return self;
+}
 
 @end

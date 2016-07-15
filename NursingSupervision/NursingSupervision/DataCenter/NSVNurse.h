@@ -16,7 +16,7 @@
 
 @interface NSVNurse : JSONModel
 
-@property (nonatomic, assign) NSInteger nurseId;
+@property (nonatomic, strong) NSString* uid;
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSString* namePinyin;
 

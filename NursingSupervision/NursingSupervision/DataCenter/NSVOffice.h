@@ -15,6 +15,7 @@
 
 @interface NSVOffice : JSONModel
 
+@property (nonatomic, strong) NSString* uid;
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSMutableArray<NSVNurse>* nurses;
 

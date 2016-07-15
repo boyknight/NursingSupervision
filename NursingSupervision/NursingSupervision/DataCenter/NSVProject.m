@@ -7,7 +7,18 @@
 //
 
 #import "NSVProject.h"
+#import "NSString+SHA.h"
 
 @implementation NSVProject
+
+-(instancetype) init{
+    self = [super init];
+    
+    if (self != nil) {
+        self.uid = [NSString sha256Uid];
+    }
+    
+    return self;
+}
 
 @end
