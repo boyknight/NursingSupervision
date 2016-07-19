@@ -179,13 +179,18 @@
     }
     
     if (self.showScore && (self.scoreTextField.text == nil || self.scoreTextField.text.length == 0)) {
-        self.messageLabel.text = @"分值不能为空！";
+        self.messageLabel.text = @"分数不能为空！";
         return;
     }
     
     if (self.showScore) {
-        if ([self.scoreTextField.text floatValue] == 0.0f) {
-            self.messageLabel.text = @"分值的格式不正确！";
+        if ([self.scoreTextField.text floatValue] == 0.0f ) {
+            self.messageLabel.text = @"分数的格式不正确，请重新输入";
+            return;
+        }
+        
+        if ([self.scoreTextField.text floatValue] < 0.0f || [self.scoreTextField.text floatValue] > 100.0f) {
+            self.messageLabel.text = @"分数必须大于0小于100，请重新输入";
             return;
         }
         

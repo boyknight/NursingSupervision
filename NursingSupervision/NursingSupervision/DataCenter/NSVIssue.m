@@ -8,6 +8,7 @@
 
 #import "NSVIssue.h"
 #import "NSString+SHA.h"
+#import "Pinyin4Objc.h"
 
 @implementation NSVIssue
 
@@ -19,6 +20,35 @@
     }
     
     return self;
+}
+
+-(void) setName:(NSString *)name{
+    _name = [name copy];
+    
+    HanyuPinyinOutputFormat *outputFormatForQuan = [[HanyuPinyinOutputFormat alloc] init];
+    [outputFormatForQuan setToneType:ToneTypeWithoutTone];
+    [outputFormatForQuan setVCharType:VCharTypeWithV];
+    [outputFormatForQuan setCaseType:CaseTypeLowercase];
+    
+    self.nameQuanPin = [PinyinHelper toHanyuPinyinStringWithNSString:self.name
+                                         withHanyuPinyinOutputFormat:outputFormatForQuan
+                                                        withNSString:@""];
+    
+    
+    NSMutableString* namePinyin = [NSMutableString string];
+    for (int i = 0; i < self.name.length; i++) {
+        
+        NSString* word = [self.name substringWithRange:NSMakeRange(i, 1)];
+        NSString* py = [PinyinHelper toHanyuPinyinStringWithNSString:word
+                                         withHanyuPinyinOutputFormat:outputFormatForQuan
+                                                        withNSString:@""];
+        
+        if (py != nil && py.length > 0) {
+            [namePinyin appendString:[py substringToIndex:1]];
+        }
+    }
+    
+    self.namePinYinShouZiMu = namePinyin;
 }
 
 @end

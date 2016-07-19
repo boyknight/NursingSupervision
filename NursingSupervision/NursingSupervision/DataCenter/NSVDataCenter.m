@@ -112,76 +112,76 @@
             
             NSVAllStaff* as = [[NSVAllStaff alloc] init];
             as.offices = [NSMutableArray<NSVOffice> array];
-            
-            NSVOffice* o = [[NSVOffice alloc] init];
-            o.name = @"肝胆外科";
-            o.nurses = [NSMutableArray<NSVNurse> array];
-            
-            [as.offices addObject:o];
-            
-            NSVNurse* n = [[NSVNurse alloc] init];
-            n.name = @"黎明";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"张学友";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"刘德华";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"郭富城";
-            [o.nurses addObject:n];
-            
-            
-            o = [[NSVOffice alloc] init];
-            o.name = @"内科";
-            o.nurses = [NSMutableArray<NSVNurse> array];
-            [as.offices addObject:o];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"星矢";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"冰河";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"紫龙";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"瞬";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"一辉";
-            [o.nurses addObject:n];
-            
-            
-            o = [[NSVOffice alloc] init];
-            o.name = @"眼科";
-            o.nurses = [NSMutableArray<NSVNurse> array];
-            [as.offices addObject:o];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"刘备";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"关羽";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"张飞";
-            [o.nurses addObject:n];
-            
-            n = [[NSVNurse alloc] init];
-            n.name = @"赵云";
-            [o.nurses addObject:n];
+//
+//            NSVOffice* o = [[NSVOffice alloc] init];
+//            o.name = @"肝胆外科";
+//            o.nurses = [NSMutableArray<NSVNurse> array];
+//            
+//            [as.offices addObject:o];
+//            
+//            NSVNurse* n = [[NSVNurse alloc] init];
+//            n.name = @"黎明";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"张学友";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"刘德华";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"郭富城";
+//            [o.nurses addObject:n];
+//            
+//            
+//            o = [[NSVOffice alloc] init];
+//            o.name = @"内科";
+//            o.nurses = [NSMutableArray<NSVNurse> array];
+//            [as.offices addObject:o];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"星矢";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"冰河";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"紫龙";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"瞬";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"一辉";
+//            [o.nurses addObject:n];
+//            
+//            
+//            o = [[NSVOffice alloc] init];
+//            o.name = @"眼科";
+//            o.nurses = [NSMutableArray<NSVNurse> array];
+//            [as.offices addObject:o];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"刘备";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"关羽";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"张飞";
+//            [o.nurses addObject:n];
+//            
+//            n = [[NSVNurse alloc] init];
+//            n.name = @"赵云";
+//            [o.nurses addObject:n];
             
             
             _staffs = as;
@@ -298,6 +298,31 @@
     return project;
 }
 
+-(nullable NSVClassify*) findClassifyWithIssue:(nonnull NSVIssue*)issue{
+    NSVClassify* classify = nil;
+    
+    for (NSVClassify* c in self.assessment.classifies) {
+        for (NSVProject* p in c.projects) {
+            for (NSVIssue* i in p.issues) {
+                if ([i.uid isEqualToString:issue.uid]) {
+                    classify = c;
+                    break;
+                }
+            }
+            
+            if (classify != nil) {
+                break;
+            }
+        }
+        
+        if (classify != nil) {
+            break;
+        }
+    }
+    
+    return classify;
+}
+
 -(nullable NSVOffice*) findOfficeWithNurse:(nonnull NSVNurse*)nurse{
     NSVOffice* office = nil;
     
@@ -315,6 +340,50 @@
     }
     
     return office;
+}
+
+-(NSVIssue*) findIssueByUid:(NSString*)uid{
+    NSVIssue* issue = nil;
+    
+    for (NSVClassify* c in self.assessment.classifies) {
+        for (NSVProject* p in c.projects) {
+            for (NSVIssue* i in p.issues) {
+                if ([i.uid isEqualToString:uid]) {
+                    issue = i;
+                    break;
+                }
+            }
+            
+            if (issue != nil) {
+                break;
+            }
+        }
+        
+        if (issue != nil) {
+            break;
+        }
+    }
+    
+    return issue;
+}
+
+-(NSVNurse*) findNurseByUid:(NSString*)uid{
+    NSVNurse* nurse = nil;
+    
+    for (NSVOffice* o in self.staffs.offices) {
+        for (NSVNurse* n in o.nurses) {
+            if ([n.uid isEqualToString:uid]) {
+                nurse = n;
+                break;
+            }
+        }
+        
+        if(nurse != nil){
+            break;
+        }
+    }
+    
+    return nurse;
 }
 
 @end

@@ -97,11 +97,11 @@
 
 +(NSString*) sha256Uid{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss zzz"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSSSSS"];
     NSString* destDateString = [dateFormatter stringFromDate:[NSDate date]];
     
-    
-    NSString* uid = [destDateString sha256];
+    NSString* randString = [NSString stringWithFormat:@"%@%u", destDateString, arc4random() % (100000+1)];
+    NSString* uid = [randString sha256];
     
     return uid;
 }

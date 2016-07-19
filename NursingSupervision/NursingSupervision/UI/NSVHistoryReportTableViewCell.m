@@ -36,6 +36,7 @@
         self.projectLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         self.projectLabel.font = [UIFont systemFontOfSize:18.0f];
         self.projectLabel.textColor = [UIColor colorWithRGBHex:0x36363d];
+        self.projectLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:self.projectLabel];
         
         self.nurseLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -43,6 +44,7 @@
         self.nurseLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         self.nurseLabel.font = [UIFont systemFontOfSize:18.0f];
         self.nurseLabel.textColor = [UIColor colorWithRGBHex:0x53993f];
+        self.nurseLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:self.nurseLabel];
         
         self.officeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -50,6 +52,7 @@
         self.officeLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         self.officeLabel.font = [UIFont systemFontOfSize:18.0f];
         self.officeLabel.textColor = [UIColor colorWithRGBHex:0x36363d];
+        self.officeLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:self.officeLabel];
         
         self.dateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -57,6 +60,7 @@
         self.dateLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         self.dateLabel.font = [UIFont systemFontOfSize:18.0f];
         self.dateLabel.textColor = [UIColor colorWithRGBHex:0x36363d];
+        self.dateLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:self.dateLabel];
         
         self.sepView = [[UIView alloc] initWithFrame:CGRectZero];

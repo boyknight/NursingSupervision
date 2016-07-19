@@ -23,7 +23,12 @@
 #import "SIAlertView.h"
 #import "AMPopTip.h"
 #import "NSDate+Format.h"
-
+#import "GCDWebServer.h"
+#import "GCDWebServerFileResponse.h"
+#import "GCDWebServerDataResponse.h"
+#import "GetAddresses.h"
+#import "Reachability.h"
+#import "BRAOfficeDocumentPackage.h"
 
 #define NSVLeftAreaWidth 225.0f
 
@@ -40,6 +45,10 @@
 #define NSVNurseListWidth 179.0f
 
 #define NSVIssueRecordCommitButtonHeight 60.0f
+
+#define TagOfStartTimeDatePicker 1000
+#define TagOfEndTimeDatePicker 1001
+#define TagOfHistoryExportAlertView 1002
 
 static NSString * const reuseIdentifier = @"Cell";
 
@@ -135,6 +144,8 @@ typedef enum{
 @property (nonatomic, strong) UIView* maskGrayMidView;
 @property (nonatomic, strong) UIView* maskGrayRightView;
 @property (nonatomic, strong) UITableView* issueSearchResultTableView;
+@property (nonatomic, strong) UILabel* emptyNurseLabel;
+@property (nonatomic, strong) UILabel* emptySearchLabel;
 
 // 问题和人员管理
 @property (nonatomic, strong) UIView* projectAndNurseManagementBgView;
@@ -182,6 +193,8 @@ typedef enum{
 
 @property (nonatomic, strong) UITableView* historyReportTableView;
 
+@property (nonatomic, strong) UILabel* emptyHistoryReportLabel;
+
 
 
 
@@ -198,6 +211,8 @@ typedef enum{
 @property (nonatomic, assign) CGFloat height;
 @property (nonatomic, assign) CGFloat deltaOfLeftHeight;
 
+@property (nonatomic, strong) GCDWebServer* webServer;
+
 
 @end
 
@@ -212,7 +227,54 @@ typedef enum{
         self.nurses = [NSMutableArray array];
         self.issueSearchResultArray = [NSMutableArray array];
         self.historyReportDataSource = [NSMutableArray array];
+        
+        self.webServer = [[GCDWebServer alloc] init];
+        
+        __weak GCDWebServer* selfWebServer = self.webServer;
+        
+//        NSLog(@"root path: %@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]);
+//        
+//        [self.webServer addHandlerForMethod:@"GET" path:@"/" requestClass:[GCDWebServerRequest class] processBlock:^GCDWebServerResponse *(__kindof GCDWebServerRequest *request) {
+//            
+//            NSLog(@"http request: %@", request);
+//            
+//            NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//            NSString* exportPath = [rootPath stringByAppendingPathComponent:@"export"];
+//            
+//            if (![[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
+//                [[NSFileManager defaultManager] createDirectoryAtPath:exportPath withIntermediateDirectories:YES attributes:nil error:nil];
+//            }
+//            
+//            NSArray* files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:exportPath error:nil];
+//            
+//            NSMutableString* html = [NSMutableString stringWithString:@"<HTML><HEAD></HEAD><BODY>"];
+//            
+//            if (files == nil || files.count == 0) {
+//                [html appendString:@"<P> 无任何文件，请刷新 </P></BODY></HTML>"];
+//            }else{
+//                [html appendString:@"<P> 请点击下载 </P><HR>"];
+//                
+//                for (NSString* fileName in files) {
+//                    
+//                    NSString* aStr = [NSString stringWithFormat:@"<a href='%@%@'>%@</a><BR>", selfWebServer.serverURL, fileName, fileName];
+//                    
+//                    [html appendString:aStr];
+//                }
+//                [html appendString:@"<HR></BODY></HTML>"];
+//                
+//            }
+//            
+//            return [GCDWebServerDataResponse responseWithHTML:html];
+//        }];
+        
+        NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        NSString* exportPath = [rootPath stringByAppendingPathComponent:@"export"];
+        
+        [self.webServer addGETHandlerForBasePath:@"/" directoryPath:exportPath indexFilename:nil cacheAge:3600 allowRangeRequests:YES];
     }
+    
+    
+
     
     return self;
 }
@@ -221,8 +283,12 @@ typedef enum{
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.historyStartDate = [NSDate date];
-    self.historyEndDate = [NSDate date];
+//    self.historyStartDate = [[NSDate date] dateOfDayFirstSecond];
+    self.historyEndDate = [[NSDate date] dateOfDayLastSecond];
+    
+    NSTimeInterval lastMonth = 60 * 60 * 24 * 30;
+    
+    self.historyStartDate = [[NSDate dateWithTimeIntervalSinceNow:-lastMonth] dateOfDayFirstSecond];
     
     self.width = self.view.frame.size.width;
     self.height = self.view.frame.size.height;
@@ -304,6 +370,11 @@ typedef enum{
     }
     else if (tableView == self.nurseTableView){
         count = self.nurses.count;
+        
+        [self.emptyNurseLabel removeFromSuperview];
+        if(count == 0){
+            [self.nurseTableView addSubview:self.emptyNurseLabel];
+        }
     }
     else if (tableView == self.projectManagementTableView){
         count = 1;
@@ -388,6 +459,11 @@ typedef enum{
     // 历史报表
     else if (tableView == self.historyReportTableView){
         count = self.historyReportDataSource.count;
+        
+        [self.emptyHistoryReportLabel removeFromSuperview];
+        if (count == 0) {
+            [self.historyReportTableView addSubview:self.emptyHistoryReportLabel];
+        }
     }
     
     return count;
@@ -619,15 +695,12 @@ typedef enum{
         NSVRecord* record = self.historyReportDataSource[indexPath.row];
         NSVIssue* issue = record.issue;
         NSVNurse* nurse = record.nurse;
-        NSVProject* project = [[NSVDataCenter defaultCenter] findProjectWithIssue:issue];
         NSVOffice* office = [[NSVDataCenter defaultCenter] findOfficeWithNurse:nurse];
         
         
         tableCell.issueLabel.text = issue.name;
         
-        if (project != nil) {
-            tableCell.projectLabel.text = project.name;
-        }
+        tableCell.projectLabel.text = [NSString stringWithFormat:@"%.01f", issue.score];
         
         tableCell.nurseLabel.text = nurse.name;
         
@@ -922,7 +995,7 @@ typedef enum{
             
             
             UILabel* projectLabel = [[UILabel alloc] initWithFrame:CGRectMake(issueLabel.frame.origin.x + issueLabel.frame.size.width + 20.0f, 0.0f, 120.0f, 45.0f)];
-            projectLabel.text = @"项目";
+            projectLabel.text = @"分数";
             projectLabel.textColor = [UIColor whiteColor];
             projectLabel.font = [UIFont systemFontOfSize:18.0f];
             projectLabel.textAlignment = NSTextAlignmentCenter;
@@ -1068,6 +1141,7 @@ typedef enum{
                     [self.panMgmProjectTableView reloadData];
                     
                     self.panMgmNavBackButton.enabled = YES;
+                    self.panMgmNavBackButton.alpha = 1.0f;
                     
                 }else if (self.panMgmProjectLevel == NSVPanMgmProjectLevel){
                     self.panMgmProjectLevel = NSVPanMgmIssueLevel;
@@ -1078,6 +1152,7 @@ typedef enum{
                     
                     [self.panMgmProjectTableView reloadData];
                     self.panMgmNavBackButton.enabled = YES;
+                    self.panMgmNavBackButton.alpha = 1.0f;
                 }
             }
         }
@@ -1096,6 +1171,7 @@ typedef enum{
                     [self.panMgmProjectTableView reloadData];
                     
                     self.panMgmNavBackButton.enabled = YES;
+                    self.panMgmNavBackButton.alpha = 1.0f;
                 }
             }
         }
@@ -1133,6 +1209,11 @@ typedef enum{
 
 #pragma mark - button clicked
 -(void) projectSwitchButtonClicked:(UIButton*)button{
+    
+    if (self.popTip != nil) {
+        [self.popTip hide];
+        self.popTip = nil;
+    }
     
     CGFloat selfHeight = self.view.frame.size.height;
     
@@ -1180,6 +1261,10 @@ typedef enum{
 
 -(void) projectManageSwitchButtonClicked:(UIButton*)button{
     
+    if (self.popTip != nil) {
+        [self.popTip hide];
+        self.popTip = nil;
+    }
 
     
     CGFloat selfHeight = self.view.frame.size.height;
@@ -1228,6 +1313,12 @@ typedef enum{
 }
 
 -(void) historySwitchButtonClicked:(UIButton*)button{
+    
+    if (self.popTip != nil) {
+        [self.popTip hide];
+        self.popTip = nil;
+    }
+    
     CGFloat selfHeight = self.view.frame.size.height;
     
     CGFloat delta = selfHeight - 3.0f * NSVProjectLabelHeight - StatusBarHeight;
@@ -1236,6 +1327,7 @@ typedef enum{
         __weak NSVMainViewController* blockSelf = self;
         
         [self.view bringSubviewToFront:self.historyReportBgView];
+        [self refreshHistoryReportDataSource];
         
         [UIView animateWithDuration:0.3f animations:^{
             
@@ -1282,7 +1374,7 @@ typedef enum{
     self.issueRecordCommitButton.enabled = NO;
     self.issueRecordCommitButton.backgroundColor = [UIColor colorWithRGBHex:0xd7d7d5];
     
-    [self showMessageBox:@"成功记录！"];
+    [self showMessageBox:@"已提交成功！"];
     
     
 }
@@ -1314,6 +1406,7 @@ typedef enum{
         if (self.panMgmProjectLevel == NSVPanMgmProjectLevel) {
             self.panMgmProjectLevel = NSVPanMgmClassifyLevel;
             button.enabled = NO;
+            button.alpha = 0.0f;
             [self.panMgmProjectTableView reloadData];
             
             self.panMgmNavTitleLabel.text = @"标准";
@@ -1331,6 +1424,7 @@ typedef enum{
         if (self.panMgmNurseLevel == NSVPanMgmNurse) {
             self.panMgmNurseLevel = NSVPanMgmOfficeLevel;
             button.enabled = NO;
+            button.alpha = 0.0f;
             
             [self.panMgmProjectTableView reloadData];
             
@@ -1352,6 +1446,7 @@ typedef enum{
         self.popTip.popoverColor = [UIColor whiteColor];
         self.popTip.edgeInsets = UIEdgeInsetsMake(-6.0f, -6.0f, -6.0f, -6.0f);
         self.popTip.radius = 9.0f;
+        self.popTip.tag = TagOfStartTimeDatePicker;
         
         CGRect fromFrame = CGRectMake(self.startDateIndicatorIcon.frame.origin.x + self.startDateIndicatorIcon.frame.size.width,
                                       self.historyBgView.frame.origin.y + self.startDateIndicatorIcon.frame.origin.y,
@@ -1359,8 +1454,18 @@ typedef enum{
                                       self.startDateIndicatorIcon.frame.size.height);
         [self.popTip showCustomView:self.datePickerBgView direction:AMPopTipDirectionRight inView:self.view fromFrame:fromFrame];
     }else{
-        [self.popTip hide];
-        self.popTip = nil;
+        if (self.popTip.isVisible) {
+            [self.popTip hide];
+            self.popTip = nil;
+        }else{
+            self.popTip.tag = TagOfStartTimeDatePicker;
+            CGRect fromFrame = CGRectMake(self.startDateIndicatorIcon.frame.origin.x + self.startDateIndicatorIcon.frame.size.width,
+                                          self.historyBgView.frame.origin.y + self.startDateIndicatorIcon.frame.origin.y,
+                                          self.startDateIndicatorIcon.frame.size.width,
+                                          self.startDateIndicatorIcon.frame.size.height);
+            [self.popTip showCustomView:self.datePickerBgView direction:AMPopTipDirectionRight inView:self.view fromFrame:fromFrame];
+        }
+
     }
 
 }
@@ -1375,6 +1480,7 @@ typedef enum{
         self.popTip.popoverColor = [UIColor whiteColor];
         self.popTip.edgeInsets = UIEdgeInsetsMake(-6.0f, -6.0f, -6.0f, -6.0f);
         self.popTip.radius = 9.0f;
+        self.popTip.tag = TagOfEndTimeDatePicker;
         
         CGRect fromFrame = CGRectMake(self.endDateIndicatorIcon.frame.origin.x + self.endDateIndicatorIcon.frame.size.width,
                                       self.historyBgView.frame.origin.y + self.endDateIndicatorIcon.frame.origin.y,
@@ -1382,13 +1488,170 @@ typedef enum{
                                       self.endDateIndicatorIcon.frame.size.height);
         [self.popTip showCustomView:self.datePickerBgView direction:AMPopTipDirectionRight inView:self.view fromFrame:fromFrame];
     }else{
+        if (self.popTip.isVisible) {
+            [self.popTip hide];
+            self.popTip = nil;
+        }else{
+            self.popTip.tag = TagOfEndTimeDatePicker;
+            
+            CGRect fromFrame = CGRectMake(self.endDateIndicatorIcon.frame.origin.x + self.endDateIndicatorIcon.frame.size.width,
+                                          self.historyBgView.frame.origin.y + self.endDateIndicatorIcon.frame.origin.y,
+                                          self.endDateIndicatorIcon.frame.size.width,
+                                          self.endDateIndicatorIcon.frame.size.height);
+            [self.popTip showCustomView:self.datePickerBgView direction:AMPopTipDirectionRight inView:self.view fromFrame:fromFrame];
+        }
+
+    }
+}
+
+-(void) historyOrderButtonClicked:(UIButton*)button{
+    
+    if (self.popTip != nil) {
+        [self.popTip hide];
+        self.popTip = nil;
+    }
+    
+    if (button == self.orderByTimeButton && !self.orderByTimeCell.isSelected) {
+        [self.orderByTimeCell setSelected:YES animated:NO];
+        [self.orderByIssueCell setSelected:NO animated:NO];
+        [self.orderByNurseCell setSelected:NO animated:NO];
+        
+        [self refreshHistoryReportDataSource];
+    }else if (button == self.orderByIssueButton && !self.orderByIssueCell.isSelected){
+        [self.orderByTimeCell setSelected:NO animated:NO];
+        [self.orderByIssueCell setSelected:YES animated:NO];
+        [self.orderByNurseCell setSelected:NO animated:NO];
+        [self refreshHistoryReportDataSource];
+    }else if (button == self.orderByNurseButton && !self.orderByNurseCell.isSelected){
+        [self.orderByTimeCell setSelected:NO animated:NO];
+        [self.orderByIssueCell setSelected:NO animated:NO];
+        [self.orderByNurseCell setSelected:YES animated:NO];
+        [self refreshHistoryReportDataSource];
+    }
+}
+
+-(void) datePickerCancelButtonClicked:(UIButton*)button{
+    if (self.popTip != nil) {
         [self.popTip hide];
         self.popTip = nil;
     }
 }
 
--(void) historyPickIssueButtonClicked:(UIButton*)button{
-    NSLog(@"here we go");
+-(void) datePickerOKButtonClicked:(UIButton*)button{
+    if (self.popTip.tag == TagOfStartTimeDatePicker) {
+        self.historyStartDate = [self.datePicker.date dateOfDayFirstSecond];
+        self.startDateLabel.text = [self.datePicker.date toStringWithFormatYYYYDotMMDotDD];
+        
+        if (self.popTip != nil) {
+            [self.popTip hide];
+            self.popTip = nil;
+        }
+        
+        [self refreshHistoryReportDataSource];
+    }else if (self.popTip.tag == TagOfEndTimeDatePicker){
+        self.historyEndDate = [self.datePicker.date dateOfDayLastSecond];
+        self.endDateLabel.text = [self.datePicker.date toStringWithFormatYYYYDotMMDotDD];
+        
+        if (self.popTip != nil) {
+            [self.popTip hide];
+            self.popTip = nil;
+        }
+        
+        [self refreshHistoryReportDataSource];
+    }
+}
+
+
+-(void) exportHistoryButtonClicked:(UIButton*) button{
+    // 检测wifi状态
+    Reachability*  r = [Reachability reachabilityForLocalWiFi];
+    if (r.isReachableViaWiFi){
+        // 导出 excel
+        NSString* documentPath = [[NSBundle mainBundle] pathForResource:@"1" ofType:@"xlsx"];
+        BRAOfficeDocumentPackage *spreadsheet = [BRAOfficeDocumentPackage open:documentPath];
+        BRAWorksheet* worksheet = spreadsheet.workbook.worksheets[0];
+        
+        
+        NSVRecords* records = [NSVDataCenter defaultCenter].records;
+        
+        // 按时间筛选
+        NSMutableArray* recordsOfDate = [NSMutableArray array];
+        
+        for (NSVRecord* record in records.records) {
+            if ([record.recordDate compare:self.historyStartDate] == NSOrderedDescending && [record.recordDate compare:self.historyEndDate] == NSOrderedAscending) {
+                [recordsOfDate addObject:record];
+            }else if ([record.recordDate compare:self.historyStartDate] == NSOrderedSame || [record.recordDate compare:self.historyEndDate] == NSOrderedSame){
+                [recordsOfDate addObject:record];
+            }
+        }
+        
+        // 按时间排序
+        [recordsOfDate sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSVRecord* r1 = (NSVRecord*)obj1;
+            NSVRecord* r2 = (NSVRecord*)obj2;
+            
+            return [r2.recordDate compare:r1.recordDate];
+        }];
+        
+        int index = 2;
+        for (NSVRecord* record in recordsOfDate) {
+            
+            NSString* cellid = [NSString stringWithFormat:@"A%d", index];
+            [[worksheet cellForCellReference:cellid shouldCreate:YES] setStringValue:[record.recordDate toStringWithFormatYYYY_MM_DD_HH_MM_Chinese]];
+            
+            cellid = [NSString stringWithFormat:@"B%d", index];
+            [[worksheet cellForCellReference:cellid shouldCreate:YES] setStringValue:record.issue.name];
+            
+            cellid = [NSString stringWithFormat:@"C%d", index];
+            [[worksheet cellForCellReference:cellid shouldCreate:YES] setStringValue:[NSString stringWithFormat:@"%.01f", record.issue.score]];
+            
+            cellid = [NSString stringWithFormat:@"D%d", index];
+            NSVProject* project = [[NSVDataCenter defaultCenter] findProjectWithIssue:record.issue];
+            if (project != nil) {
+                [[worksheet cellForCellReference:cellid shouldCreate:YES] setStringValue:project.name];
+            }
+            
+            cellid = [NSString stringWithFormat:@"E%d", index];
+            NSVClassify* classify = [[NSVDataCenter defaultCenter] findClassifyWithIssue:record.issue];
+            if (classify != nil) {
+                [[worksheet cellForCellReference:cellid shouldCreate:YES] setStringValue:classify.name];
+            }
+            
+            cellid = [NSString stringWithFormat:@"F%d", index];
+            [[worksheet cellForCellReference:cellid shouldCreate:YES] setStringValue:record.nurse.name];
+            
+            
+            cellid = [NSString stringWithFormat:@"G%d", index];
+            NSVOffice* office = [[NSVDataCenter defaultCenter] findOfficeWithNurse:record.nurse];
+            
+            if (office != nil) {
+                [[worksheet cellForCellReference:cellid shouldCreate:YES] setStringValue:office.name];
+            }
+            
+            index++;
+        }
+        
+        NSString* rootPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"export"];
+        NSString *fullPath = [rootPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.xlsx", [[NSDate date] toStringWithFormatYYYYMMDDHHMM]]];
+        
+        [spreadsheet saveAs:fullPath];
+        
+        
+        // 启动 http server
+        [self.webServer startWithPort:8080 bonjourName:nil];
+        
+        // 显示对话框
+        UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@""
+                                                       message:[NSString stringWithFormat:@"请在电脑的浏览器中输入以下地址 %@ \r\r 在下载未完成前，请不要关闭这个对话框！", self.webServer.serverURL]
+                                                      delegate:self
+                                             cancelButtonTitle:@"停止导出"
+                                             otherButtonTitles:nil];
+        alert.tag = TagOfHistoryExportAlertView;
+        [alert show];
+        
+    }else{
+        [self showMessageBox:@"没有连接WIFI网络，请重新连接后再试。"];
+    }
 }
 
 #pragma mark - 初始化界面
@@ -1584,7 +1847,7 @@ typedef enum{
                                                                     NSVLeftAreaWidth - (self.pickStartDateLable.frame.origin.x + self.pickStartDateLable.frame.size.width + 10.0f) - (20.0f + 8.0f + 10.0f),
                                                                     25.0f)];
     
-    self.startDateLabel.text = [self dateToYYYYMMDDString:self.historyStartDate];
+    self.startDateLabel.text = [self.historyStartDate toStringWithFormatYYYYDotMMDotDD];//[self dateToYYYYMMDDString:self.historyStartDate];
     self.startDateLabel.backgroundColor = [UIColor clearColor];
     self.startDateLabel.textColor = [UIColor colorWithRGBHex:0x53993f];
     self.startDateLabel.font = [UIFont boldSystemFontOfSize:20.0f];
@@ -1625,7 +1888,7 @@ typedef enum{
                                                                     NSVLeftAreaWidth - (self.pickEndDateLable.frame.origin.x + self.pickEndDateLable.frame.size.width + 10.0f) - (20.0f + 8.0f + 10.0f),
                                                                     25.0f)];
     
-    self.endDateLabel.text = [self dateToYYYYMMDDString:self.historyStartDate];
+    self.endDateLabel.text = [self.historyEndDate toStringWithFormatYYYYDotMMDotDD]; //[self dateToYYYYMMDDString:self.historyStartDate];
     self.endDateLabel.backgroundColor = [UIColor clearColor];
     self.endDateLabel.textColor = [UIColor colorWithRGBHex:0x53993f];
     self.endDateLabel.font = [UIFont boldSystemFontOfSize:20.0f];
@@ -1664,6 +1927,7 @@ typedef enum{
     self.datePickerCancelButton.frame = CGRectMake(15.0f, 0.0f, 40.0f, self.datePickerTitleView.frame.size.height);
     [self.datePickerCancelButton setTitle:@"取消" forState:UIControlStateNormal];
     self.datePickerCancelButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+    [self.datePickerCancelButton addTarget:self action:@selector(datePickerCancelButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.datePickerTitleView addSubview:self.datePickerCancelButton];
     
@@ -1685,7 +1949,7 @@ typedef enum{
     self.datePickerOKButton.frame = CGRectMake(self.datePickerTitleView.frame.size.width - (40.0f + 15.0f), 0.0f, 40.0f, self.datePickerTitleView.frame.size.height);
     [self.datePickerOKButton setTitle:@"确定" forState:UIControlStateNormal];
     self.datePickerOKButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
-    
+    [self.datePickerOKButton addTarget:self action:@selector(datePickerOKButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.datePickerTitleView addSubview:self.datePickerOKButton];
     
     // 选择时间控件
@@ -1741,6 +2005,8 @@ typedef enum{
                                               50.0f);
     self.orderByTimeButton.backgroundColor = [UIColor clearColor];
     
+    [self.orderByTimeButton addTarget:self action:@selector(historyOrderButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.historyBgView addSubview:self.orderByTimeButton];
     
     // 按问题排序
@@ -1762,6 +2028,7 @@ typedef enum{
                                               NSVLeftAreaWidth,
                                               50.0f);
     self.orderByIssueButton.backgroundColor = [UIColor clearColor];
+    [self.orderByIssueButton addTarget:self action:@selector(historyOrderButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.historyBgView addSubview:self.orderByIssueButton];
     
@@ -1785,6 +2052,7 @@ typedef enum{
                                                50.0f);
     self.orderByNurseButton.backgroundColor = [UIColor clearColor];
     
+    [self.orderByNurseButton addTarget:self action:@selector(historyOrderButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.historyBgView addSubview:self.orderByNurseButton];
     
     // 导出按钮
@@ -1797,6 +2065,8 @@ typedef enum{
     self.exportHistoryButton.layer.cornerRadius = 8.0f;
     self.exportHistoryButton.layer.masksToBounds = YES;
     [self.exportHistoryButton setTitle:@"导出EXCEL" forState:UIControlStateNormal];
+    
+    [self.exportHistoryButton addTarget:self action:@selector(exportHistoryButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.historyBgView addSubview:self.exportHistoryButton];
     
@@ -1829,9 +2099,9 @@ typedef enum{
                                                                         self.issueRecordBgView.frame.size.width - NSVNurseListWidth,
                                                                         44.0f)];
     self.issueSearchBar.searchBarStyle = UISearchBarStyleMinimal;
-    self.issueSearchBar.placeholder = @"请输入关键词或项目名称搜索问题";
+    self.issueSearchBar.placeholder = @"请输入关键词搜索问题";
     self.issueSearchBar.backgroundColor = [UIColor whiteColor];
-    self.issueSearchBar.showsCancelButton = YES;
+    self.issueSearchBar.showsCancelButton = NO;
     self.issueSearchBar.delegate = self;
     [self.issueRecordBgView addSubview:self.issueSearchBar];
     
@@ -1913,6 +2183,24 @@ typedef enum{
     self.issueSearchResultTableView.delegate = self;
     self.issueSearchResultTableView.dataSource = self;
     self.issueSearchResultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    // 搜索无结果 文字标签
+    self.emptySearchLabel = [[UILabel alloc] initWithFrame:CGRectMake( (NSInteger)((self.issueSearchResultTableView.frame.size.width - 180.0f) / 2.0f),
+                                                                      (NSInteger)( (self.issueSearchResultTableView.frame.size.height - 18.0f) / 2.0f ), 180.0f, 18.0f)];
+    
+    self.emptySearchLabel.textAlignment = NSTextAlignmentCenter;
+    self.emptySearchLabel.text = @"没有找到匹配问题";
+    self.emptySearchLabel.textColor = [UIColor colorWithRGBHex:0x36363d];
+    self.emptySearchLabel.font = [UIFont systemFontOfSize:18.0f];
+    
+    // 护士无数据 文字标签
+    self.emptyNurseLabel = [[UILabel alloc] initWithFrame:CGRectMake( (NSInteger)((self.nurseTableView.frame.size.width - 80.0f) / 2.0f),
+                                                                      (NSInteger)( (self.nurseTableView.frame.size.height - 18.0f) / 2.0f ), 80.0f, 18.0f)];
+    
+    self.emptyNurseLabel.textAlignment = NSTextAlignmentCenter;
+    self.emptyNurseLabel.text = @"暂无数据";
+    self.emptyNurseLabel.textColor = [UIColor colorWithRGBHex:0x36363d];
+    self.emptyNurseLabel.font = [UIFont systemFontOfSize:18.0f];
 }
 
 -(void) initProjectAndNurseManagementOfRightSide{
@@ -1936,28 +2224,32 @@ typedef enum{
     
     // 返回按钮
     self.panMgmNavBackButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.panMgmNavBackButton.frame = CGRectMake(25.0f, 0.0f, 40.0f, 44.0f);
+    self.panMgmNavBackButton.frame = CGRectMake(35.0f, 0.0f, 40.0f, 44.0f);
     [self.panMgmNavBackButton setTitle:@"返回" forState:UIControlStateNormal];
     self.panMgmNavBackButton.enabled = NO;
+    self.panMgmNavBackButton.alpha = 0.0f;
+    [self.panMgmNavBackButton setTitleColor:[UIColor colorWithRGBHex:0x53993f] forState:UIControlStateNormal];
     [self.panMgmNavBackButton addTarget:self action:@selector(panMgmNavBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.panMgmNavView addSubview:self.panMgmNavBackButton];
     
     // 编辑按钮
     self.panMgmNavEditButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.panMgmNavEditButton.frame = CGRectMake(self.panMgmNavView.frame.size.width - 85.0f, 0.0f, 60.0f, 44.0f);
+    self.panMgmNavEditButton.frame = CGRectMake(self.panMgmNavView.frame.size.width - 70.0f, 0.0f, 60.0f, 44.0f);
     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
     self.panMgmNavEditButton.enabled = YES;
     self.panMgmNavEditButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    [self.panMgmNavEditButton setTitleColor:[UIColor colorWithRGBHex:0x53993f] forState:UIControlStateNormal];
     [self.panMgmNavEditButton addTarget:self action:@selector(panMgmNavEditButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.panMgmNavView addSubview:self.panMgmNavEditButton];
 
     // 新建按钮 panMgmNavNewButton
     self.panMgmNavNewButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.panMgmNavNewButton.frame = CGRectMake(self.panMgmNavView.frame.size.width - 85.0f - 60.0f - 10.0f, 0.0f, 60.0f, 44.0f);
+    self.panMgmNavNewButton.frame = CGRectMake(self.panMgmNavView.frame.size.width - 70.0f - 60.0f - 10.0f, 0.0f, 60.0f, 44.0f);
     [self.panMgmNavNewButton setTitle:@"新建" forState:UIControlStateNormal];
     self.panMgmNavNewButton.enabled = YES;
     self.panMgmNavNewButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    [self.panMgmNavNewButton setTitleColor:[UIColor colorWithRGBHex:0x53993f] forState:UIControlStateNormal];
     [self.panMgmNavNewButton addTarget:self action:@selector(panMgmNavNewButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.panMgmNavView addSubview:self.panMgmNavNewButton];
     
@@ -2005,7 +2297,7 @@ typedef enum{
     self.nurseRollFirstLabel.font = [UIFont systemFontOfSize:18.0f];
     self.nurseRollFirstLabel.textColor = [UIColor colorWithRGBHex:0x747474];
     self.nurseRollFirstLabel.textAlignment = NSTextAlignmentRight;
-    self.nurseRollFirstLabel.text = @"10次";
+//    self.nurseRollFirstLabel.text = @"10次";
     [self.historyReportBgView addSubview:self.nurseRollFirstLabel];
     
     // 违规人员榜 第二名 次数 文字标签
@@ -2016,7 +2308,7 @@ typedef enum{
     self.nurseRollSecondLabel.font = [UIFont systemFontOfSize:18.0f];
     self.nurseRollSecondLabel.textColor = [UIColor colorWithRGBHex:0x747474];
     self.nurseRollSecondLabel.textAlignment = NSTextAlignmentRight;
-    self.nurseRollSecondLabel.text = @"4次";
+//    self.nurseRollSecondLabel.text = @"4次";
     
     [self.historyReportBgView addSubview:self.nurseRollSecondLabel];
     
@@ -2028,7 +2320,7 @@ typedef enum{
     self.nurseRollThirdLabel.font = [UIFont systemFontOfSize:18.0f];
     self.nurseRollThirdLabel.textColor = [UIColor colorWithRGBHex:0x747474];
     self.nurseRollThirdLabel.textAlignment = NSTextAlignmentRight;
-    self.nurseRollThirdLabel.text = @"2次";
+//    self.nurseRollThirdLabel.text = @"2次";
     
     [self.historyReportBgView addSubview:self.nurseRollThirdLabel];
     
@@ -2046,7 +2338,7 @@ typedef enum{
                                                                              self.nurseRollFirstLabel.frame.size.height)];
     self.nurseRollFirstNameLabel.font = [UIFont systemFontOfSize:18.0f];
     self.nurseRollFirstNameLabel.textColor = [UIColor whiteColor];
-    self.nurseRollFirstNameLabel.text = @"李白";
+//    self.nurseRollFirstNameLabel.text = @"李白";
     
     [self.historyReportBgView addSubview:self.nurseRollFirstNameLabel];
     
@@ -2068,7 +2360,7 @@ typedef enum{
                                                                              self.nurseRollSecondLabel.frame.size.height)];
     self.nurseRollSecondNameLabel.font = [UIFont systemFontOfSize:18.0f];
     self.nurseRollSecondNameLabel.textColor = [UIColor whiteColor];
-    self.nurseRollSecondNameLabel.text = @"杜甫";
+//    self.nurseRollSecondNameLabel.text = @"杜甫";
     
     [self.historyReportBgView addSubview:self.nurseRollSecondNameLabel];
     
@@ -2089,7 +2381,7 @@ typedef enum{
                                                                               self.nurseRollThirdLabel.frame.size.height)];
     self.nurseRollThirdNameLabel.font = [UIFont systemFontOfSize:18.0f];
     self.nurseRollThirdNameLabel.textColor = [UIColor whiteColor];
-    self.nurseRollThirdNameLabel.text = @"王晓波";
+//    self.nurseRollThirdNameLabel.text = @"王晓波";
     
     [self.historyReportBgView addSubview:self.nurseRollThirdNameLabel];
     
@@ -2114,7 +2406,7 @@ typedef enum{
     self.issueRollFirstLabel.font = [UIFont systemFontOfSize:18.0f];
     self.issueRollFirstLabel.textColor = [UIColor colorWithRGBHex:0x747474];
     self.issueRollFirstLabel.textAlignment = NSTextAlignmentRight;
-    self.issueRollFirstLabel.text = @"10次";
+//    self.issueRollFirstLabel.text = @"10次";
     [self.historyReportBgView addSubview:self.issueRollFirstLabel];
     
     // 违规问题榜 第二名 次数 文字标签
@@ -2125,7 +2417,7 @@ typedef enum{
     self.issueRollSecondLabel.font = [UIFont systemFontOfSize:18.0f];
     self.issueRollSecondLabel.textColor = [UIColor colorWithRGBHex:0x747474];
     self.issueRollSecondLabel.textAlignment = NSTextAlignmentRight;
-    self.issueRollSecondLabel.text = @"4次";
+//    self.issueRollSecondLabel.text = @"4次";
     
     [self.historyReportBgView addSubview:self.issueRollSecondLabel];
     
@@ -2137,7 +2429,7 @@ typedef enum{
     self.issueRollThirdLabel.font = [UIFont systemFontOfSize:18.0f];
     self.issueRollThirdLabel.textColor = [UIColor colorWithRGBHex:0x747474];
     self.issueRollThirdLabel.textAlignment = NSTextAlignmentRight;
-    self.issueRollThirdLabel.text = @"2次";
+//    self.issueRollThirdLabel.text = @"2次";
     
     [self.historyReportBgView addSubview:self.issueRollThirdLabel];
     
@@ -2158,7 +2450,7 @@ typedef enum{
                                                                              self.issueRollFirstNameBgView.frame.size.height)];
     self.issueRollFirstNameLabel.font = [UIFont systemFontOfSize:18.0f];
     self.issueRollFirstNameLabel.textColor = [UIColor whiteColor];
-    self.issueRollFirstNameLabel.text = @"病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净";
+//    self.issueRollFirstNameLabel.text = @"病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净";
     self.issueRollFirstNameLabel.numberOfLines = 2;
     self.issueRollFirstNameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     
@@ -2181,7 +2473,7 @@ typedef enum{
                                                                               self.issueRollSecondNameBgView.frame.size.height)];
     self.issueRollSecondNameLabel.font = [UIFont systemFontOfSize:18.0f];
     self.issueRollSecondNameLabel.textColor = [UIColor whiteColor];
-    self.issueRollSecondNameLabel.text = @"病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净";
+//    self.issueRollSecondNameLabel.text = @"病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净";
     self.issueRollSecondNameLabel.numberOfLines = 2;
     self.issueRollSecondNameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     
@@ -2204,7 +2496,7 @@ typedef enum{
                                                                              self.issueRollThirdNameBgView.frame.size.height)];
     self.issueRollThirdNameLabel.font = [UIFont systemFontOfSize:18.0f];
     self.issueRollThirdNameLabel.textColor = [UIColor whiteColor];
-    self.issueRollThirdNameLabel.text = @"病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净";
+//    self.issueRollThirdNameLabel.text = @"病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净病区不干净";
     self.issueRollThirdNameLabel.numberOfLines = 2;
     self.issueRollThirdNameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     
@@ -2220,6 +2512,16 @@ typedef enum{
     self.historyReportTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.historyReportBgView addSubview:self.historyReportTableView];
+    
+    
+    // 历史报表为空 文字标签
+    self.emptyHistoryReportLabel = [[UILabel alloc] initWithFrame:CGRectMake( (NSInteger)((self.historyReportTableView.frame.size.width - 80.0f) / 2.0f),
+                                                                     (NSInteger)( (self.historyReportTableView.frame.size.height - 18.0f) / 2.0f ), 80.0f, 18.0f)];
+    
+    self.emptyHistoryReportLabel.textAlignment = NSTextAlignmentCenter;
+    self.emptyHistoryReportLabel.text = @"暂无数据";
+    self.emptyHistoryReportLabel.textColor = [UIColor colorWithRGBHex:0x36363d];
+    self.emptyHistoryReportLabel.font = [UIFont systemFontOfSize:18.0f];
 
     
 }
@@ -2332,6 +2634,12 @@ typedef enum{
     [result addObjectsFromArray:startMatchArray];
     [result addObjectsFromArray:middleMatchArray];
     
+    
+    [self.emptySearchLabel removeFromSuperview];
+    if (result.count == 0) {
+        [self.issueSearchResultTableView addSubview:self.emptySearchLabel];
+    }
+    
     return result;
 }
 
@@ -2388,9 +2696,11 @@ typedef enum{
             case NSVPanMgmClassifyLevel:{
                 if (self.panMgmProjectTableView.isEditing) {
                     self.panMgmNavBackButton.enabled = NO;
+                    self.panMgmNavBackButton.alpha = 0.0f;
                     [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
                 }else{
                     self.panMgmNavBackButton.enabled = NO;
+                    self.panMgmNavBackButton.alpha = 0.0f;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
                 
@@ -2401,9 +2711,11 @@ typedef enum{
             case NSVPanMgmProjectLevel:{
                 if (self.panMgmProjectTableView.isEditing) {
                     self.panMgmNavBackButton.enabled = NO;
+                    self.panMgmNavBackButton.alpha = 0.0f;
                     [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
                 }else{
                     self.panMgmNavBackButton.enabled = YES;
+                    self.panMgmNavBackButton.alpha = 1.0f;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
                 self.panMgmNavTitleLabel.text = @"项目";
@@ -2413,9 +2725,11 @@ typedef enum{
             case NSVPanMgmIssueLevel:{
                 if (self.panMgmProjectTableView.isEditing) {
                     self.panMgmNavBackButton.enabled = NO;
+                    self.panMgmNavBackButton.alpha = 0.0f;
                     [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
                 }else{
                     self.panMgmNavBackButton.enabled = YES;
+                    self.panMgmNavBackButton.alpha = 1.0f;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
                 self.panMgmNavTitleLabel.text = @"问题";
@@ -2432,9 +2746,11 @@ typedef enum{
             case NSVPanMgmOfficeLevel:{
                 if (self.panMgmProjectTableView.isEditing) {
                     self.panMgmNavBackButton.enabled = NO;
+                    self.panMgmNavBackButton.alpha = 0.0f;
                     [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
                 }else{
                     self.panMgmNavBackButton.enabled = NO;
+                    self.panMgmNavBackButton.alpha = 0.0f;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
                 
@@ -2445,9 +2761,11 @@ typedef enum{
             case NSVPanMgmNurseLevel:{
                 if (self.panMgmProjectTableView.isEditing) {
                     self.panMgmNavBackButton.enabled = NO;
+                    self.panMgmNavBackButton.alpha = 0.0f;
                     [self.panMgmNavEditButton setTitle:@"完成" forState:UIControlStateNormal];
                 }else{
                     self.panMgmNavBackButton.enabled = YES;
+                    self.panMgmNavBackButton.alpha = 1.0f;
                     [self.panMgmNavEditButton setTitle:@"编辑" forState:UIControlStateNormal];
                 }
                 self.panMgmNavTitleLabel.text = @"人员";
@@ -2558,20 +2876,288 @@ typedef enum{
     return msg;
 }
 
+-(void) refreshHistoryReportRoll{
+    NSVRecords* records = [NSVDataCenter defaultCenter].records;
+    
+    // 按时间筛选
+    NSMutableArray* recordsOfDate = [NSMutableArray array];
+    
+    for (NSVRecord* record in records.records) {
+        if ([record.recordDate compare:self.historyStartDate] == NSOrderedDescending && [record.recordDate compare:self.historyEndDate] == NSOrderedAscending) {
+            [recordsOfDate addObject:record];
+        }else if ([record.recordDate compare:self.historyStartDate] == NSOrderedSame || [record.recordDate compare:self.historyEndDate] == NSOrderedSame){
+            [recordsOfDate addObject:record];
+        }
+    }
+    
+    // 统计问题出现次数
+    NSMutableDictionary* issueCounterDict = [NSMutableDictionary dictionary];
+    for (NSVRecord* r in recordsOfDate) {
+        if (issueCounterDict[r.issue.uid] == nil) {
+            issueCounterDict[r.issue.uid] = [NSNumber numberWithInteger:1];
+        }else{
+            NSNumber* n = issueCounterDict[r.issue.uid];
+            issueCounterDict[r.issue.uid] = [NSNumber numberWithInteger:[n integerValue] + 1];
+        }
+    }
+    
+    // 统计人员出现问题次数
+    NSMutableDictionary* nurseCounterDict = [NSMutableDictionary dictionary];
+    for (NSVRecord* r in recordsOfDate) {
+        if (nurseCounterDict[r.nurse.uid] == nil) {
+            nurseCounterDict[r.nurse.uid] = [NSNumber numberWithInteger:1];
+        }else{
+            NSNumber* n = nurseCounterDict[r.nurse.uid];
+            nurseCounterDict[r.nurse.uid] = [NSNumber numberWithInteger:[n integerValue] + 1];
+        }
+    }
+    
+    // 按照问题次数排序
+    NSArray* allKeysOfIssueCount = [issueCounterDict allKeys];
+    NSArray* sortedUids = [allKeysOfIssueCount sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSString* uid1 = (NSString*)obj1;
+        NSString* uid2 = (NSString*)obj2;
+        
+        NSNumber* n1 = issueCounterDict[uid1];
+        NSNumber* n2 = issueCounterDict[uid2];
+        
+        return [n2 compare:n1];
+    }];
+    
+    // 按照人员次数排序
+    NSArray* allKeysOfNurseCount = [nurseCounterDict allKeys];
+    NSArray* sortedUidsOfNurse = [allKeysOfNurseCount sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSString* uid1 = (NSString*)obj1;
+        NSString* uid2 = (NSString*)obj2;
+        
+        NSNumber* n1 = nurseCounterDict[uid1];
+        NSNumber* n2 = nurseCounterDict[uid2];
+        
+        return [n2 compare:n1];
+    }];
+    
+    
+    
+    for (int i = 0; i < 3; i++) {
+        if (i < sortedUids.count) {
+            NSString* uid = sortedUids[i];
+            NSVIssue* issue = [[NSVDataCenter defaultCenter] findIssueByUid:uid];
+            NSNumber* count = issueCounterDict[uid];
+            
+            if (i == 0) {
+                self.issueRollFirstLabel.text = [NSString stringWithFormat:@"%@次", count];
+                self.issueRollFirstNameLabel.text = issue.name;
+            }else if (i == 1){
+                self.issueRollSecondLabel.text = [NSString stringWithFormat:@"%@次", count];
+                self.issueRollSecondNameLabel.text = issue.name;
+            }else if (i == 2){
+                self.issueRollThirdLabel.text = [NSString stringWithFormat:@"%@次", count];
+                self.issueRollThirdNameLabel.text = issue.name;
+            }
+            
+            
+        }else{
+            if (i == 0) {
+                self.issueRollFirstLabel.text = @"次数";
+                self.issueRollFirstNameLabel.text = @"暂无数据";
+            }else if (i == 1){
+                self.issueRollSecondLabel.text = @"次数";
+                self.issueRollSecondNameLabel.text = @"暂无数据";
+            }else if (i == 2){
+                self.issueRollThirdLabel.text = @"次数";
+                self.issueRollThirdNameLabel.text = @"暂无数据";
+            }
+        }
+        
+        
+        if (i < sortedUidsOfNurse.count) {
+            NSString* uid = sortedUidsOfNurse[i];
+            NSVNurse* nurse = [[NSVDataCenter defaultCenter] findNurseByUid:uid];
+            NSNumber* count = nurseCounterDict[uid];
+            
+            if (i == 0) {
+                self.nurseRollFirstLabel.text = [NSString stringWithFormat:@"%@次", count];
+                self.nurseRollFirstNameLabel.text = nurse.name;
+            }else if (i == 1){
+                self.nurseRollSecondLabel.text = [NSString stringWithFormat:@"%@次", count];
+                self.nurseRollSecondNameLabel.text = nurse.name;
+            }else if (i == 2){
+                self.nurseRollThirdLabel.text = [NSString stringWithFormat:@"%@次", count];
+                self.nurseRollThirdNameLabel.text = nurse.name;
+            }
+            
+            
+        }else{
+            if (i == 0) {
+                self.nurseRollFirstLabel.text = @"次数";
+                self.nurseRollFirstNameLabel.text = @"暂无数据";
+            }else if (i == 1){
+                self.nurseRollSecondLabel.text = @"次数";
+                self.nurseRollSecondNameLabel.text = @"暂无数据";
+            }else if (i == 2){
+                self.nurseRollThirdLabel.text = @"次数";
+                self.nurseRollThirdNameLabel.text = @"暂无数据";
+            }
+        }
+    }
+    
+}
+
 -(void) refreshHistoryReportDataSource{
+    
+    [self refreshHistoryReportRoll];
+    
     if (self.orderByTimeCell.isSelected){
         [self.historyReportDataSource removeAllObjects];
         
         NSVRecords* records = [NSVDataCenter defaultCenter].records;
         
-        [self.historyReportDataSource addObjectsFromArray:records.records];
+        // 按时间筛选
+        NSMutableArray* recordsOfDate = [NSMutableArray array];
+        
+        for (NSVRecord* record in records.records) {
+            if ([record.recordDate compare:self.historyStartDate] == NSOrderedDescending && [record.recordDate compare:self.historyEndDate] == NSOrderedAscending) {
+                [recordsOfDate addObject:record];
+            }else if ([record.recordDate compare:self.historyStartDate] == NSOrderedSame || [record.recordDate compare:self.historyEndDate] == NSOrderedSame){
+                [recordsOfDate addObject:record];
+            }
+        }
+        
+        // 按时间排序
+        [recordsOfDate sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSVRecord* r1 = (NSVRecord*)obj1;
+            NSVRecord* r2 = (NSVRecord*)obj2;
+            
+            return [r2.recordDate compare:r1.recordDate];
+        }];
+        
+        
+        [self.historyReportDataSource addObjectsFromArray:recordsOfDate];
         
         [self.historyReportTableView reloadData];
         
     }else if (self.orderByIssueCell.isSelected){
+        [self.historyReportDataSource removeAllObjects];
         
+        NSVRecords* records = [NSVDataCenter defaultCenter].records;
+        
+        // 按时间筛选
+        NSMutableArray* recordsOfDate = [NSMutableArray array];
+        
+        for (NSVRecord* record in records.records) {
+            if ([record.recordDate compare:self.historyStartDate] == NSOrderedDescending && [record.recordDate compare:self.historyEndDate] == NSOrderedAscending) {
+                [recordsOfDate addObject:record];
+            }else if ([record.recordDate compare:self.historyStartDate] == NSOrderedSame || [record.recordDate compare:self.historyEndDate] == NSOrderedSame){
+                [recordsOfDate addObject:record];
+            }
+        }
+        
+        // 按问题排序
+        
+        // 按时间排序
+        [recordsOfDate sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSVRecord* r1 = (NSVRecord*)obj1;
+            NSVRecord* r2 = (NSVRecord*)obj2;
+            
+            return [r2.recordDate compare:r1.recordDate];
+        }];
+        
+        // 统计问题出现次数
+        NSMutableDictionary* counterDict = [NSMutableDictionary dictionary];
+        for (NSVRecord* r in recordsOfDate) {
+            if (counterDict[r.issue.uid] == nil) {
+                counterDict[r.issue.uid] = [NSNumber numberWithInteger:1];
+            }else{
+                NSNumber* n = counterDict[r.issue.uid];
+                counterDict[r.issue.uid] = [NSNumber numberWithInteger:[n integerValue] + 1];
+            }
+        }
+        
+        // 按照次数排序
+        NSArray* allKeys = [counterDict allKeys];
+        NSArray* sortedUids = [allKeys sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSString* uid1 = (NSString*)obj1;
+            NSString* uid2 = (NSString*)obj2;
+            
+            NSNumber* n1 = counterDict[uid1];
+            NSNumber* n2 = counterDict[uid2];
+            
+            return [n2 compare:n1];
+        }];
+        
+        NSMutableArray* sortedRecords = [NSMutableArray array];
+        for (NSString* uid in sortedUids) {
+            for (NSVRecord* r in recordsOfDate) {
+                if ([r.issue.uid isEqualToString:uid]) {
+                    [sortedRecords addObject:r];
+                }
+            }
+        }
+        
+        [self.historyReportDataSource addObjectsFromArray:sortedRecords];
+        
+        [self.historyReportTableView reloadData];
     }else if (self.orderByNurseCell.isSelected){
+        [self.historyReportDataSource removeAllObjects];
         
+        NSVRecords* records = [NSVDataCenter defaultCenter].records;
+        
+        // 按时间筛选
+        NSMutableArray* recordsOfDate = [NSMutableArray array];
+        
+        for (NSVRecord* record in records.records) {
+            if ([record.recordDate compare:self.historyStartDate] == NSOrderedDescending && [record.recordDate compare:self.historyEndDate] == NSOrderedAscending) {
+                [recordsOfDate addObject:record];
+            }else if ([record.recordDate compare:self.historyStartDate] == NSOrderedSame || [record.recordDate compare:self.historyEndDate] == NSOrderedSame){
+                [recordsOfDate addObject:record];
+            }
+        }
+        
+        // 按人员排序
+        
+        // 按时间排序
+        [recordsOfDate sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSVRecord* r1 = (NSVRecord*)obj1;
+            NSVRecord* r2 = (NSVRecord*)obj2;
+            
+            return [r2.recordDate compare:r1.recordDate];
+        }];
+        
+        // 统计人员出现次数
+        NSMutableDictionary* counterDict = [NSMutableDictionary dictionary];
+        for (NSVRecord* r in recordsOfDate) {
+            if (counterDict[r.nurse.uid] == nil) {
+                counterDict[r.nurse.uid] = [NSNumber numberWithInteger:1];
+            }else{
+                NSNumber* n = counterDict[r.nurse.uid];
+                counterDict[r.nurse.uid] = [NSNumber numberWithInteger:[n integerValue] + 1];
+            }
+        }
+        
+        // 按照次数排序
+        NSArray* allKeys = [counterDict allKeys];
+        NSArray* sortedUids = [allKeys sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSString* uid1 = (NSString*)obj1;
+            NSString* uid2 = (NSString*)obj2;
+            
+            NSNumber* n1 = counterDict[uid1];
+            NSNumber* n2 = counterDict[uid2];
+            
+            return [n2 compare:n1];
+        }];
+        
+        NSMutableArray* sortedRecords = [NSMutableArray array];
+        for (NSString* uid in sortedUids) {
+            for (NSVRecord* r in recordsOfDate) {
+                if ([r.nurse.uid isEqualToString:uid]) {
+                    [sortedRecords addObject:r];
+                }
+            }
+        }
+        
+        [self.historyReportDataSource addObjectsFromArray:sortedRecords];
+        
+        [self.historyReportTableView reloadData];
     }
 }
 
@@ -2580,10 +3166,14 @@ typedef enum{
     [self.issueSearchBar resignFirstResponder];
     
     [self endSearchIssue];
+    
+    self.issueSearchBar.showsCancelButton = NO;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
     [self startSearchIssue];
+    
+    self.issueSearchBar.showsCancelButton = YES;
     
     return YES;
 }
@@ -2823,15 +3413,19 @@ typedef enum{
 #pragma  mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (buttonIndex != 1) {
-        return;
-    }
     
-    NSInteger row = alertView.tag;
-    
-    switch (self.panMgmType) {
-        case NSVPanMgmProject:{
-//            if(self.panMgmProjectLevel == [level integerValue]){
+    if(alertView.tag == TagOfHistoryExportAlertView){
+        [self.webServer stop];
+    }else{
+        if (buttonIndex != 1) {
+            return;
+        }
+        
+        NSInteger row = alertView.tag;
+        
+        switch (self.panMgmType) {
+            case NSVPanMgmProject:{
+                //            if(self.panMgmProjectLevel == [level integerValue]){
                 if (self.panMgmProjectLevel == NSVPanMgmClassifyLevel) {
                     [[NSVDataCenter defaultCenter].assessment.classifies removeObjectAtIndex:row];
                     
@@ -2864,13 +3458,13 @@ typedef enum{
                     
                     [self.issueTableView reloadData];
                 }
-//            }
-        }
-            break;
-            
-            
-        case NSVPanMgmNurse:{
-//            if(self.panMgmNurseLevel == [level integerValue]){
+                //            }
+            }
+                break;
+                
+                
+            case NSVPanMgmNurse:{
+                //            if(self.panMgmNurseLevel == [level integerValue]){
                 if (self.panMgmNurseLevel == NSVPanMgmOfficeLevel) {
                     [[NSVDataCenter defaultCenter].staffs.offices removeObjectAtIndex:row];
                     
@@ -2895,15 +3489,15 @@ typedef enum{
                     [self refreshNursesData];
                     [self.nurseTableView reloadData];
                 }
-//            }
+                //            }
+            }
+                break;
+                
+            default:
+                break;
         }
-            break;
-            
-        default:
-            break;
+
     }
-
-
 }
 
 @end

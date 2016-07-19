@@ -12,5 +12,17 @@
 
 -(NSString*) toStringWithFormatYYYY_MM_DD_HH_MM_Chinese;
 -(NSString*) toStringWithFormatYYYY_MM_DD_HH_MM;
+-(NSString*) toStringWithFormatYYYYDotMMDotDD;
+-(NSString*) toStringWithFormatYYYYMMDDHHMM;
+
+-(NSDate*) dateOfDayLastSecond;
+-(NSDate*) dateOfDayFirstSecond;
+
+-(NSInteger) year;
+-(NSInteger) month;
+-(NSInteger) dayOfMonth;
+-(NSInteger) hour;
+-(NSInteger) minute;
+-(NSInteger) second;
 
 @end

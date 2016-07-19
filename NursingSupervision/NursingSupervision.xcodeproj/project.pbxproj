@@ -11,6 +11,7 @@
 		B00866D91D33B88200230214 /* NSVHistoryReportTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B00866D81D33B88200230214 /* NSVHistoryReportTableViewCell.m */; };
 		B00866DC1D33D56A00230214 /* NSString+SHA.m in Sources */ = {isa = PBXBuildFile; fileRef = B00866DB1D33D56A00230214 /* NSString+SHA.m */; };
 		B02243F41CF487DA004E2E6F /* UIColor+NSVAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */; };
+		B04668471D3D1BB800063C8A /* 1.xlsx in Resources */ = {isa = PBXBuildFile; fileRef = B04668461D3D1BB800063C8A /* 1.xlsx */; };
 		B0527B2A1D21677F00DC0472 /* NSVNewDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = B0527B291D21677F00DC0472 /* NSVNewDialog.m */; };
 		B07FE8101CF5E4360052F2DA /* NSVProjectItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B07FE80F1CF5E4360052F2DA /* NSVProjectItemTableViewCell.m */; };
 		B085480F1C7DAC600004991B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B085480E1C7DAC600004991B /* main.m */; };
@@ -45,6 +46,7 @@
 		B00866DB1D33D56A00230214 /* NSString+SHA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SHA.m"; sourceTree = "<group>"; };
 		B02243F21CF487DA004E2E6F /* UIColor+NSVAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+NSVAdditions.h"; sourceTree = "<group>"; };
 		B02243F31CF487DA004E2E6F /* UIColor+NSVAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NSVAdditions.m"; sourceTree = "<group>"; };
+		B04668461D3D1BB800063C8A /* 1.xlsx */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.xlsx; sourceTree = "<group>"; };
 		B0527B281D21677F00DC0472 /* NSVNewDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVNewDialog.h; sourceTree = "<group>"; };
 		B0527B291D21677F00DC0472 /* NSVNewDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNewDialog.m; sourceTree = "<group>"; };
 		B07FE80E1CF5E4360052F2DA /* NSVProjectItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVProjectItemTableViewCell.h; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 		B085480D1C7DAC600004991B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B04668461D3D1BB800063C8A /* 1.xlsx */,
 				B0B22D3F1C82FB080040DA49 /* init.json */,
 				B085480E1C7DAC600004991B /* main.m */,
 			);
@@ -289,6 +292,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B04668471D3D1BB800063C8A /* 1.xlsx in Resources */,
 				B085481D1C7DAC600004991B /* LaunchScreen.storyboard in Resources */,
 				B085481A1C7DAC600004991B /* Assets.xcassets in Resources */,
 				B0B22D401C82FB080040DA49 /* init.json in Resources */,
@@ -478,10 +482,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = NursingSupervision/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yxstudio.NursingSupervision;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -492,10 +499,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = NursingSupervision/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yxstudio.NursingSupervision;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -25,6 +25,10 @@
 -(void) addNewRecord:(nonnull NSVRecord*)record;
 
 -(nullable NSVProject*) findProjectWithIssue:(nonnull NSVIssue*)issue;
+-(nullable NSVClassify*) findClassifyWithIssue:(nonnull NSVIssue*)issue;
 -(nullable NSVOffice*) findOfficeWithNurse:(nonnull NSVNurse*)nurse;
+
+-(nullable NSVIssue*) findIssueByUid:(NSString*)uid;
+-(nullable NSVNurse*) findNurseByUid:(NSString*)uid;
 
 @end

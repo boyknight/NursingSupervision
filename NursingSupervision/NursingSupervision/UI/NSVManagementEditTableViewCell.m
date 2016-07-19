@@ -25,7 +25,7 @@
     self  = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     
     if (self != nil) {
-        self.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+        self.backgroundColor = [UIColor whiteColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.accessoryType = UITableViewCellAccessoryNone;
         self.editingAccessoryType = UITableViewCellAccessoryNone;
@@ -83,6 +83,20 @@
 {
     [super setEditing:editing animated:animated];
     
+    if (editing) {
+        self.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+//        self.nameTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+        self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
+        self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
+        
+    }else{
+        self.backgroundColor = [UIColor whiteColor];
+//        self.nameTextField.backgroundColor = [UIColor whiteColor];
+        self.nameTextField.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.scoreTextField.layer.borderColor = [UIColor whiteColor].CGColor;
+    }
+    
+    
     [self.nameTextField resignFirstResponder];
     [self.scoreTextField resignFirstResponder];
     
@@ -120,8 +134,8 @@
             self.scoreTextField.text = [NSString stringWithFormat:@"%@", self.score];
             
             self.scoreTextField.userInteractionEnabled = YES;
-            self.scoreTextField.backgroundColor = [UIColor whiteColor];
-            self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
+//            self.scoreTextField.backgroundColor = [UIColor whiteColor];
+//            self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
         }
         
         self.scoreTextField.frame = CGRectMake(self.deleteButton.frame.origin.x - (marginOfControls + scoreWidth),
@@ -145,8 +159,8 @@
         self.nameTextField.frame = nameTextFieldFrame;
         self.nameTextField.text = self.name;
         self.nameTextField.userInteractionEnabled = YES;
-        self.nameTextField.backgroundColor = [UIColor whiteColor];
-        self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
+//        self.nameTextField.backgroundColor = [UIColor whiteColor];
+//        self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xe2e2e0].CGColor;
 
         self.rightIconImageView.alpha = 0.0f;
         self.rightIconImageView.frame = CGRectMake(self.frame.size.width - (marginOfSides + indicatorWidth),
@@ -167,8 +181,8 @@
             self.scoreTextField.text = [NSString stringWithFormat:@"%@", self.score];
             
             self.scoreTextField.userInteractionEnabled = NO;
-            self.scoreTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
-            self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
+//            self.scoreTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+//            self.scoreTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
         }
         
         self.scoreTextField.frame = CGRectMake(self.deleteButton.frame.origin.x - (marginOfControls + scoreWidth),
@@ -192,8 +206,8 @@
         self.nameTextField.frame = nameTextFieldFrame;
         self.nameTextField.text = self.name;
         self.nameTextField.userInteractionEnabled = NO;
-        self.nameTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
-        self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
+//        self.nameTextField.backgroundColor = [UIColor colorWithRGBHex:0xf1f1f1];
+//        self.nameTextField.layer.borderColor = [UIColor colorWithRGBHex:0xf1f1f1].CGColor;
         
         self.rightIconImageView.alpha = 0.0f;
         self.rightIconImageView.frame = CGRectMake(self.frame.size.width - (marginOfSides + indicatorWidth),

@@ -9,7 +9,10 @@ pod 'PinYin4Objc'
 pod 'JSONModel'
 pod 'SIAlertView'
 pod 'AMPopTip'
-
+pod 'GCDWebServer'
+pod 'GetAddresses'
+pod 'Reachability'
+pod 'XlsxReaderWriter'
 
 end
 
