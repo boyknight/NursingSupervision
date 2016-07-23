@@ -25,6 +25,7 @@
 		B085483A1C7DBEA80004991B /* NSVIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = B08548391C7DBEA80004991B /* NSVIssue.m */; };
 		B085483D1C7DBF370004991B /* NSVNurse.m in Sources */ = {isa = PBXBuildFile; fileRef = B085483C1C7DBF370004991B /* NSVNurse.m */; };
 		B08548401C7DBF950004991B /* NSVRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = B085483F1C7DBF950004991B /* NSVRecord.m */; };
+		B0A9773B1D4392E300492FE6 /* staff.json in Resources */ = {isa = PBXBuildFile; fileRef = B0A9773A1D4392E300492FE6 /* staff.json */; };
 		B0B22D3E1C82F6450040DA49 /* NSVAssessment.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B22D3D1C82F6450040DA49 /* NSVAssessment.m */; };
 		B0B22D401C82FB080040DA49 /* init.json in Resources */ = {isa = PBXBuildFile; fileRef = B0B22D3F1C82FB080040DA49 /* init.json */; };
 		B0C963A31C7DF4BE002F1A38 /* NSVDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C963A21C7DF4BE002F1A38 /* NSVDataCenter.m */; };
@@ -72,6 +73,7 @@
 		B085483C1C7DBF370004991B /* NSVNurse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVNurse.m; sourceTree = "<group>"; };
 		B085483E1C7DBF950004991B /* NSVRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVRecord.h; sourceTree = "<group>"; };
 		B085483F1C7DBF950004991B /* NSVRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVRecord.m; sourceTree = "<group>"; };
+		B0A9773A1D4392E300492FE6 /* staff.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = staff.json; sourceTree = "<group>"; };
 		B0B22D3C1C82F6450040DA49 /* NSVAssessment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVAssessment.h; sourceTree = "<group>"; };
 		B0B22D3D1C82F6450040DA49 /* NSVAssessment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVAssessment.m; sourceTree = "<group>"; };
 		B0B22D3F1C82FB080040DA49 /* init.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = init.json; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 		B085480D1C7DAC600004991B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B0A9773A1D4392E300492FE6 /* staff.json */,
 				B04668461D3D1BB800063C8A /* 1.xlsx */,
 				B0B22D3F1C82FB080040DA49 /* init.json */,
 				B085480E1C7DAC600004991B /* main.m */,
@@ -296,6 +299,7 @@
 				B085481D1C7DAC600004991B /* LaunchScreen.storyboard in Resources */,
 				B085481A1C7DAC600004991B /* Assets.xcassets in Resources */,
 				B0B22D401C82FB080040DA49 /* init.json in Resources */,
+				B0A9773B1D4392E300492FE6 /* staff.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

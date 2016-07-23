@@ -112,6 +112,41 @@
             
             NSVAllStaff* as = [[NSVAllStaff alloc] init];
             as.offices = [NSMutableArray<NSVOffice> array];
+            
+            NSString* initJsonPath = [NSString stringWithFormat:@"%@/%@", bundleResPath, @"staff.json"];
+            if ([fileManager fileExistsAtPath:initJsonPath]) {
+                NSData* jsonData = [NSData dataWithContentsOfFile:initJsonPath];
+                NSDictionary* jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+                
+                NSArray* offices = jsonObject[@"offices"];
+                
+                if (offices != nil) {
+                    for (NSDictionary* office in offices) {
+                        NSString* officeName = office[@"name"];
+                        
+                        NSVOffice* o = [[NSVOffice alloc] init];
+                        o.name = officeName;
+                        o.nurses = [NSMutableArray<NSVNurse> array];
+                        
+                        NSArray* nurses = office[@"nurses"];
+                        
+                        if (nurses != nil) {
+                            for (NSDictionary* nurse in nurses) {
+                                NSString* nurseName = nurse[@"name"];
+                                
+                                NSVNurse* n = [[NSVNurse alloc] init];
+                                n.name = nurseName;
+                                
+                                [o.nurses addObject:n];
+                            }
+                        }
+                        
+                        [as.offices addObject:o];
+                    }
+                }
+            }
+            
+
 //
 //            NSVOffice* o = [[NSVOffice alloc] init];
 //            o.name = @"肝胆外科";
