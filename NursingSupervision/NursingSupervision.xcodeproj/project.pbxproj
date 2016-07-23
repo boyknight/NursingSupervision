@@ -268,7 +268,7 @@
 				TargetAttributes = {
 					B08548091C7DAC600004991B = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = 334YLCXWYF;
+						DevelopmentTeam = 2CUB7532NF;
 					};
 				};
 			};
@@ -415,7 +415,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Zhi Yong Yang (A7R5XT74UD)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhi Yong Yang (A7R5XT74UD)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -437,6 +438,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "d6d9aab7-ce31-4561-bfc2-2b888ff97cb7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -459,7 +461,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhi Yong Yang (2CUB7532NF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zhi Yong Yang (2CUB7532NF)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -474,6 +477,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "f7c67b60-d225-410b-b368-4d5aa61105f0";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -486,14 +490,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhi Yong Yang (A7R5XT74UD)";
 				INFOPLIST_FILE = NursingSupervision/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yxstudio.NursingSupervision;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kldog.ns;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE = "d6d9aab7-ce31-4561-bfc2-2b888ff97cb7";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -503,14 +507,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zhi Yong Yang (2CUB7532NF)";
 				INFOPLIST_FILE = NursingSupervision/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yxstudio.NursingSupervision;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kldog.ns;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE = "f7c67b60-d225-410b-b368-4d5aa61105f0";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
